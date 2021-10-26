@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "391463997933",
+    "project_id": "hotspot-46542",
+    "storage_bucket": "hotspot-46542.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391463997933:android:0fc42dc907d96b72f657e4",
+        "android_client_info": {
+          "package_name": "com.example.hotspot_f2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391463997933-tt4akr9r43m5krhii79bge184o49iltm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hotspot_f2",
+            "certificate_hash": "f3876c1ba552405283aeb3e5e0c47e9baf9fda2b"
+          }
+        },
+        {
+          "client_id": "391463997933-v5u25eq223jbg45k4oejm9kgfoik68vg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9jdaTCQYTPCa22IVfzldWw84NSiWVYAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "391463997933-v5u25eq223jbg45k4oejm9kgfoik68vg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
