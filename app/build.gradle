@@ -67,6 +67,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-rc01'
     // navigation bar with compose
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
+    implementation 'com.google.firebase:firebase-common-ktx:19.5.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

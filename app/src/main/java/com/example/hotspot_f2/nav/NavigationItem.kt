@@ -1,4 +1,6 @@
-package com.example.hotspot_f2
+package com.example.hotspot_f2.nav
+
+import com.example.hotspot_f2.R
 
 sealed class NavigationItem(var route: String, var icon: Int, var title: String) {
     object Home : NavigationItem("home", R.drawable.ic_home, "Home")
