@@ -1,5 +1,6 @@
 package com.example.hotspot_f2
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -14,12 +15,17 @@ import com.example.hotspot_f2.nav.NavigationItem
 import com.example.hotspot_f2.ui.HomeScreen
 import com.example.hotspot_f2.ui.MoviesScreen
 import com.example.hotspot_f2.ui.MusicScreen
-import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
+
+    private lateinit var  firebaseAuth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
+        firebaseAuth = FirebaseAuth.getInstance()
+        checkUser()
+
         setContent {
             NavComposeApp()
         }
@@ -27,6 +33,16 @@ class MainActivity : AppCompatActivity() {
             MainScreen()
             Text("sut min dut 2")
              */
+    }
+    private fun checkUser(){
+        val firebaseUser = firebaseAuth.currentUser
+        if (firebaseUser == null){
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+        else {
+            val email = firebaseUser.email
+        }
     }
 }
 

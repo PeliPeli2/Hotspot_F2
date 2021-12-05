@@ -3,15 +3,13 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
 
-
 }
 apply plugin: 'com.google.gms.google-services'
-
 android {
     compileSdk 31
     defaultConfig {
         applicationId "com.example.hotspot_f2"
-        minSdk 22
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -21,6 +19,7 @@ android {
     buildFeatures {
         // Enables Jetpack Compose for this module
         compose true
+        viewBinding true
     }
     buildTypes {
         release {
@@ -44,39 +43,43 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
 
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    implementation "androidx.compose.runtime:runtime-livedata:1.0.4"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation "androidx.compose.runtime:runtime-livedata:1.0.5"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 
     // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.3.1'
+    implementation 'androidx.activity:activity-compose:1.4.0'
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.0.4'
+    implementation 'androidx.compose.material:material:1.0.5'
     // Animations
-    implementation 'androidx.compose.animation:animation:1.0.4'
+    implementation 'androidx.compose.animation:animation:1.0.5'
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui:1.0.4'
-    implementation 'androidx.compose.ui:ui-tooling:1.0.4'
+    implementation 'androidx.compose.ui:ui:1.0.5'
+    implementation 'androidx.compose.ui:ui-tooling:1.0.5'
     // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
     // navigation bar with compose
-    implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
-    implementation 'com.google.firebase:firebase-common-ktx:19.5.0'
+    implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
+    implementation 'com.google.firebase:firebase-common-ktx:20.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.4'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.5'
     // FireBase
     implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
-
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.facebook.android:facebook-login:latest.release'
 }

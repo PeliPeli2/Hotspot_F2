@@ -4,6 +4,7 @@ import androidx.navigation.NavHostController
 import com.example.hotspot_f2.nav.Destination.Home
 import com.example.hotspot_f2.nav.Destination.Login
 import com.example.hotspot_f2.nav.Destination.Signup
+import com.google.firebase.ktx.Firebase
 
 
 /**
@@ -14,6 +15,7 @@ object Destination {
     const val Signup = "signup"
     const val Login = "login"
     const val Home = "home"
+    const val Firebase = "FIrebase"
 }
 
 /**

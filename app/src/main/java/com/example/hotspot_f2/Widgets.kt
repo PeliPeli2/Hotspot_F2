@@ -44,7 +44,6 @@ fun Title(title: String) {
         modifier = Modifier.fillMaxHeight(0.5f)
     )
 }
-
 // Different set of buttons in this page
 @Composable
 fun Buttons(title: String, onClick: (() -> Unit)?, backgroundColor: Color) {
