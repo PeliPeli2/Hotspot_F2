@@ -42,6 +42,7 @@ fun HomeScreen(context: Context = LocalContext.current) {
         )
         Button(
             onClick = {
+                //gets firebase user and logs out
                 firebaseAuth = FirebaseAuth.getInstance()
                 firebaseAuth.signOut()
                 context.startActivity(Intent(context, MainActivity::class.java))
@@ -55,7 +56,6 @@ fun HomeScreen(context: Context = LocalContext.current) {
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {

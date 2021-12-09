@@ -4,7 +4,6 @@ plugins {
     id 'com.google.gms.google-services'
 
 }
-apply plugin: 'com.google.gms.google-services'
 android {
     compileSdk 31
     defaultConfig {
@@ -83,3 +82,4 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
     implementation 'com.facebook.android:facebook-login:latest.release'
 }
+apply plugin: 'com.google.gms.google-services'

@@ -12,6 +12,7 @@ import android.content.Intent
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.GoogleAuthProvider
 
 
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         binding = LoginscreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        FirebaseApp.initializeApp(this)
 
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+
         if (requestCode == RC_SIGN_IN) {
             Log.d(TAG, "onActivityResult: Google SignIn Intent Result")
             val accountTask = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -75,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     private fun firebaseAuthWithGoogleAccount(account: GoogleSignInAccount?) {
         Log.d(TAG, "firebaseAuthWithGoogleAccount: begin firebase auth with google")
 
-        val credential = GoogleAuthProvider.getCredential(account!!.idToken, null)
+        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnSuccessListener { authResult ->
                 Log.d(TAG, "firebaseAuthWithGoogleAccount: LoggedIn")
