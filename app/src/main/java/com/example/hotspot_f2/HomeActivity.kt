@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,12 +15,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.hotspot_f2.nav.NavigationItem
 import com.example.hotspot_f2.ui.HomeScreen
 import com.example.hotspot_f2.ui.MoviesScreen
-import com.example.hotspot_f2.ui.MusicScreen
+import com.example.hotspot_f2.ui.ProfileScreen
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var  firebaseAuth: FirebaseAuth
+    private lateinit var profileViewModel:ProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +31,6 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             NavComposeApp()
         }
-            /*
-            MainScreen()
-            Text("sut min dut 2")
-             */
     }
     private fun checkUser(){
         val firebaseUser = firebaseAuth.currentUser
@@ -70,7 +68,11 @@ fun Navigation(navController: NavHostController) {
             HomeScreen()
         }
         composable(NavigationItem.Music.route) {
-            MusicScreen()
+            ProfileScreen("Lars LArsen",
+                "24",
+                "For instance, on the planet Earth, man had always assumed that he was more intelligent than dolphins because he had achieved so much—the wheel, New York, wars and so on—whilst all the dolphins had ever done was muck about in the water having a good time. But conversely, the dolphins had always believed that they were far more intelligent than man—for precisely the same reasons."
+                , painterResource(id = R.drawable.lars)
+            )
         }
         composable(NavigationItem.Movies.route) {
             MoviesScreen()
