@@ -1,7 +1,10 @@
 package com.example.hotspot_f2.ui
 
+
+
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,9 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.hotspot_f2.Database
 import com.example.hotspot_f2.MainActivity
 import com.example.hotspot_f2.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 private lateinit var firebaseAuth: FirebaseAuth
 
@@ -54,8 +60,16 @@ fun MoviesScreen(context: Context = LocalContext.current) {
                 text = "Logout"
             )
         }
+
+        Button(onClick = {Database().writeTestData()})
+        {
+            Text(
+                text = "Write test data"
+            )
+        }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
