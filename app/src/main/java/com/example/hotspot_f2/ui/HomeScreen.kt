@@ -27,15 +27,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.draw.clip
 import com.google.android.gms.maps.CameraUpdateFactory
-
-
+import com.google.android.gms.maps.GoogleMap
 
 
 private lateinit var firebaseAuth: FirebaseAuth
 
 @Composable
 fun HomeScreen(context: Context = LocalContext.current) {
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +58,6 @@ fun HomeScreen(context: Context = LocalContext.current) {
         Hotspotmap(
             modifier = Modifier
         ){
-
         }
     }
 }
