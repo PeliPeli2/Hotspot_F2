@@ -9,4 +9,5 @@ data class Hotspots2(
     val name: String,
     val type: String,
     val checkins: Int,
-    val image: Painter)
+    val image: Painter,
+    val location: String)

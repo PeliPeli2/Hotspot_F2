@@ -15,8 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hotspot_f2.nav.NavigationItem
+import com.example.hotspot_f2.ui.DisplayList
 import com.example.hotspot_f2.ui.HomeScreen
-import com.example.hotspot_f2.ui.HotSpotListScreen
+//import com.example.hotspot_f2.ui.HotSpotListScreen
 import com.example.hotspot_f2.ui.ProfileScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -82,7 +83,7 @@ fun Navigation(navController: NavHostController) {
             )
         }
         composable(NavigationItem.Movies.route) {
-            HotSpotListScreen("Kassen", "Bar", 2, painterResource(id = R.drawable.bar))
+            DisplayList()
         }
         /*
         composable(NavigationItem.Books.route) {

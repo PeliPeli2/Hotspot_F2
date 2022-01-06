@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,19 +24,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hotspot_f2.R
 
-@Composable
 
-fun HotSpotListScreen(name: String,type: String, checkins: Int, image:Painter) {
+/*fun HotSpotListScreen(name: String,type: String, checkins: Int, image:Painter) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         HotspotList(name, type, checkins, image)
-    }
-}
+    }*/
 
 @Composable
-fun HotspotList(name: String,type: String, checkins: Int, image:Painter) {
+fun DisplayList(){
+    val hotspotrepository = HotspotRepository()
+    val getAlldata = hotspotrepository.getAllData()
+    LazyColumn{
+        items(items = getAlldata) { hotspot ->
+            HotspotList(hotspot = hotspot )
+        }
+    }
+
+
+}
+@Composable
+fun HotspotList(hotspot: Hotspots2) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +62,7 @@ fun HotspotList(name: String,type: String, checkins: Int, image:Painter) {
                 .align(Center)
         ) {
             Image(
-                painter = image,
+                painter = hotspot.image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -65,30 +77,24 @@ fun HotspotList(name: String,type: String, checkins: Int, image:Painter) {
                     .align(CenterVertically)
 
 
-
             )
-Column {
-    Text(
-        text = name + " - " + type,
-        color = White,
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 10.dp),
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Bold
-    )
-    Text(
-        color = White,
-        modifier = Modifier
-            .padding(horizontal = 16.dp,vertical = 10.dp),
-        fontSize = 13.sp,
-        text = "Indtjekninger: $checkins"
-    )
-    Text(color = White,
-        modifier = Modifier
-            .padding(horizontal = 16.dp,vertical = 5.dp),
-        fontSize = 13.sp,
-        text = "København K")
-}
+            Column {
+                Text(
+                    text = hotspot.name + " - " + hotspot.type,
+                    color = White,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    color = White,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    fontSize = 13.sp,
+                    text = "Indtjekninger: " + hotspot.checkins  + " - " + hotspot.location
+                )
+            }
         }
     }
 }
@@ -96,13 +102,8 @@ Column {
     @Preview(showBackground = true)
     @Composable
     fun HotspotListScreenPreview() {
-        val first: Array<Array<String>> = arrayOf(
-            arrayOf("2", "4", "6"),
-            arrayOf("1", "2", "5"),
-            arrayOf("1", "2", "5")
-        )
+        DisplayList()
 
-        HotSpotListScreen("Kassen", "Bar", 2, painterResource(id = R.drawable.bar))
     }
 
 
