@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,17 +16,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.hotspot_f2.AddMarker
 import com.example.hotspot_f2.Hotspotmap
 import com.example.hotspot_f2.R
 import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.ui.draw.clip
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 
 
 private lateinit var firebaseAuth: FirebaseAuth
@@ -60,6 +53,13 @@ fun HomeScreen(context: Context = LocalContext.current) {
         ){
         }
     }
+    //__________________________
+
+    AddMarker(
+        modifier = Modifier
+    )
+
+    //______________________________________
 }
 @Preview(showBackground = true)
 @Composable

@@ -39,6 +39,9 @@ class CustomInfoWindow (context: Context) : GoogleMap.InfoWindowAdapter {
             view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.k_bar)
             view.findViewById<ImageView>(R.id.imageView2).visibility = View.VISIBLE
         }
+        else {
+            view.findViewById<ImageView>(R.id.imageView2).visibility = View.GONE
+        }
         view.findViewById<Button>(R.id.button).setText("Check in")
 
 

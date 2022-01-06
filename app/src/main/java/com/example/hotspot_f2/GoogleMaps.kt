@@ -1,27 +1,22 @@
 package com.example.hotspot_f2
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import java.lang.IllegalStateException
-import androidx.compose.ui.Modifier
 import com.example.hotspot_f2.ui.CustomInfoWindow
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-
 
 @Composable
 fun Hotspotmap(
@@ -100,8 +95,8 @@ fun Hotspotmap(
         },
         modifier=modifier
     )
-
 }
+
 @Composable
 fun rememberMapLifecycle(map:MapView):LifecycleObserver{
     return remember{
