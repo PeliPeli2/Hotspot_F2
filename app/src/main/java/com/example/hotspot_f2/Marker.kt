@@ -25,15 +25,11 @@ fun AddMarker(
     context: Context = LocalContext.current,
     modifier: Modifier = Modifier
 ) {
-
     val showInputForm = remember { mutableStateOf(false) }
-
     val textState1 = remember { mutableStateOf(TextFieldValue()) }
     val textState2 = remember { mutableStateOf(TextFieldValue()) }
     val textState3 = remember { mutableStateOf(TextFieldValue()) }
     val textState4 = remember { mutableStateOf(TextFieldValue()) }
-
-
 
     Column(Modifier.padding(16.dp)) {
         if (showInputForm.value) {
@@ -44,16 +40,8 @@ fun AddMarker(
                 }
 
                 Button(onClick = {
-                    showInputForm.value = true //hide after adding hotspot
-
-                    Log.d("???", "ASDJKLASJDKLJASD")
-
-                    //function
-                    val newVar = textState1.value.text
-                    Toast.makeText(context, newVar.toString(), Toast.LENGTH_SHORT).show()
-                    fun testFunction(): String {
-                        return newVar
-                    }
+                    testAddingAHotspot()
+                    showInputForm.value = true //hide after adding hotspot //TODO: Skal rettes til false
                 }
                 ) {
                     Text("Add")
