@@ -1,7 +1,6 @@
 package com.example.hotspot_f2
 
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -19,18 +18,17 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-fun testAddingAHotspot()
+
+
+
+fun testAddingAHotspot(textState1: String, textState2: String, textState3: String, textState4: String)
 {
-    // Lav en ny marker (bare en kopi af en af de andre rykket en lille smule)
+    /*
     val newMarker = MarkerOptions()
-        .position(LatLng(55.74,12.3963))
-        .title("Brønnum")
-        .snippet("Adjacent to the buzzing Kongens Nytorv square is Brønnum, a hushed," +
-                " historic retreat—the perfect post-sightseeing reprieve. Specializing in Champagne," +
-                " along with a well-edited list of wine and cocktails and late-afternoon live jazz performances.")
-
-    // Tilføj den nye marker til kortet: .....
-
+        .position(LatLng(textState1.toDouble(), textState2.toDouble()))
+        .title(textState3)
+        .snippet(textState4)
+    */
 }
 
 
@@ -80,9 +78,11 @@ fun Hotspotmap(
 
     }
 
+
     val lifecycle= LocalLifecycleOwner.current.lifecycle
 
     lifecycle.addObserver(rememberMapLifecycle(mapView ))
+
 
     AndroidView(
         factory = {

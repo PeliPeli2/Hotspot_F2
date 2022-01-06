@@ -1,7 +1,6 @@
 package com.example.hotspot_f2
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,7 +39,9 @@ fun AddMarker(
                 }
 
                 Button(onClick = {
-                    testAddingAHotspot()
+
+                    testAddingAHotspot(textState1.toString(), textState2.toString(),textState3.toString(),textState4.toString())
+                    Toast.makeText(context, "Hotspot created", Toast.LENGTH_LONG).show()
                     showInputForm.value = true //hide after adding hotspot //TODO: Skal rettes til false
                 }
                 ) {
@@ -76,7 +77,6 @@ fun AddMarker(
                 onValueChange = { textState4.value = it },
                 label = { Text("Snippet") }
             )
-
         }
         else {
             // show input form when button is clicked
