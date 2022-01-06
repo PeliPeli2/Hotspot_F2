@@ -6,12 +6,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -27,62 +24,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hotspot_f2.R
 
-@Composable
-fun HotSpotListScreen(name: String, type: String, checkins: Int, image: Painter) {
+
+/*fun HotSpotListScreen(name: String,type: String, checkins: Int, image:Painter) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        HotspotList()
-    //HotspotList(name, type, checkins, image)
-    }
-}
-
-//Kommer nok til at se en smule anderledes ud senere
-data class HotspotTestDataFormat(
-    val name: String,
-    val type: String,
-    val checkins: Int,
-    val imageID: Int
-)
-
-//Test listen skal nok flyttes til en anden fil senere
-fun getTestList(): List<HotspotTestDataFormat>{
-    val testListOfHotspots: List<HotspotTestDataFormat> = List(15){
-        HotspotTestDataFormat(
-            name = "Kassen $it",
-            type = "Bar",
-            checkins = it,
-            imageID = R.drawable.bar)
-    }
-    return testListOfHotspots
-}
+        HotspotList(name, type, checkins, image)
+    }*/
 
 @Composable
-fun HotspotList() {
-    LazyColumn(modifier = Modifier.padding(4.dp)) {
-        items(items = getTestList()) {
-            item -> HotspotListElement(
-            name = item.name,
-            type = item.type,
-            checkins = item.checkins,
-            image = painterResource(id = item.imageID))
+fun DisplayList(){
+    val hotspotrepository = HotspotRepository()
+    val getAlldata = hotspotrepository.getAllData()
+    LazyColumn{
+        items(items = getAlldata) { hotspot ->
+            HotspotList(hotspot = hotspot )
         }
     }
+
+
 }
-
 @Composable
-fun HotspotListElement(name: String, type: String, checkins: Int, image: Painter) {
-    val expanded = remember { mutableStateOf(false)}
-    //val extraPadding = if(expanded.value) 48.dp else 0.dp
-
+fun HotspotList(hotspot: Hotspots2) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
-            //.height(80.dp + extraPadding)
+            .height(80.dp)
             .background(color = Blue)
-            .selectable(selected = expanded.value, onClick = {expanded.value = !expanded.value})
 
     ) {
         Row(
@@ -92,7 +62,7 @@ fun HotspotListElement(name: String, type: String, checkins: Int, image: Painter
                 .align(Center)
         ) {
             Image(
-                painter = image,
+                painter = hotspot.image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -106,10 +76,11 @@ fun HotspotListElement(name: String, type: String, checkins: Int, image: Painter
                     .size(60.dp)
                     .align(CenterVertically)
 
+
             )
-            Column() {
+            Column {
                 Text(
-                    text = name + " - " + type,
+                    text = hotspot.name + " - " + hotspot.type,
                     color = White,
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 10.dp),
@@ -121,36 +92,19 @@ fun HotspotListElement(name: String, type: String, checkins: Int, image: Painter
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 10.dp),
                     fontSize = 13.sp,
-                    text = "Indtjekninger: $checkins"
+                    text = "Indtjekninger: " + hotspot.checkins  + " - " + hotspot.location
                 )
-
-                if(expanded.value) // Only show this part if the item is selected
-                {
-                    Text(
-                        color = White,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 5.dp),
-                        fontSize = 13.sp,
-                        text = "København K"
-                    )
-                }
-
             }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HotspotListScreenPreview() {
-    val first: Array<Array<String>> = arrayOf(
-        arrayOf("2", "4", "6"),
-        arrayOf("1", "2", "5"),
-        arrayOf("1", "2", "5")
-    )
+    @Preview(showBackground = true)
+    @Composable
+    fun HotspotListScreenPreview() {
+        DisplayList()
 
-    HotSpotListScreen("Kassen", "Bar", 2, painterResource(id = R.drawable.bar))
-}
+    }
 
 
 
