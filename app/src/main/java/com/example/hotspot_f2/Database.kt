@@ -52,7 +52,7 @@ class Database() {
                     "a pioneer of the Copenhagen cocktail scene. Years after opening, this bar, " +
                     "situated near Højbro Square, remains a sought-after drinks destination",
             location = GeoPoint(55.7279,12.39), "København K",
-            connections = 34,painterResource(id = R.drawable.bar),"Bar",40 )
+            connections = 34,painterResource(id = R.drawable.k_bar),"Bar",40 )
 
         return listOf(point1, point2, point3, point4)
     }
