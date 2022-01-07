@@ -141,9 +141,8 @@ fun BottomNavigationBar(navController: NavController) {
     BottomNavigation(
         backgroundColor = colorResource(id = R.color.colorPrimary),
         contentColor = Color.White
-    )  {Box(modifier = Modifier.padding(vertical = 200.dp)){
-
-    }
+    )
+    {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
