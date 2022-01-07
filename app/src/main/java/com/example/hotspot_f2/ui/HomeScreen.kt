@@ -28,38 +28,9 @@ private lateinit var firebaseAuth: FirebaseAuth
 @Composable
 fun HomeScreen(context: Context = LocalContext.current) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.colorPrimaryDark))
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Home View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
-    }
-    Box(
-        modifier=Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    )
-    {
-        Hotspotmap(
-            modifier = Modifier
-        ){
-        }
-    }
-    //__________________________
-
-    AddMarker(
-        modifier = Modifier
-    )
-
-    //______________________________________
+    Box(modifier=Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center) { Hotspotmap(modifier = Modifier){} }
+    AddMarker(modifier = Modifier)
 }
 @Preview(showBackground = true)
 @Composable
