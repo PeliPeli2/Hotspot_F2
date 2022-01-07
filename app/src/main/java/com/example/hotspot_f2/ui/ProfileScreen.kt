@@ -29,9 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hotspot_f2.Database
-import com.example.hotspot_f2.MainActivity
-import com.example.hotspot_f2.ProfileViewModel
+import com.example.hotspot_f2.*
 import com.example.hotspot_f2.R
 import com.google.firebase.auth.FirebaseAuth
 
@@ -99,6 +97,11 @@ fun LogoutButton(context: Context = LocalContext.current){
     }) { Text(text = "Logout") }
 
     Button(onClick = { Database().writeTestData()}) { Text(text = "Write test data") }
+
+    Button(onClick = { Database().testUpdateUser()}) { Text(text = "Update"  + User.user.age.toString()) }
+
+    Button(onClick = { Database().testGetUser()}) { Text(text = "Get") }
+
 }
 
 @Composable

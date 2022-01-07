@@ -3,6 +3,7 @@ package com.example.hotspot_f2
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.firestore.FirestoreRegistrar
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -64,6 +65,66 @@ class Database() {
         getDummyHotspots().forEach { writeHotspot(it) }
     }
 
+    fun testUpdateUser()
+    {
+        val testUser = User("Adam Abel", 99, "En bruger af appen")
+        updateUser(testUser)
+
+        val testUser2 = User("Bente Bent", 98, "En anden bruger af appen")
+        updateUser(testUser2)
+    }
+
+    fun testGetUser()
+    {
+        val testUser = getUser("Bente Bent")
+    }
+
+
+    fun updateUser(user: User)
+    {
+        Firebase.firestore.collection("users").document(user.name).set(hashMapFromUser(user))
+    }
+
+    private fun fetchUser(name: String)
+    {
+        val docRef = Firebase.firestore.collection("users").document(name)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+
+                    User.user.name = document.get("name").toString()
+                    User.user.description = document.get("description").toString()
+                    User.user.age = document.get("age").toString().toInt()
+                    Log.d(TAG, "Found a user named ${User.user.name}")}
+            }
+            .addOnFailureListener { Log.d(TAG, "Failed to get user") }
+    }
+
+    fun getUser(name: String): User {
+        fetchUser(name)
+        return User.user
+    }
+
+    /*
+    fun getUser(name: String): User{
+
+        val resultUser = User("", 0, "")
+
+        val docRef = Firebase.firestore.collection("users").document(name)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    resultUser.name = document.get("name").toString()
+                    resultUser.description = document.get("description").toString()
+                    resultUser.age = document.get("age").toString().toInt()
+                    Log.d(TAG, "Found a user named ${resultUser.name}")}
+            }
+            .addOnFailureListener { Log.d(TAG, "Failed to get user") }
+
+        Log.d(TAG, "Retrieved a user named ${resultUser.name}")
+        return resultUser
+    }
+     */
 
     fun writeHotspot(hotspot: Hotspot) {
         val data = hashMapOf(
@@ -94,6 +155,13 @@ class Database() {
             "checkins" to hs.checkins,
             "imageID" to hs.imageID,
             "location" to hs.location)
+    }
+
+    fun hashMapFromUser(user: User): HashMap<String, Comparable<*>> {
+        return hashMapOf(
+            "name" to user.name,
+            "age" to user.age,
+            "description" to user.description)
     }
 
     fun documentToHotspot()
