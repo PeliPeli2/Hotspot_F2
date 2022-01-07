@@ -1,54 +1,60 @@
 package com.example.hotspot_f2.ui
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.aspectRatio
+import android.content.Context
+import android.content.Intent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.hotspot_f2.MainActivity
 import com.example.hotspot_f2.ProfileViewModel
 import com.example.hotspot_f2.R
+import com.google.firebase.auth.FirebaseAuth
 
+
+private lateinit var firebaseAuth: FirebaseAuth
 
 @Composable
-fun ProfileScreen(name:String, age:String, description:String, image:Painter) {
-    val model: ProfileViewModel
+fun ProfileScreen(image:Painter, model: ProfileViewModel = ProfileViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        ProfileSection(name, age, description, image)
+        ProfileSection(image)
     }
 }
 
 
 @Composable
 fun ProfileSection(
-    name:String,
-    age:String,
-    description:String,
     image:Painter,
     modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
+    model: ProfileViewModel = ProfileViewModel()
 ) {
+    var name by rememberSaveable { model.name }
+    var age by rememberSaveable { model.age }
+    var description by rememberSaveable { model.description }
+
     Column(modifier = modifier
         .fillMaxWidth()
         .verticalScroll(rememberScrollState())
@@ -75,9 +81,30 @@ fun ProfileSection(
             Spacer(modifier = Modifier.width(16.dp))
             StatSection(name, age, modifier = Modifier.weight(7f))
         }
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") }
+        )
+
         ProfileDescription(
             description = description,
         )
+
+        Button(
+            onClick = {
+                //gets firebase user and logs out
+                firebaseAuth = FirebaseAuth.getInstance()
+                firebaseAuth.signOut()
+                context.startActivity(Intent(context, MainActivity::class.java))
+
+            },
+        )
+        {
+            Text(
+                text = "Logout"
+            )
+        }
     }
 }
 
@@ -144,9 +171,6 @@ fun ProfileDescription(
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen("Lars LArsen",
-        "24",
-        "For instance, on the planet Earth, man had always assumed that he was more intelligent than dolphins because he had achieved so much—the wheel, New York, wars and so on—whilst all the dolphins had ever done was muck about in the water having a good time. But conversely, the dolphins had always believed that they were far more intelligent than man—for precisely the same reasons."
-        ,painterResource(id = R.drawable.lars)
+    ProfileScreen(painterResource(id = R.drawable.lars)
         )
 }

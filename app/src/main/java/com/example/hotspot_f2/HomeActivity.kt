@@ -20,18 +20,18 @@ import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var  firebaseAuth: FirebaseAuth
+    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var profileViewModel:ProfileViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
-
         setContent {
             NavComposeApp()
         }
     }
+
     private fun checkUser(){
         val firebaseUser = firebaseAuth.currentUser
         if (firebaseUser == null){
@@ -47,6 +47,7 @@ class HomeActivity : AppCompatActivity() {
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+
     Scaffold(
         topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navController) }
@@ -63,16 +64,13 @@ fun MainScreenPreview() {
 
 @Composable
 fun Navigation(navController: NavHostController) {
+
     NavHost(navController, startDestination = NavigationItem.Home.route) {
         composable(NavigationItem.Home.route) {
             HomeScreen()
         }
         composable(NavigationItem.Music.route) {
-            ProfileScreen("Lars LArsen",
-                "24",
-                "For instance, on the planet Earth, man had always assumed that he was more intelligent than dolphins because he had achieved so much—the wheel, New York, wars and so on—whilst all the dolphins had ever done was muck about in the water having a good time. But conversely, the dolphins had always believed that they were far more intelligent than man—for precisely the same reasons."
-                , painterResource(id = R.drawable.lars)
-            )
+            ProfileScreen(image = painterResource(id = R.drawable.lars))
         }
         composable(NavigationItem.Movies.route) {
             MoviesScreen()
