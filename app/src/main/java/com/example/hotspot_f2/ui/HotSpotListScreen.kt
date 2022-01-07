@@ -60,30 +60,40 @@ fun HotspotList(hotspot: HotspotData) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Gray)
+            .background(color = Black)
     )
     {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .background(color = White)) {
+        Image(
+        painter = hotspot.image,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .clip(RoundedCornerShape(20))
+            .fillMaxHeight()
+            .width(500.dp)
+            .padding(horizontal = 2.dp,vertical = 5.dp))
+
+
+    }
+
+
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 1.dp)
-                .height(170.dp)
+                .padding(bottom = 1.dp)
+                .height(70.dp)
                 .background(color = White)
 
 
         ) {
             Column {
-                Image(
-                    painter = hotspot.image,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(shape = RoundedCornerShape(percent = 40))
-                        .padding(horizontal = 10.dp, vertical = 10.dp)
-                        .height(80.dp)
-                        .width(200.dp)
-                )
+
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
