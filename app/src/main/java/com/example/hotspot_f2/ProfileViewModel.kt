@@ -11,6 +11,4 @@ class ProfileViewModel {
 
     private var _description = MutableLiveData("")
     var description: MutableLiveData<String> = _description
-
-
 }
