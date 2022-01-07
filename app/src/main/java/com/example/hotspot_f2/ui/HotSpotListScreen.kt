@@ -30,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.hotspot_f2.Database
+import com.example.hotspot_f2.HotspotData
 import com.example.hotspot_f2.R
 
 
@@ -43,8 +45,8 @@ import com.example.hotspot_f2.R
 
 @Composable
 fun DisplayList(){
-    val hotspotrepository = HotspotRepository()
-    val getAlldata = hotspotrepository.getAllData()
+    val hotspotrepository = Database()
+    val getAlldata = hotspotrepository.getHotspots()
     LazyColumn{
         items(items = getAlldata) { hotspot ->
             HotspotList(hotspot = hotspot )
@@ -54,7 +56,7 @@ fun DisplayList(){
 
 }
 @Composable
-fun HotspotList(hotspot: Hotspots2) {
+fun HotspotList(hotspot: HotspotData) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,61 +73,62 @@ fun HotspotList(hotspot: Hotspots2) {
 
 
         ) {
-            Column { Image(
-                painter = hotspot.image,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .clip(shape = RoundedCornerShape(percent = 40))
-                    .padding(horizontal = 10.dp, vertical = 10.dp)
-                    .height(80.dp)
-                    .width(200.dp)
-            )
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .fillMaxWidth()
-            ) {
+            Column {
+                Image(
+                    painter = hotspot.image,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .clip(shape = RoundedCornerShape(percent = 40))
+                        .padding(horizontal = 10.dp, vertical = 10.dp)
+                        .height(80.dp)
+                        .width(200.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth()
+                ) {
 
-                Column {
-                    Row {
+                    Column {
+                        Row {
+                            Text(
+                                text = hotspot.title,
+                                color = DarkGray,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp, vertical = 1.dp),
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                        }
                         Text(
-                            text = hotspot.name,
+                            text = hotspot.type + " - " + hotspot.locationname,
                             color = DarkGray,
                             modifier = Modifier
-                                .padding(horizontal = 8.dp, vertical = 1.dp),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
+                                .padding(horizontal = 9.dp, vertical = 1.dp),
+                            fontSize = 13.sp,
                         )
-
-                    }
-                    Text(
-                        text = hotspot.type + " - " + hotspot.location,
-                        color = DarkGray,
-                        modifier = Modifier
-                            .padding(horizontal = 9.dp, vertical = 1.dp),
-                        fontSize = 13.sp,
-                    )
-                    Row(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_people_24),
-                            contentDescription = null,
+                        Row(
                             modifier = Modifier
-                                .size(18.dp)
-                        )
-                        Text(
-                            color = DarkGray,
-                            modifier = Modifier
-                                .padding(horizontal = 3.dp, vertical = 1.dp),
-                            fontSize = 12.sp,
-                            text = "" + hotspot.checkins + " indtjekninger lige nu "
-                        )
+                                .padding(horizontal = 8.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_baseline_people_24),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(18.dp)
+                            )
+                            Text(
+                                color = DarkGray,
+                                modifier = Modifier
+                                    .padding(horizontal = 3.dp, vertical = 1.dp),
+                                fontSize = 12.sp,
+                                text = "" + hotspot.checkedins + " indtjekninger lige nu "
+                            )
+                        }
                     }
                 }
-            }
             }
         }
     }
