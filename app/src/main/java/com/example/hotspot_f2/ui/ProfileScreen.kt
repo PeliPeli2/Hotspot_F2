@@ -1,5 +1,7 @@
 package com.example.hotspot_f2.ui
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,12 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.hotspot_f2.Database
+import com.example.hotspot_f2.MainActivity
 import com.example.hotspot_f2.ProfileViewModel
 import com.example.hotspot_f2.R
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
@@ -74,11 +81,24 @@ fun ProfileSection(
         ) {
             Spacer(modifier = Modifier.width(16.dp))
             StatSection(name, age, modifier = Modifier.weight(7f))
+            LogoutButton()
+
         }
         ProfileDescription(
             description = description,
         )
     }
+}
+
+@Composable
+fun LogoutButton(context: Context = LocalContext.current){
+    Button(onClick = {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth.signOut()
+        context.startActivity(Intent(context, MainActivity::class.java))
+    }) { Text(text = "Logout") }
+
+    Button(onClick = { Database().writeTestData()}) { Text(text = "Write test data") }
 }
 
 @Composable

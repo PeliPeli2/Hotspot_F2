@@ -1,6 +1,8 @@
 package com.example.hotspot_f2
 
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
@@ -13,6 +15,8 @@ import com.example.hotspot_f2.ui.HotSpotTheme
  * The main Navigation composable which will handle all the navigation stack.
  */
 
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun NavComposeApp() {
     val navController = rememberNavController()

@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
@@ -13,16 +15,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hotspot_f2.nav.NavigationItem
+import com.example.hotspot_f2.ui.DisplayList
 import com.example.hotspot_f2.ui.HomeScreen
-import com.example.hotspot_f2.ui.MoviesScreen
+//import com.example.hotspot_f2.ui.HotSpotListScreen
 import com.example.hotspot_f2.ui.ProfileScreen
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var  firebaseAuth: FirebaseAuth
-    private lateinit var profileViewModel:ProfileViewModel
 
+    @ExperimentalMaterialApi
+    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
@@ -31,6 +35,10 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             NavComposeApp()
         }
+            /*
+            MainScreen()
+            Text("sut min dut 2")
+             */
     }
     private fun checkUser(){
         val firebaseUser = firebaseAuth.currentUser
@@ -75,7 +83,7 @@ fun Navigation(navController: NavHostController) {
             )
         }
         composable(NavigationItem.Movies.route) {
-            MoviesScreen()
+            DisplayList()
         }
         /*
         composable(NavigationItem.Books.route) {
