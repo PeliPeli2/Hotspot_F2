@@ -46,27 +46,6 @@ fun MoviesScreen(context: Context = LocalContext.current) {
             textAlign = TextAlign.Center,
             fontSize = 25.sp
         )
-        Button(
-            onClick = {
-                //gets firebase user and logs out
-                firebaseAuth = FirebaseAuth.getInstance()
-                firebaseAuth.signOut()
-                context.startActivity(Intent(context, MainActivity::class.java))
-
-            },
-        )
-        {
-            Text(
-                text = "Logout"
-            )
-        }
-
-        Button(onClick = {Database().writeTestData()})
-        {
-            Text(
-                text = "Write test data"
-            )
-        }
     }
 }
 
