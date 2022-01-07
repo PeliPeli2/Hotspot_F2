@@ -35,10 +35,6 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             NavComposeApp()
         }
-            /*
-            MainScreen()
-            Text("sut min dut 2")
-             */
     }
     private fun checkUser(){
         val firebaseUser = firebaseAuth.currentUser

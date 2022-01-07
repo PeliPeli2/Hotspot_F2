@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/apptitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="50sp"
+        android:text="HotSpot_F2"
+        android:layout_centerHorizontal="true" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googlesign_in_button"
         android:layout_width="wrap_content"
