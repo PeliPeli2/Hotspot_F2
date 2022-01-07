@@ -66,7 +66,7 @@ fun HotspotList(hotspot: HotspotData) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(120.dp)
             .background(color = White)) {
         Image(
         painter = hotspot.image,
@@ -76,6 +76,7 @@ fun HotspotList(hotspot: HotspotData) {
             .clip(RoundedCornerShape(20))
             .fillMaxHeight()
             .width(500.dp)
+            .align(Center)
             .padding(horizontal = 2.dp,vertical = 5.dp))
 
 
