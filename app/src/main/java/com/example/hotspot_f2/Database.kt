@@ -67,64 +67,47 @@ class Database() {
 
     fun testUpdateUser()
     {
-        val testUser = User("Adam Abel", 99, "En bruger af appen")
+        val testUser = ProfileViewModel()
+        testUser.name.value = "Adam Abel"
+        testUser.age.value = 99
+        testUser.description.value = "En bruger af appen"
+        testUser.imageID.value = R.drawable.lars
         updateUser(testUser)
 
-        val testUser2 = User("Bente Bent", 98, "En anden bruger af appen")
+        val testUser2 = ProfileViewModel()
+        testUser2.name.value = "Bente Bent"
+        testUser2.age.value = 88
+        testUser2.description.value = "En anden bruger af appen"
+        testUser2.imageID.value = R.drawable.lars
         updateUser(testUser2)
     }
 
-    fun testGetUser()
+    fun updateUser(profileViewModel: ProfileViewModel)
     {
-        val testUser = getUser("Bente Bent")
+        Firebase.firestore.collection("users").document(profileViewModel.name.value).set(hashMapFromProfile(profileViewModel))
+            .addOnSuccessListener { Log.d(TAG, "Updated the user ${profileViewModel.name.value}" ) }
+            .addOnFailureListener { Log.d(TAG, "Error updating the user ${profileViewModel.name.value}" )}
     }
 
-
-    fun updateUser(user: User)
-    {
-        Firebase.firestore.collection("users").document(user.name).set(hashMapFromUser(user))
-    }
-
-    private fun fetchUser(name: String)
+    private fun fetchUser(name: String, profileViewModel: ProfileViewModel)
     {
         val docRef = Firebase.firestore.collection("users").document(name)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
 
-                    User.user.name = document.get("name").toString()
-                    User.user.description = document.get("description").toString()
-                    User.user.age = document.get("age").toString().toInt()
-                    Log.d(TAG, "Found a user named ${User.user.name}")}
+                    profileViewModel.name.value = document.get("name").toString()
+                    profileViewModel.description.value = document.get("description").toString()
+                    profileViewModel.age.value = document.get("age").toString().toInt()
+                    profileViewModel.imageID.value = document.get("imageID").toString().toInt()
+                    Log.d(TAG, "Fetched a user named ${profileViewModel.name.value}")}
             }
             .addOnFailureListener { Log.d(TAG, "Failed to get user") }
     }
 
-    fun getUser(name: String): User {
-        fetchUser(name)
-        return User.user
+    fun getUser(requestedUserName: String, profileViewModel: ProfileViewModel) {
+        fetchUser(requestedUserName, profileViewModel)
     }
-
-    /*
-    fun getUser(name: String): User{
-
-        val resultUser = User("", 0, "")
-
-        val docRef = Firebase.firestore.collection("users").document(name)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    resultUser.name = document.get("name").toString()
-                    resultUser.description = document.get("description").toString()
-                    resultUser.age = document.get("age").toString().toInt()
-                    Log.d(TAG, "Found a user named ${resultUser.name}")}
-            }
-            .addOnFailureListener { Log.d(TAG, "Failed to get user") }
-
-        Log.d(TAG, "Retrieved a user named ${resultUser.name}")
-        return resultUser
-    }
-     */
 
     fun writeHotspot(hotspot: Hotspot) {
         val data = hashMapOf(
@@ -157,11 +140,12 @@ class Database() {
             "location" to hs.location)
     }
 
-    fun hashMapFromUser(user: User): HashMap<String, Comparable<*>> {
+    fun hashMapFromProfile(profileViewModel: ProfileViewModel): HashMap<String, Comparable<*>> {
         return hashMapOf(
-            "name" to user.name,
-            "age" to user.age,
-            "description" to user.description)
+            "name" to profileViewModel.name.value,
+            "age" to profileViewModel.age.value,
+            "description" to profileViewModel.description.value,
+            "imageID" to profileViewModel.imageID.value)
     }
 
     fun documentToHotspot()
@@ -194,23 +178,4 @@ class Database() {
             }
     }
 
-    private fun writeTestDataOld() {
-        // Create a new user with a first and last name
-        val user = hashMapOf(
-            "first" to "Bente",
-            "last" to "Bent",
-            "born" to 1990
-        )
-
-        // Add a new document with a generated ID
-        val db = Firebase.firestore
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-    }
 }

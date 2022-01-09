@@ -3,11 +3,13 @@ package com.example.hotspot_f2
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -24,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var  firebaseAuth: FirebaseAuth
+    private val profileViewModel by viewModels<ProfileViewModel>()
+
 
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
@@ -32,8 +36,9 @@ class HomeActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
 
+
         setContent {
-            NavComposeApp()
+            NavComposeApp(profileViewModel)
         }
             /*
             MainScreen()
@@ -53,37 +58,33 @@ class HomeActivity : AppCompatActivity() {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(profileViewModel: ProfileViewModel) {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navController) }
     ) {
-        Navigation(navController)
+        Navigation(navController, profileViewModel)
     }}
 
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    MainScreen(ProfileViewModel())
 }
 
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, profileViewModel: ProfileViewModel) {
     NavHost(navController, startDestination = NavigationItem.Home.route) {
         composable(NavigationItem.Home.route) {
-            HomeScreen()
+            HomeScreen(profileViewModel)
         }
         composable(NavigationItem.Music.route) {
-            ProfileScreen("Lars LArsen",
-                "24",
-                "For instance, on the planet Earth, man had always assumed that he was more intelligent than dolphins because he had achieved so much—the wheel, New York, wars and so on—whilst all the dolphins had ever done was muck about in the water having a good time. But conversely, the dolphins had always believed that they were far more intelligent than man—for precisely the same reasons."
-                , painterResource(id = R.drawable.lars)
-            )
+            ProfileScreen(profileViewModel)
         }
         composable(NavigationItem.Movies.route) {
-            DisplayList()
+            DisplayList(profileViewModel)
         }
         /*
         composable(NavigationItem.Books.route) {

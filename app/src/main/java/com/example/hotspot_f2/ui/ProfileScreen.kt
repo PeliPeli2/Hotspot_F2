@@ -35,28 +35,55 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun ProfileScreen(name:String, age:String, description:String, image:Painter) {
-    val model: ProfileViewModel
+fun ProfileScreen(profileViewModel: ProfileViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        ProfileSection(name, age, description, image)
+
+
+        TopButtons(profileViewModel)
+        ProfileSection(
+            profileViewModel.name.value,
+            profileViewModel.age.value.toString(),
+            profileViewModel.description.value,
+            painterResource(id = profileViewModel.imageID.value)
+        )
+    }
+}
+
+@Composable
+fun TopButtons(profileViewModel: ProfileViewModel) {
+    val context = LocalContext.current
+
+    Row() {
+        Button(onClick = {
+            val firebaseAuth = FirebaseAuth.getInstance()
+            firebaseAuth.signOut()
+            context.startActivity(Intent(context, MainActivity::class.java))
+        })
+        { Text(text = "Logout") }
+        Button(onClick = { profileViewModel.age.value++ }) { Text(text = "age++") }
+        Button(onClick = { Database().getUser("Adam Abel", profileViewModel) }) { Text(text = "Adam") }
+        Button(onClick = { Database().getUser("Bente Bent", profileViewModel) }) { Text(text = "Bente") }
+        Button(onClick = { Database().updateUser(profileViewModel) }) { Text(text = "Write current to DB") }
     }
 }
 
 
+
 @Composable
 fun ProfileSection(
-    name:String,
-    age:String,
-    description:String,
-    image:Painter,
-    modifier: Modifier = Modifier,
+    name: String,
+    age: String,
+    description: String,
+    image: Painter,
+    modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .verticalScroll(rememberScrollState())
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -79,29 +106,13 @@ fun ProfileSection(
         ) {
             Spacer(modifier = Modifier.width(16.dp))
             StatSection(name, age, modifier = Modifier.weight(7f))
-            LogoutButton()
+            // LogoutButton(profileViewModel)
 
         }
         ProfileDescription(
             description = description,
         )
     }
-}
-
-@Composable
-fun LogoutButton(context: Context = LocalContext.current){
-    Button(onClick = {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
-        context.startActivity(Intent(context, MainActivity::class.java))
-    }) { Text(text = "Logout") }
-
-    Button(onClick = { Database().writeTestData()}) { Text(text = "Write test data") }
-
-    Button(onClick = { Database().testUpdateUser()}) { Text(text = "Update"  + User.user.age.toString()) }
-
-    Button(onClick = { Database().testGetUser()}) { Text(text = "Get") }
-
 }
 
 @Composable
@@ -125,8 +136,10 @@ fun RoundImage(
 }
 
 @Composable
-fun StatSection(name:String, age:String,
-    modifier: Modifier = Modifier) {
+fun StatSection(
+    name: String, age: String,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
     ) {
@@ -138,10 +151,12 @@ fun StatSection(name:String, age:String,
                 fontSize = 20.sp
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = age,
+            Text(
+                text = age,
                 fontSize = 18.sp
             )
-        }    }
+        }
+    }
 }
 
 @Composable
@@ -167,9 +182,7 @@ fun ProfileDescription(
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen("Lars LArsen",
-        "24",
-        "For instance, on the planet Earth, man had always assumed that he was more intelligent than dolphins because he had achieved so much—the wheel, New York, wars and so on—whilst all the dolphins had ever done was muck about in the water having a good time. But conversely, the dolphins had always believed that they were far more intelligent than man—for precisely the same reasons."
-        ,painterResource(id = R.drawable.lars)
-        )
+    ProfileScreen(
+        ProfileViewModel()
+    )
 }

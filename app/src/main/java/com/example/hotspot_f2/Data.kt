@@ -14,13 +14,3 @@ data class Hotspot(
     val checkins: Int,
     val imageID: Int,
     val location: GeoPoint)
-
-data class User(
-    var name: String,
-    var age: Int,
-    var description: String)
-{
-    companion object {
-        val user = User(name = "", age = 0, description = "")
-    }
-}

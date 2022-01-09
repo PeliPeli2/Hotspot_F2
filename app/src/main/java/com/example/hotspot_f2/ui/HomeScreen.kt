@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.hotspot_f2.AddMarker
 import com.example.hotspot_f2.Hotspotmap
+import com.example.hotspot_f2.ProfileViewModel
 import com.example.hotspot_f2.R
 import com.google.firebase.auth.FirebaseAuth
 
@@ -26,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 private lateinit var firebaseAuth: FirebaseAuth
 
 @Composable
-fun HomeScreen(context: Context = LocalContext.current) {
+fun HomeScreen(profileViewModel: ProfileViewModel, context: Context = LocalContext.current) {
 
     Box(modifier=Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center) { Hotspotmap(modifier = Modifier){} }
@@ -35,6 +36,6 @@ fun HomeScreen(context: Context = LocalContext.current) {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(ProfileViewModel())
 }
 

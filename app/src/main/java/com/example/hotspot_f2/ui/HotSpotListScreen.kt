@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hotspot_f2.Database
 import com.example.hotspot_f2.Hotspot
+import com.example.hotspot_f2.ProfileViewModel
 import com.example.hotspot_f2.R
 
 
@@ -44,7 +45,7 @@ import com.example.hotspot_f2.R
     }*/
 
 @Composable
-fun DisplayList(){
+fun DisplayList(profileViewModel: ProfileViewModel){
     val getAlldata = Database().getHotspots()
     LazyColumn{
         items(items = getAlldata) { hotspot ->
@@ -129,7 +130,7 @@ fun HotspotList(hotspot: Hotspot) {
     @Preview(showBackground = true)
     @Composable
     fun HotspotListScreenPreview() {
-        DisplayList()
+        DisplayList(ProfileViewModel())
 
     }
 
