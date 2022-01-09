@@ -13,8 +13,12 @@ class Database() {
         private const val TAG = "FIRESTOREDB"
     }
 
-    fun getHotspots(): List<Hotspot> {
-        return getDummyHotspots() //TODO: get hotspots from Firestore database
+    fun getHotspots(hotspotViewModel: HotspotViewModel) {
+        //TODO: get hotspots from Firestore database
+
+        getDummyHotspots().forEach {
+            hotspotViewModel.hotspots.add(it)
+        }
     }
 
     private fun getDummyHotspots(): List<Hotspot> {

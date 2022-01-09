@@ -17,25 +17,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.hotspot_f2.AddMarker
-import com.example.hotspot_f2.Hotspotmap
-import com.example.hotspot_f2.ProfileViewModel
-import com.example.hotspot_f2.R
+import com.example.hotspot_f2.*
 import com.google.firebase.auth.FirebaseAuth
 
 
 private lateinit var firebaseAuth: FirebaseAuth
 
 @Composable
-fun HomeScreen(profileViewModel: ProfileViewModel, context: Context = LocalContext.current) {
+fun HomeScreen(hotspotViewModel: HotspotViewModel, context: Context = LocalContext.current) {
 
     Box(modifier=Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center) { Hotspotmap(modifier = Modifier){} }
+        contentAlignment = Alignment.Center) { Hotspotmap(hotspotViewModel = hotspotViewModel, modifier = Modifier){} }
     AddMarker(modifier = Modifier)
 }
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(ProfileViewModel())
+    HomeScreen(HotspotViewModel())
 }
 

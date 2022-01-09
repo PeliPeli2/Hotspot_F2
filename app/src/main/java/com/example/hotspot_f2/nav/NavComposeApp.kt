@@ -18,7 +18,7 @@ import com.example.hotspot_f2.ui.HotSpotTheme
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun NavComposeApp(profileViewModel: ProfileViewModel) {
+fun NavComposeApp(profileViewModel: ProfileViewModel, hotspotViewModel: HotspotViewModel) {
     val navController = rememberNavController()
     val actions = remember(navController) { Action(navController) }
     HotSpotTheme {
@@ -28,7 +28,7 @@ fun NavComposeApp(profileViewModel: ProfileViewModel) {
                 Home
         ) {
             composable(Home) {
-                MainScreen(profileViewModel)
+                MainScreen(profileViewModel, hotspotViewModel)
             }
         }
     }

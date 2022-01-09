@@ -27,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var  firebaseAuth: FirebaseAuth
     private val profileViewModel by viewModels<ProfileViewModel>()
-
+    private val hotspotViewModel by viewModels<HotspotViewModel>()
 
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
@@ -38,7 +38,7 @@ class HomeActivity : AppCompatActivity() {
 
 
         setContent {
-            NavComposeApp(profileViewModel)
+            NavComposeApp(profileViewModel, hotspotViewModel)
         }
             /*
             MainScreen()
@@ -58,33 +58,33 @@ class HomeActivity : AppCompatActivity() {
 }
 
 @Composable
-fun MainScreen(profileViewModel: ProfileViewModel) {
+fun MainScreen(profileViewModel: ProfileViewModel, hotspotViewModel: HotspotViewModel) {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navController) }
     ) {
-        Navigation(navController, profileViewModel)
+        Navigation(navController, profileViewModel, hotspotViewModel)
     }}
 
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen(ProfileViewModel())
+    MainScreen(ProfileViewModel(), HotspotViewModel())
 }
 
 
 @Composable
-fun Navigation(navController: NavHostController, profileViewModel: ProfileViewModel) {
+fun Navigation(navController: NavHostController, profileViewModel: ProfileViewModel, hotspotViewModel: HotspotViewModel) {
     NavHost(navController, startDestination = NavigationItem.Home.route) {
         composable(NavigationItem.Home.route) {
-            HomeScreen(profileViewModel)
+            HomeScreen(hotspotViewModel)
         }
         composable(NavigationItem.Music.route) {
             ProfileScreen(profileViewModel)
         }
         composable(NavigationItem.Movies.route) {
-            DisplayList(profileViewModel)
+            DisplayList(hotspotViewModel)
         }
         /*
         composable(NavigationItem.Books.route) {

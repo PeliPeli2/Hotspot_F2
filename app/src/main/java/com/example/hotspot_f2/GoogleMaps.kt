@@ -33,7 +33,7 @@ fun testAddingAHotspot(textState1: String, textState2: String, textState3: Strin
 
 
 @Composable
-fun Hotspotmap(
+fun Hotspotmap(hotspotViewModel: HotspotViewModel,
     modifier:Modifier=Modifier,
     OnReady:(GoogleMap)->Unit
 )
@@ -41,7 +41,7 @@ fun Hotspotmap(
     val context= LocalContext.current
     val markers = mutableListOf<MarkerOptions>()
 
-    Database().getHotspots().forEach {
+    hotspotViewModel.hotspots.forEach {
         markers.add(
             MarkerOptions()
                 .position(LatLng(it.location.latitude, it.location.longitude))

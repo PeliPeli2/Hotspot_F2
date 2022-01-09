@@ -30,9 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hotspot_f2.Database
-import com.example.hotspot_f2.Hotspot
-import com.example.hotspot_f2.ProfileViewModel
+import com.example.hotspot_f2.*
 import com.example.hotspot_f2.R
 
 
@@ -45,10 +43,10 @@ import com.example.hotspot_f2.R
     }*/
 
 @Composable
-fun DisplayList(profileViewModel: ProfileViewModel){
-    val getAlldata = Database().getHotspots()
+fun DisplayList(hotspotViewModel: HotspotViewModel){
+    //val getAlldata = Database().getHotspots()
     LazyColumn{
-        items(items = getAlldata) { hotspot ->
+        items(items = hotspotViewModel.hotspots) { hotspot ->
             HotspotList(hotspot = hotspot )
         }
     }
@@ -130,7 +128,7 @@ fun HotspotList(hotspot: Hotspot) {
     @Preview(showBackground = true)
     @Composable
     fun HotspotListScreenPreview() {
-        DisplayList(ProfileViewModel())
+        DisplayList(HotspotViewModel())
 
     }
 
