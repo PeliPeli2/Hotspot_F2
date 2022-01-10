@@ -5,6 +5,7 @@ package com.example.hotspot_f2
 
 
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -136,10 +137,12 @@ fun BottomNavigationBar(navController: NavController) {
         //NavigationItem.Books,
         //NavigationItem.Profile
     )
+
     BottomNavigation(
         backgroundColor = colorResource(id = R.color.colorPrimary),
         contentColor = Color.White
-    ) {
+    )
+    {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->

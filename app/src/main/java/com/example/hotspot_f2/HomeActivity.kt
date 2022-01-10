@@ -6,10 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -40,10 +41,6 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             NavComposeApp(profileViewModel, hotspotViewModel)
         }
-            /*
-            MainScreen()
-            Text("sut min dut 2")
-             */
     }
     private fun checkUser(){
         val firebaseUser = firebaseAuth.currentUser
@@ -63,8 +60,9 @@ fun MainScreen(profileViewModel: ProfileViewModel, hotspotViewModel: HotspotView
     Scaffold(
         topBar = { TopBar() },
         bottomBar = { BottomNavigationBar(navController) }
-    ) {
-        Navigation(navController, profileViewModel, hotspotViewModel)
+    ) { innerPadding ->
+        // Apply the padding globally to the whole BottomNavScreensController
+        Box(modifier = Modifier.padding(innerPadding)) { Navigation(navController, profileViewModel, hotspotViewModel)}
     }}
 
 @Preview(showBackground = true)

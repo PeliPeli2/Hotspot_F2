@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hotspot_f2.*
+import com.example.hotspot_f2.Hotspot
 import com.example.hotspot_f2.R
 
 
@@ -50,71 +50,90 @@ fun DisplayList(hotspotViewModel: HotspotViewModel){
             HotspotList(hotspot = hotspot )
         }
     }
-}
 
+
+}
 @Composable
 fun HotspotList(hotspot: Hotspot) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Gray)
+            .background(color = Black)
     )
     {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(120.dp)
+            .background(color = White)) {
+        Image(
+        painter = painterResource(id = hotspot.imageID) ,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .clip(RoundedCornerShape(20))
+            .fillMaxHeight()
+            .width(500.dp)
+            .align(Center)
+            .padding(horizontal = 2.dp, vertical = 5.dp))
+
+
+    }
+
+
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 1.dp)
-                .height(170.dp)
+                .padding(bottom = 1.dp)
+                .height(70.dp)
                 .background(color = White)
+
 
         ) {
             Column {
-                Image(
-                painter = painterResource(id = hotspot.imageID),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .clip(shape = RoundedCornerShape(percent = 40))
-                    .padding(horizontal = 10.dp, vertical = 10.dp)
-                    .height(80.dp)
-                    .width(200.dp)
-            )
+
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .fillMaxWidth()
                 ) {
+
                     Column {
                         Row {
                             Text(
                                 text = hotspot.title,
                                 color = DarkGray,
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 1.dp),
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp, vertical = 1.dp),
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold
                             )
+
                         }
                         Text(
-                            text = hotspot.type /* + " - "  + hotspot.location */,
+                            text = hotspot.type + " - " + hotspot.locationname,
                             color = DarkGray,
-                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 1.dp),
+                            modifier = Modifier
+                                .padding(horizontal = 9.dp, vertical = 1.dp),
                             fontSize = 13.sp,
                         )
                         Row(
-                            modifier = Modifier.padding(horizontal = 8.dp)
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_baseline_people_24),
                                 contentDescription = null,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier
+                                    .size(18.dp)
                             )
                             Text(
                                 color = DarkGray,
                                 modifier = Modifier
                                     .padding(horizontal = 3.dp, vertical = 1.dp),
                                 fontSize = 12.sp,
-                                text = "" + hotspot.checkins + " indtjekninger lige nu "
+                                text = "" + hotspot.checkedins + " indtjekninger lige nu "
                             )
                         }
                     }
