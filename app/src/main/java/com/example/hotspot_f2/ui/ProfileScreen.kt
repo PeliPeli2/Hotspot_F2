@@ -64,9 +64,9 @@ fun TopButtons(profileViewModel: ProfileViewModel) {
         })
         { Text(text = "Logout") }
         Button(onClick = { profileViewModel.age.value++ }) { Text(text = "age++") }
-        Button(onClick = { Database().getUser("Adam Abel", profileViewModel) }) { Text(text = "Adam") }
-        Button(onClick = { Database().getUser("Bente Bent", profileViewModel) }) { Text(text = "Bente") }
-        Button(onClick = { Database().updateUser(profileViewModel) }) { Text(text = "Write current to DB") }
+        Button(onClick = { Database().testGetUser("Adam Abel", profileViewModel) }) { Text(text = "Adam") }
+        Button(onClick = { Database().testGetUser("Bente Bent", profileViewModel) }) { Text(text = "Bente") }
+        Button(onClick = { Database().testUpdateUser(profileViewModel.name.value, profileViewModel) }) { Text(text = "Write current to DB") }
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.lightColors
@@ -44,15 +45,13 @@ import com.example.hotspot_f2.R
 
 @Composable
 fun DisplayList(hotspotViewModel: HotspotViewModel){
-    //val getAlldata = Database().getHotspots()
     LazyColumn{
         items(items = hotspotViewModel.hotspots) { hotspot ->
             HotspotList(hotspot = hotspot )
         }
     }
-
-
 }
+
 @Composable
 fun HotspotList(hotspot: Hotspot) {
     Column(

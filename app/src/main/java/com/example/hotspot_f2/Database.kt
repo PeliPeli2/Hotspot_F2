@@ -1,24 +1,28 @@
 package com.example.hotspot_f2
 
 import android.util.Log
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.firestore.FirestoreRegistrar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlin.random.Random
 
 class Database() {
     private companion object {
         private const val TAG = "FIRESTOREDB"
     }
 
+    fun DELETEALLHOTSPOTSINDB() {
+
+    }
+
     fun getHotspots(hotspotViewModel: HotspotViewModel) {
         //TODO: get hotspots from Firestore database
 
-        getDummyHotspots().forEach {
-            hotspotViewModel.hotspots.add(it)
-        }
+
+        //hotspotViewModel.hotspots.clear()
+        getAllHotspots(hotspotViewModel)
+        //getDummyHotspots().forEach { hotspotViewModel.hotspots.add(it) }
     }
 
     private fun getDummyHotspots(): List<Hotspot> {
@@ -66,40 +70,47 @@ class Database() {
     }
 
     fun writeDummyHotspots() {
-        getDummyHotspots().forEach { writeHotspot(it) }
+        getDummyHotspots().forEach {writeHotspot("Bente Bent", it) }
     }
 
-    fun testUpdateUser()
-    {
+    fun writeDummyUsers() {
         val testUser = ProfileViewModel()
         testUser.name.value = "Adam Abel"
         testUser.age.value = 99
         testUser.description.value = "En bruger af appen"
         testUser.imageID.value = R.drawable.lars
-        updateUser(testUser)
+        updateUser(testUser.name.value, testUser)
 
         val testUser2 = ProfileViewModel()
         testUser2.name.value = "Bente Bent"
         testUser2.age.value = 88
         testUser2.description.value = "En anden bruger af appen"
         testUser2.imageID.value = R.drawable.lars
-        updateUser(testUser2)
+        updateUser(testUser2.name.value, testUser2)
     }
 
-    fun updateUser(profileViewModel: ProfileViewModel)
-    {
-        Firebase.firestore.collection("users").document(profileViewModel.name.value).set(hashMapFromProfile(profileViewModel))
+    fun testUpdateUser(dummyUserID: String, profileViewModel: ProfileViewModel) {
+        updateUser(dummyUserID, profileViewModel)
+    }
+
+    fun updateCurrentUser(profileViewModel: ProfileViewModel) {
+        val userID = FirebaseAuth.getInstance().currentUser?.uid
+        if(userID != null) {
+            updateUser(userID, profileViewModel)
+        }
+    }
+
+    private fun updateUser(userID: String, profileViewModel: ProfileViewModel) {
+        Firebase.firestore.collection("users").document(userID).set(hashMapFromProfile(profileViewModel))
             .addOnSuccessListener { Log.d(TAG, "Updated the user ${profileViewModel.name.value}" ) }
             .addOnFailureListener { Log.d(TAG, "Error updating the user ${profileViewModel.name.value}" )}
     }
 
-    private fun fetchUser(name: String, profileViewModel: ProfileViewModel)
-    {
-        val docRef = Firebase.firestore.collection("users").document(name)
+    private fun getUser(userID: String, profileViewModel: ProfileViewModel) {
+        val docRef = Firebase.firestore.collection("users").document(userID)
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-
                     profileViewModel.name.value = document.get("name").toString()
                     profileViewModel.description.value = document.get("description").toString()
                     profileViewModel.age.value = document.get("age").toString().toInt()
@@ -109,12 +120,20 @@ class Database() {
             .addOnFailureListener { Log.d(TAG, "Failed to get user") }
     }
 
-    fun getUser(requestedUserName: String, profileViewModel: ProfileViewModel) {
-        fetchUser(requestedUserName, profileViewModel)
+    fun testGetUser(userID: String, profileViewModel: ProfileViewModel) {
+        getUser(userID = userID, profileViewModel = profileViewModel)
     }
 
-    fun writeHotspot(hotspot: Hotspot) {
+    fun getCurrentUser(profileViewModel: ProfileViewModel) {
+        val userID = FirebaseAuth.getInstance().currentUser?.uid
+        if(userID != null) {
+            getUser(userID, profileViewModel)
+        }
+    }
+
+    private fun writeHotspot(creator: String, hotspot: Hotspot) {
         val data = hashMapOf(
+            "creator" to creator,
             "title" to hotspot.title,
             "description" to hotspot.description,
             "type" to hotspot.type,
@@ -123,18 +142,41 @@ class Database() {
             "location" to hotspot.location)
 
         val db = Firebase.firestore
-
         db.collection("hotspots")
             .add(data)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
+            .addOnSuccessListener { documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
+    }
+
+    private fun getAllHotspots(hotspotViewModel: HotspotViewModel) {
+        hotspotViewModel.hotspots.clear()
+        val db = Firebase.firestore
+        db.collection("hotspots")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    hotspotViewModel.hotspots.add(
+                        Hotspot(
+                            title = document.get("title").toString(),
+                            description = document.get("description").toString(),
+                            type = document.get("type").toString(),
+                            checkins = document.get("checkins").toString().toInt(),
+                            imageID = R.drawable.broennum,//document.get("imageID").toString().toInt(),
+                            location = document.get("location", GeoPoint::class.java)!! //GeoPoint(55.73 + Random.nextDouble(0.00,0.01),12.3962  + Random.nextDouble(0.00,0.01)) //
+                        )
+                    )
+                }
+
+                Log.d(TAG, hotspotViewModel.hotspots.size.toString())
+                hotspotViewModel.hotspots.forEach { Log.d(TAG, it.imageID.toString()) }
+                Log.d(TAG, "bar.png " + R.drawable.bar)
+                Log.d(TAG, "broennum.png " + R.drawable.broennum)
+                Log.d(TAG, "duck_and_cover.jpg " + R.drawable.duck_and_cover)
+                Log.d(TAG, "oersted.jpg " + R.drawable.oersted)
             }
     }
 
-    fun hashMapFromHotspot(hs: Hotspot): HashMap<String, Comparable<*>> {
+    private fun hashMapFromHotspot(hs: Hotspot): HashMap<String, Comparable<*>> {
         return hashMapOf(
             "title" to hs.title,
             "description" to hs.description,
@@ -144,42 +186,11 @@ class Database() {
             "location" to hs.location)
     }
 
-    fun hashMapFromProfile(profileViewModel: ProfileViewModel): HashMap<String, Comparable<*>> {
+    private fun hashMapFromProfile(profileViewModel: ProfileViewModel): HashMap<String, Comparable<*>> {
         return hashMapOf(
             "name" to profileViewModel.name.value,
             "age" to profileViewModel.age.value,
             "description" to profileViewModel.description.value,
             "imageID" to profileViewModel.imageID.value)
     }
-
-    fun documentToHotspot()
-    {}
-
-    fun writeTestData() {
-    // Create a new user with a first and last name
-
-
-        val testHotspot = Hotspot(
-            title = "Testbar",
-            description = "En bar et sted i verden",
-            type = "bar",
-            checkins = 12,
-            imageID = R.drawable.bar,
-            location = GeoPoint(22.0, 22.0))
-
-        val testHashMap = hashMapFromHotspot(testHotspot)
-
-
-        // Add a new document with a generated ID
-        val db = Firebase.firestore
-        db.collection("users")
-            .add(testHashMap)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-    }
-
 }

@@ -57,14 +57,10 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel,
 
     val mapView= remember {
         MapView(context)
-
     }
 
-
     val lifecycle= LocalLifecycleOwner.current.lifecycle
-
     lifecycle.addObserver(rememberMapLifecycle(mapView ))
-
 
     AndroidView(
         factory = {
