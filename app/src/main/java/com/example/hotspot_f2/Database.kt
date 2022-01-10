@@ -149,7 +149,9 @@ class Database() {
     }
 
     private fun getAllHotspots(hotspotViewModel: HotspotViewModel) {
+        //fixerupper()
         hotspotViewModel.hotspots.clear()
+
         val db = Firebase.firestore
         db.collection("hotspots")
             .get()
@@ -161,7 +163,7 @@ class Database() {
                             description = document.get("description").toString(),
                             type = document.get("type").toString(),
                             checkins = document.get("checkins").toString().toInt(),
-                            imageID = R.drawable.broennum,//document.get("imageID").toString().toInt(),
+                            imageID = R.drawable.broennum, //document.get("imageID").toString().toInt(),
                             location = document.get("location", GeoPoint::class.java)!! //GeoPoint(55.73 + Random.nextDouble(0.00,0.01),12.3962  + Random.nextDouble(0.00,0.01)) //
                         )
                     )
@@ -173,6 +175,7 @@ class Database() {
                 Log.d(TAG, "broennum.png " + R.drawable.broennum)
                 Log.d(TAG, "duck_and_cover.jpg " + R.drawable.duck_and_cover)
                 Log.d(TAG, "oersted.jpg " + R.drawable.oersted)
+                Log.d(TAG, "K-bar" + R.drawable.k_bar)
             }
     }
 

@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hotspot_f2.Hotspot
+import com.example.hotspot_f2.HotspotViewModel
 import com.example.hotspot_f2.R
 
 
@@ -112,7 +113,7 @@ fun HotspotList(hotspot: Hotspot) {
 
                         }
                         Text(
-                            text = hotspot.type + " - " + hotspot.locationname,
+                            text = hotspot.type,
                             color = DarkGray,
                             modifier = Modifier
                                 .padding(horizontal = 9.dp, vertical = 1.dp),
@@ -133,7 +134,7 @@ fun HotspotList(hotspot: Hotspot) {
                                 modifier = Modifier
                                     .padding(horizontal = 3.dp, vertical = 1.dp),
                                 fontSize = 12.sp,
-                                text = "" + hotspot.checkedins + " indtjekninger lige nu "
+                                text = "" + hotspot.checkins + " indtjekninger lige nu "
                             )
                         }
                     }
