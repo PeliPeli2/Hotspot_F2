@@ -1,24 +1,20 @@
 package com.example.hotspot_f2.ui
 
-import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,9 +25,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hotspot_f2.*
-import com.example.hotspot_f2.R
+import com.example.hotspot_f2.Database
+import com.example.hotspot_f2.MainActivity
+import com.example.hotspot_f2.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
+
 
 
 @Composable
@@ -40,14 +38,9 @@ fun ProfileScreen(profileViewModel: ProfileViewModel) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-
-
-        TopButtons(profileViewModel)
         ProfileSection(
-            profileViewModel.name.value,
-            profileViewModel.age.value.toString(),
-            profileViewModel.description.value,
-            painterResource(id = profileViewModel.imageID.value)
+            painterResource(id = profileViewModel.imageID.value),
+            profileViewModel
         )
     }
 }
@@ -55,7 +48,8 @@ fun ProfileScreen(profileViewModel: ProfileViewModel) {
 @Composable
 fun TopButtons(profileViewModel: ProfileViewModel) {
     val context = LocalContext.current
-
+    var edit by rememberSaveable { mutableStateOf(false) }
+    var editText by rememberSaveable { mutableStateOf("Edit profile") }
     Row() {
         Button(onClick = {
             val firebaseAuth = FirebaseAuth.getInstance()
@@ -63,10 +57,16 @@ fun TopButtons(profileViewModel: ProfileViewModel) {
             context.startActivity(Intent(context, MainActivity::class.java))
         })
         { Text(text = "Logout") }
-        Button(onClick = { profileViewModel.age.value++ }) { Text(text = "age++") }
+        Button(onClick = {
+            if(edit)
+                editText= "Done"
+            else
+                editText= "Edit profile"
+            edit =!edit
+        }) { Text(text = editText) }
         Button(onClick = { Database().testGetUser("Adam Abel", profileViewModel) }) { Text(text = "Adam") }
-        Button(onClick = { Database().testGetUser("Bente Bent", profileViewModel) }) { Text(text = "Bente") }
-        Button(onClick = { Database().testUpdateUser(profileViewModel.name.value, profileViewModel) }) { Text(text = "Write current to DB") }
+        Button(onClick = { Database().getCurrentUser( profileViewModel) }) { Text(text = "Current") }
+        Button(onClick = { Database().updateCurrentUser(profileViewModel) }) { Text(text = "Write current to DB") }
     }
 }
 
@@ -74,12 +74,15 @@ fun TopButtons(profileViewModel: ProfileViewModel) {
 
 @Composable
 fun ProfileSection(
-    name: String,
-    age: String,
-    description: String,
     image: Painter,
+    profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
+    var name by rememberSaveable { profileViewModel.name }
+    var age by rememberSaveable { profileViewModel.age }
+    var description by rememberSaveable { profileViewModel.description }
+
+    TopButtons(profileViewModel)
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -105,13 +108,20 @@ fun ProfileSection(
                 .padding(horizontal = 20.dp)
         ) {
             Spacer(modifier = Modifier.width(16.dp))
-            StatSection(name, age, modifier = Modifier.weight(7f))
+            StatSection(name, age.toString(), modifier = Modifier.weight(7f))
             // LogoutButton(profileViewModel)
 
         }
         ProfileDescription(
             description = description,
         )
+
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") }
+        )
+
     }
 }
 
