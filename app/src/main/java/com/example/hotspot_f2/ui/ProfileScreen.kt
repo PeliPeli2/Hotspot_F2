@@ -77,8 +77,6 @@ fun ProfileSection(
             }
                 edit =!edit
         }) { Text(text = editText) }
-        Button(onClick = { Database().testGetUser("Adam Abel", profileViewModel) }) { Text(text = "Adam") }
-        Button(onClick = { Database().getCurrentUser( profileViewModel) }) { Text(text = "Current") }
     }
     Column(
         modifier = modifier

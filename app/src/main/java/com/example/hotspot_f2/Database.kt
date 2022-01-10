@@ -12,8 +12,8 @@ class Database() {
     }
 
     fun getHotspots(hotspotViewModel: HotspotViewModel) {
-        getAllHotspots(hotspotViewModel)
-        //getDummyHotspots().forEach { hotspotViewModel.hotspots.add(it) }
+        //getAllHotspots(hotspotViewModel)
+        getDummyHotspots().forEach { hotspotViewModel.hotspots.add(it) }
     }
 
     private fun getDummyHotspots(): List<Hotspot> {
