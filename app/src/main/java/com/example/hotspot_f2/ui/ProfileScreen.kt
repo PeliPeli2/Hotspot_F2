@@ -2,23 +2,17 @@ package com.example.hotspot_f2.ui
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,7 +49,13 @@ fun ProfileSection(
     description:String,
     image:Painter,
     modifier: Modifier = Modifier,
+    model: ProfileViewModel = ProfileViewModel(),
 ) {
+    var name by rememberSaveable { model.name }
+    var age by rememberSaveable { model.age }
+    var description by rememberSaveable { model.description }
+    var edit by rememberSaveable { mutableStateOf(false) }
+
     Column(modifier = modifier
         .fillMaxWidth()
         .verticalScroll(rememberScrollState())
