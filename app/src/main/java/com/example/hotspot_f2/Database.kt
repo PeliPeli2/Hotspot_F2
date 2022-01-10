@@ -11,10 +11,6 @@ class Database() {
         private const val TAG = "FIRESTOREDB"
     }
 
-    fun DELETEALLHOTSPOTSINDB() {
-
-    }
-
     fun getHotspots(hotspotViewModel: HotspotViewModel) {
         getAllHotspots(hotspotViewModel)
         //getDummyHotspots().forEach { hotspotViewModel.hotspots.add(it) }
@@ -105,12 +101,15 @@ class Database() {
         val docRef = Firebase.firestore.collection("users").document(userID)
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (!document.getData().isNullOrEmpty()) {
                     profileViewModel.name.value = document.get("name").toString()
                     profileViewModel.description.value = document.get("description").toString()
                     profileViewModel.age.value = document.get("age").toString().toInt()
                     profileViewModel.imageID.value = document.get("imageID").toString().toInt()
-                    Log.d(TAG, "Fetched a user named ${profileViewModel.name.value}")}
+                    Log.d(TAG, "Fetched user with userID $userID")}
+                else {
+                    Log.d(TAG, "No data for user with userID $userID")
+                }
             }
             .addOnFailureListener { Log.d(TAG, "Failed to get user") }
     }
