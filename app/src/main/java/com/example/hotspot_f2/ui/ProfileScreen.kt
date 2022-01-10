@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,6 +58,7 @@ fun ProfileSection(
     var age by rememberSaveable { model.age }
     var description by rememberSaveable { model.description }
     var edit by rememberSaveable { mutableStateOf(false) }
+    var editText by rememberSaveable { mutableStateOf("Edit profile") }
 
     Column(modifier = modifier
         .fillMaxWidth()
@@ -85,18 +87,40 @@ fun ProfileSection(
                 Spacer(modifier = Modifier.width(16.dp))
                 StatSection(name, age, modifier = Modifier.weight(7f))
             }
+            else{
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Name") }
+                )
+                OutlinedTextField(
+                    value = age,
+                    onValueChange = { age = it },
+                    label = { Text("Age") }
+                )
+            }
         }
         if (!edit) {
             ProfileDescription(
                 description = description,
             )
         }
-        Button(onClick = { edit =!edit}
-        ) { Text(text = "edit profile") }
-
+        else
+        {
+            OutlinedTextField(
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Description") }
+            )
+        }
+        Button(onClick = {
+            if(!edit)
+                editText= "Done"
+            else
+                editText= "Edit profile"
+            edit =!edit}
+        ) { Text(text = editText) }
         LogoutButton()
-
-
     }
 }
 
