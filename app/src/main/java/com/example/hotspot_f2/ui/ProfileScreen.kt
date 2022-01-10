@@ -11,8 +11,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -79,14 +81,22 @@ fun ProfileSection(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            Spacer(modifier = Modifier.width(16.dp))
-            StatSection(name, age, modifier = Modifier.weight(7f))
-            LogoutButton()
-
+            if (!edit){
+                Spacer(modifier = Modifier.width(16.dp))
+                StatSection(name, age, modifier = Modifier.weight(7f))
+            }
         }
-        ProfileDescription(
-            description = description,
-        )
+        if (!edit) {
+            ProfileDescription(
+                description = description,
+            )
+        }
+        Button(onClick = { edit =!edit}
+        ) { Text(text = "edit profile") }
+
+        LogoutButton()
+
+
     }
 }
 
@@ -98,7 +108,8 @@ fun LogoutButton(context: Context = LocalContext.current){
         context.startActivity(Intent(context, MainActivity::class.java))
     }) { Text(text = "Logout") }
 
-    Button(onClick = { Database().writeTestData()}) { Text(text = "Write test data") }
+    Button(onClick = { Database().writeTestData()}
+    ) { Text(text = "Write test data") }
 }
 
 @Composable
