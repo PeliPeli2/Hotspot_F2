@@ -14,15 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "391463997933-9juemip1gst045mdko8ukot4q1r39dgo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.hotspot_f2",
-            "certificate_hash": "8310c8e10f2a134a5f555541ef37990aefd94df7"
-          }
-        },
-        {
-          "client_id": "391463997933-advsero5d4gf0pff00tjaktu8u8g13mi.apps.googleusercontent.com",
+          "client_id": "391463997933-99507d49j8kl4s6j9kn63td7uaa6n202.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.hotspot_f2",
