@@ -14,6 +14,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import android.util.Patterns
+import java.util.regex.Pattern
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseApp.initializeApp(this)
 
+        val auth = Firebase.auth
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -49,8 +54,38 @@ class MainActivity : AppCompatActivity() {
             val intent = googleSignInClient.signInIntent
             startActivityForResult(intent, RC_SIGN_IN)
         }
-    }
 
+        binding.passwordbutton.setOnClickListener {
+            auth.signInWithEmailAndPassword("hej@het.het", "mat12345")
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signUserwithEmailandpassword:success")
+                        checkUser()
+                    } else {
+                        auth.createUserWithEmailAndPassword( "hej@het.het", "mat12345")
+                            .addOnCompleteListener(this) {task ->
+                                //Try to create user instead
+                                if (task.isSuccessful){
+                                    checkUser()
+                                }
+                                else {
+                                    // If create user or signin in fails, display a message to the user.
+                                    Log.w(TAG, "createorsignUserWithEmail:failure", task.exception)
+                                    Toast.makeText(baseContext, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                    }
+                }
+        }
+
+    }
+    private fun isValidEmail(email: String): Boolean {
+        val pattern: Pattern = Patterns.EMAIL_ADDRESS
+        return pattern.matcher(email).matches()
+    }
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
         if (firebaseUser != null) {

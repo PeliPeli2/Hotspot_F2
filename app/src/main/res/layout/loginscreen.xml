@@ -9,10 +9,10 @@
         android:id="@+id/apptitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:textSize="50sp"
         android:text="HotSpot_F2"
-        android:layout_centerHorizontal="true" />
+        android:textSize="50sp" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googlesign_in_button"
@@ -58,6 +58,84 @@
         android:src="@drawable/facebookimage"
         />
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/passwordbutton"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        android:layout_below="@id/facebookbutton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:contentDescription=""
+        android:id="@+id/passwordimage"
+        android:visibility="visible"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignStart="@id/passwordbutton"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/facebookbutton"
+        android:src="@drawable/passwordlogo"
+        />
+    <EditText
+        android:id="@+id/passwordbuttonemail"
+        android:background="@color/purple_200"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@id/facebookbutton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:hint="enter your email"
+        android:visibility="gone"
+        />
+    <EditText
+        android:id="@+id/passwordbuttonpassword"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@id/facebookbutton"
+        android:layout_centerVertical="true"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/purple_200"
+        android:hint="enter password"
+        android:visibility="gone"
+        android:inputType="textPassword"
+        />
+    <Button
+        android:id="@+id/Confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordbuttonpassword"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="100dp"
+        android:text="Confirm"
+        android:visibility="gone"
+        android:textSize="15sp"
+        />
+    <Button
+        android:id="@+id/Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordbuttonpassword"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/Confirm"
+        android:text="Cancel"
+        android:visibility="gone"
+        />
 
 
 </RelativeLayout>
