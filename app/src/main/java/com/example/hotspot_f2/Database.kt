@@ -54,7 +54,7 @@ class Database() {
                     "a pioneer of the Copenhagen cocktail scene. Years after opening, this bar, " +
                     "situated near Højbro Square, remains a sought-after drinks destination",
             checkins = 44,
-            imageID = R.drawable.bar,
+            imageID = R.drawable.k_bar,
             location = GeoPoint(55.7279,12.39))
 
         return listOf(point1, point2, point3, point4)
