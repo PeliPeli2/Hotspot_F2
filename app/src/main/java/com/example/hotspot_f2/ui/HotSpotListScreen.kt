@@ -1,6 +1,7 @@
 package com.example.hotspot_f2.ui
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.Toast
 import androidx.compose.foundation.*
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.hotspot_f2.HotSpotActivity
 import com.example.hotspot_f2.Hotspot
 import com.example.hotspot_f2.HotspotViewModel
 import com.example.hotspot_f2.R
@@ -67,7 +69,7 @@ fun HotspotList(hotspot: Hotspot) {
             .clickable(onClick = {
                 Toast.makeText(context, hotspot.title, Toast.LENGTH_SHORT)
                     .show()
-               //context.startActivity()
+               //context.startActivity(Intent(context, HotSpotActivity::class.java))
             }
     )
     )

@@ -21,6 +21,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -29,6 +33,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.zxing.common.detector.WhiteRectangleDetector
 
 
 class HotSpotActivity : AppCompatActivity() {
@@ -48,6 +53,7 @@ class HotSpotActivity : AppCompatActivity() {
 fun HotspotScreen(title : String?, description: String?, checkins : Int,image : Int) {
     var x by rememberSaveable{mutableStateOf(checkins)}
     var buttontext by rememberSaveable{mutableStateOf("checkin")}
+    var buttoncolor by remember{ mutableStateOf(Color.Green)}
     val context = LocalContext.current
     Column(
         
@@ -70,6 +76,8 @@ fun HotspotScreen(title : String?, description: String?, checkins : Int,image : 
             onClick = { context.startActivity(Intent(context, HomeActivity::class.java)) }) {
             Icon(
                 Icons.Outlined.ArrowBack,
+                modifier = Modifier
+                    .size(30.dp),
             contentDescription = "LOL",
                 tint = Color.White
 
@@ -84,11 +92,17 @@ fun HotspotScreen(title : String?, description: String?, checkins : Int,image : 
                 fontWeight = FontWeight.Bold
 
             )
-            Button(onClick = {if (buttontext == "checkin") {
+            Button(
+                modifier = Modifier
+                    .padding(vertical = 8.dp, horizontal = 20.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = buttoncolor),
+                onClick = {if (buttontext == "checkin") {
                 buttontext = "checkud"
+                    buttoncolor = Red
                 x += 1
             } else {
                 buttontext = "checkin"
+                    buttoncolor = Green
                 x += -1
             }}) {
                 Text(buttontext)
