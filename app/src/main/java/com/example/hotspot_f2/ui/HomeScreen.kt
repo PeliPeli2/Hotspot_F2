@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.hotspot_f2.*
 import com.google.firebase.auth.FirebaseAuth
 
@@ -24,15 +26,17 @@ import com.google.firebase.auth.FirebaseAuth
 private lateinit var firebaseAuth: FirebaseAuth
 
 @Composable
-fun HomeScreen(hotspotViewModel: HotspotViewModel, context: Context = LocalContext.current) {
+fun HomeScreen(hotspotViewModel: HotspotViewModel, navController: NavHostController, context: Context = LocalContext.current) {
 
     Box(modifier=Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center) { Hotspotmap(hotspotViewModel = hotspotViewModel, modifier = Modifier){} }
+        contentAlignment = Alignment.Center) { Hotspotmap(hotspotViewModel = hotspotViewModel, navController = navController, modifier = Modifier){}
+    }
     AddMarker(modifier = Modifier)
 }
 @Preview(showBackground = true)
+
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(HotspotViewModel())
+    //HomeScreen(HotspotViewModel())
 }
 

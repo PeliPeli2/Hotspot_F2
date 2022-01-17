@@ -77,12 +77,15 @@ fun MainScreenPreview() {
 fun Navigation(navController: NavHostController, profileViewModel: ProfileViewModel, hotspotViewModel: HotspotViewModel) {
     NavHost(navController, startDestination = NavigationItem.Home.route) {
         composable(NavigationItem.Home.route) {
-            HomeScreen(hotspotViewModel)
+            HomeScreen(hotspotViewModel, navController)
         }
         composable(NavigationItem.Music.route) {
             ProfileScreen(profileViewModel)
         }
         composable(NavigationItem.Movies.route) {
+            DisplayList(hotspotViewModel)
+        }
+        composable("HotSpot") {
             DisplayList(hotspotViewModel)
         }
         /*

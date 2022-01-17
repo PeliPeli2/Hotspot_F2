@@ -1,16 +1,29 @@
 package com.example.hotspot_f2
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
+import com.example.hotspot_f2.nav.NavigationItem
 import com.example.hotspot_f2.ui.CustomInfoWindow
+import com.example.hotspot_f2.HotSpotActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -33,14 +46,13 @@ fun testAddingAHotspot(textState1: String, textState2: String, textState3: Strin
 
 
 @Composable
-fun Hotspotmap(hotspotViewModel: HotspotViewModel,
+fun Hotspotmap(hotspotViewModel: HotspotViewModel, navController: NavHostController,
     modifier:Modifier=Modifier,
     OnReady:(GoogleMap)->Unit
 )
 {
     val context= LocalContext.current
     val markers = mutableListOf<MarkerOptions>()
-
     hotspotViewModel.hotspots.forEach {
         markers.add(
             MarkerOptions()
@@ -69,9 +81,34 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel,
                           googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
                           markers.forEach { googleMap.addMarker(it) }
                           googleMap.setInfoWindowAdapter(CustomInfoWindow(this.context))
+                          googleMap.setOnInfoWindowClickListener { markerOptions ->
+                              val intent = Intent(context, HotSpotActivity::class.java)
+                              intent.putExtra("hotspotname", markerOptions.title.toString())
+                              intent.putExtra("hotspotinfo", markerOptions.snippet.toString())
+                              //random checkin value should be changed
+                              intent.putExtra("hotspotcheckins","10")
+                              //If statements should be changed
+                                  if (markerOptions.title == "Brønnum") {
+                                      intent.putExtra("hotspotimage", "R.drawable.broennum")
+                                  }
+                                  if (markerOptions.title == "Duck And Cover") {
+                                      intent.putExtra("hotspotimage", "R.drawable.duck_and_cover")
+                                  }
+                                  if (markerOptions.title == "Ørsted") {
+                                      intent.putExtra("hotspotimage", "R.drawable.oersted")
+                                  }
+                                  if (markerOptions.title == "K-bar") {
+                                      intent.putExtra("hotspotimage", "R.drawable.k_bar")
+                                  }
+                              context.startActivity(intent)
+                              hotspotViewModel.title = markerOptions.title.toString()
+                              Log.d("marker", markerOptions.title.toString())
+                              Log.d("hotspot", hotspotViewModel.title)
+                          }
                           googleMap.setOnMarkerClickListener { markerOptions ->
                               if (markerOptions.isInfoWindowShown) {
                                   markerOptions.hideInfoWindow()
+
                               } else {
                                   markerOptions.showInfoWindow()
                               }
