@@ -47,6 +47,7 @@ class HotSpotActivity : AppCompatActivity() {
 @Composable
 fun HotspotScreen(title : String?, description: String?, checkins : Int,image : Int) {
     var x by rememberSaveable{mutableStateOf(checkins)}
+    var buttontext by rememberSaveable{mutableStateOf("checkin")}
     val context = LocalContext.current
     Column(
         
@@ -83,8 +84,14 @@ fun HotspotScreen(title : String?, description: String?, checkins : Int,image : 
                 fontWeight = FontWeight.Bold
 
             )
-            Button(onClick = { x += 1 }) {
-                Text("Checkin")
+            Button(onClick = {if (buttontext == "checkin") {
+                buttontext = "checkud"
+                x += 1
+            } else {
+                buttontext = "checkin"
+                x += -1
+            }}) {
+                Text(buttontext)
 
             }
         }
