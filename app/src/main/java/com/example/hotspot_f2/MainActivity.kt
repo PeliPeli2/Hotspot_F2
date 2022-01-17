@@ -18,6 +18,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.util.Patterns
 import android.view.View
+import android.widget.EditText
 import java.util.regex.Pattern
 
 
@@ -57,21 +58,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.passwordbutton.setOnClickListener {
-            binding.passwordbutton.visibility = View.GONE
-            binding.passwordimage.visibility = View.GONE
-            binding.Confirm.visibility = View.VISIBLE
-            binding.Cancel.visibility = View.VISIBLE
-            binding.passwordbuttonemail.visibility = View.VISIBLE
-            binding.passwordbuttonpassword.visibility = View.VISIBLE
+            ChangeVisibility(binding.passwordbutton)
+            ChangeVisibility(binding.passwordimage)
+            ChangeVisibility(binding.Confirm)
+            ChangeVisibility(binding.Cancel)
+            ChangeVisibility(binding.passwordbuttonemail)
+            ChangeVisibility(binding.passwordbuttonpassword)
+
 
             binding.Confirm.setOnClickListener {
             if (isValidEmail(binding.passwordbuttonemail.text.toString()) && (binding.passwordbuttonpassword.text.toString().length > 5)) {
-                binding.passwordbutton.visibility = View.VISIBLE
-                binding.passwordimage.visibility = View.VISIBLE
-                binding.Confirm.visibility = View.GONE
-                binding.Cancel.visibility = View.GONE
-                binding.passwordbuttonemail.visibility = View.GONE
-                binding.passwordbuttonpassword.visibility = View.GONE
+                ChangeVisibility(binding.passwordbutton)
+                ChangeVisibility(binding.passwordimage)
+                ChangeVisibility(binding.Confirm)
+                ChangeVisibility(binding.Cancel)
+                ChangeVisibility(binding.passwordbuttonemail)
+                ChangeVisibility(binding.passwordbuttonpassword)
                 auth.signInWithEmailAndPassword(binding.passwordbuttonemail.text.toString(), binding.passwordbuttonpassword.text.toString())
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
@@ -105,15 +107,22 @@ class MainActivity : AppCompatActivity() {
             }
             }
             binding.Cancel.setOnClickListener {
-                binding.passwordbutton.visibility = View.VISIBLE
-                binding.passwordimage.visibility = View.VISIBLE
-                binding.Confirm.visibility = View.GONE
-                binding.Cancel.visibility = View.GONE
-                binding.passwordbuttonemail.visibility = View.GONE
-                binding.passwordbuttonpassword.visibility = View.GONE
+                ChangeVisibility(binding.passwordbutton)
+                ChangeVisibility(binding.passwordimage)
+                ChangeVisibility(binding.Confirm)
+                ChangeVisibility(binding.Cancel)
+                ChangeVisibility(binding.passwordbuttonemail)
+                ChangeVisibility(binding.passwordbuttonpassword)
             }
         }
 
+    }
+    private fun ChangeVisibility(view: View){
+        if(      view.visibility == View.VISIBLE){
+            view.visibility = View.GONE
+        }else {
+            view.visibility = View.VISIBLE
+        }
     }
     private fun isValidEmail(email: String): Boolean {
         val pattern: Pattern = Patterns.EMAIL_ADDRESS
