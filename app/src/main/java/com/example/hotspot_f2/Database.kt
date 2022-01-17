@@ -142,7 +142,7 @@ class Database() {
             .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
     }
 
-    private fun getAllHotspots(hotspotViewModel: HotspotViewModel) {
+   fun getAllHotspots(hotspotViewModel: HotspotViewModel) {
         hotspotViewModel.hotspots.clear()
 
         val db = Firebase.firestore

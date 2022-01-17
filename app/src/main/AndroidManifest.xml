@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hotspot_f2">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,10 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hotspot_F2">
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/Theme.Hotspot_F2.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".MainActivity"
@@ -26,8 +32,7 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".HotSpotActivity"
             android:exported="true">

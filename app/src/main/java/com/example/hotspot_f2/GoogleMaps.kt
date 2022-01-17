@@ -86,19 +86,19 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel, navController: NavHostControl
                               intent.putExtra("hotspotname", markerOptions.title.toString())
                               intent.putExtra("hotspotinfo", markerOptions.snippet.toString())
                               //random checkin value should be changed
-                              intent.putExtra("hotspotcheckins","10")
+                              intent.putExtra("hotspotcheckins",10)
                               //If statements should be changed
                                   if (markerOptions.title == "Brønnum") {
-                                      intent.putExtra("hotspotimage", "R.drawable.broennum")
+                                      intent.putExtra("hotspotimage", R.drawable.broennum)
                                   }
                                   if (markerOptions.title == "Duck And Cover") {
-                                      intent.putExtra("hotspotimage", "R.drawable.duck_and_cover")
+                                      intent.putExtra("hotspotimage", R.drawable.duck_and_cover)
                                   }
                                   if (markerOptions.title == "Ørsted") {
-                                      intent.putExtra("hotspotimage", "R.drawable.oersted")
+                                      intent.putExtra("hotspotimage", R.drawable.oersted)
                                   }
                                   if (markerOptions.title == "K-bar") {
-                                      intent.putExtra("hotspotimage", "R.drawable.k_bar")
+                                      intent.putExtra("hotspotimage", R.drawable.k_bar)
                                   }
                               context.startActivity(intent)
                               hotspotViewModel.title = markerOptions.title.toString()

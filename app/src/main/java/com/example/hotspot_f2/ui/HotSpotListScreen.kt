@@ -1,5 +1,8 @@
 package com.example.hotspot_f2.ui
 
+import android.content.Context
+import android.view.View
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +29,7 @@ import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,93 +60,96 @@ fun DisplayList(hotspotViewModel: HotspotViewModel){
 }
 @Composable
 fun HotspotList(hotspot: Hotspot) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Black)
+            .clickable(onClick = {
+                Toast.makeText(context, hotspot.title, Toast.LENGTH_SHORT)
+                    .show()
+               //context.startActivity()
+            }
+    )
     )
     {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .background(color = White)) {
-        Image(
-        painter = painterResource(id = hotspot.imageID) ,
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .clip(RoundedCornerShape(20))
-            .fillMaxHeight()
-            .width(500.dp)
-            .align(Center)
-            .padding(horizontal = 2.dp, vertical = 5.dp))
-
-
-    }
-
-
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 1.dp)
-                .height(70.dp)
-                .background(color = White)
-
-
+                .height(120.dp)
         ) {
-            Column {
+            Image(
+                painter = painterResource(id = hotspot.imageID),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20))
+                    .fillMaxHeight()
+                    .width(500.dp)
+                    .align(Center)
+                    .padding(horizontal = 2.dp, vertical = 5.dp)
+            )
 
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .fillMaxWidth()
-                ) {
 
-                    Column {
-                        Row {
-                            Text(
-                                text = hotspot.title,
-                                color = DarkGray,
-                                modifier = Modifier
-                                    .padding(horizontal = 8.dp, vertical = 1.dp),
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(90.dp)
+        )
+        {
 
-                        }
+                Column {
+                    Row {
                         Text(
-                            text = hotspot.type,
-                            color = DarkGray,
+                            text = hotspot.title,
                             modifier = Modifier
-                                .padding(horizontal = 9.dp, vertical = 1.dp),
-                            fontSize = 13.sp,
+                                .padding(vertical = 5.dp,horizontal = 5.dp),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
                         )
-                        Row(
-                            modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_baseline_people_24),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(18.dp)
-                            )
-                            Text(
-                                color = DarkGray,
-                                modifier = Modifier
-                                    .padding(horizontal = 3.dp, vertical = 1.dp),
-                                fontSize = 12.sp,
-                                text = "" + hotspot.checkins + " indtjekninger lige nu "
-                            )
-                        }
+
                     }
+                    Text(
+                        text = hotspot.type,
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp),
+                        fontSize = 14.sp,
+                    )
+                    Row(
+                        modifier = Modifier
+                            .padding(vertical = 7.dp, horizontal = 6.dp)
+
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_baseline_people_24),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(18.dp)
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp),
+                            fontSize = 13.sp,
+                            text = "" + hotspot.checkins + " indtjekninger lige nu "
+
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(DarkGray)
+                            .padding(vertical = 8.dp)
+                    )
                 }
+
             }
+
+
         }
     }
-}
+
+
 
     @Preview(showBackground = true)
     @Composable
