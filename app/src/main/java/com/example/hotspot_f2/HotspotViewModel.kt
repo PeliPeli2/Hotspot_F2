@@ -22,4 +22,5 @@ class HotspotViewModel: ViewModel() {
     init {
         Database().getHotspots(this)
     }
+
 }
