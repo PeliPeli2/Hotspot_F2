@@ -17,38 +17,31 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.*
+//val destination1 = LatLng(55.7215, 12.3639)
 
-
-
-
+val locationArrayList1: MutableList<String> = ArrayList()
+val locationArrayList2: MutableList<String> = ArrayList()
+val locationArrayList3: MutableList<String> = ArrayList()
+val locationArrayList4: MutableList<String> = ArrayList()
+var confirm: Boolean = false
 fun testAddingAHotspot(textState1: String, textState2: String, textState3: String, textState4: String)
 {
-    /*
-    val newMarker = MarkerOptions()
-        .position(LatLng(textState1.toDouble(), textState2.toDouble()))
-        .title(textState3)
-        .snippet(textState4)
-    */
+    locationArrayList1.add(textState1);
+    locationArrayList2.add(textState2);
+    locationArrayList3.add(textState3);
+    locationArrayList4.add(textState4);
+    confirm = true
 }
-
 
 @Composable
 fun Hotspotmap(hotspotViewModel: HotspotViewModel,
-    modifier:Modifier=Modifier,
-    OnReady:(GoogleMap)->Unit
+               modifier:Modifier=Modifier,
+               OnReady:(GoogleMap)->Unit
 )
 {
     val context= LocalContext.current
     val markers = mutableListOf<MarkerOptions>()
-
-    hotspotViewModel.hotspots.forEach {
-        markers.add(
-            MarkerOptions()
-                .position(LatLng(it.location.latitude, it.location.longitude))
-                .title(it.title)
-                .snippet(it.description)
-        )
-    }
 
     val cameraPosition = CameraPosition.builder()
         .target(LatLng(55.7314, 12.3962))
@@ -60,27 +53,56 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel,
     }
 
     val lifecycle= LocalLifecycleOwner.current.lifecycle
-    lifecycle.addObserver(rememberMapLifecycle(mapView ))
+    lifecycle.addObserver(rememberMapLifecycle(mapView))
 
     AndroidView(
         factory = {
-                  mapView.apply {
-                      mapView.getMapAsync { googleMap->
-                          googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-                          markers.forEach { googleMap.addMarker(it) }
-                          googleMap.setInfoWindowAdapter(CustomInfoWindow(this.context))
-                          googleMap.setOnMarkerClickListener { markerOptions ->
-                              if (markerOptions.isInfoWindowShown) {
-                                  markerOptions.hideInfoWindow()
-                              } else {
-                                  markerOptions.showInfoWindow()
-                              }
-                              true
-                          }
-                          OnReady(googleMap)
+            mapView.apply {
+                mapView.getMapAsync { googleMap->
+                    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+                        if (confirm) {
+                            var i = 0
+                            while (i <= locationArrayList1.size-1) {
+                                val markerOptionsDestination = MarkerOptions()
+                                    .position(
+                                        com.google.android.gms.maps.model.LatLng(
+                                            locationArrayList1[i].toDouble(),
+                                            locationArrayList2[i].toDouble()
+                                        )
+                                    )
+                                    .title(locationArrayList3[i])
+                                    .snippet(locationArrayList4[i])
+                                googleMap.addMarker(markerOptionsDestination)
+                                i++
+                            }
+                        }
 
-                      }
-                  }
+                    hotspotViewModel.hotspots.forEach {
+                        markers.add(
+                            MarkerOptions()
+                                .position(
+                                    com.google.android.gms.maps.model.LatLng(
+                                        it.location.latitude,
+                                        it.location.longitude
+                                    )
+                                )
+                                .title(it.title)
+                                .snippet(it.description)
+                        )
+                    }
+                    markers.forEach { googleMap.addMarker(it) }
+                    googleMap.setInfoWindowAdapter(CustomInfoWindow(this.context))
+                    googleMap.setOnMarkerClickListener { markerOptions ->
+                        if (markerOptions.isInfoWindowShown) {
+                            markerOptions.hideInfoWindow()
+                        } else {
+                            markerOptions.showInfoWindow()
+                        }
+                        true
+                    }
+                    OnReady(googleMap)
+                }
+            }
         },
         modifier=modifier
     )

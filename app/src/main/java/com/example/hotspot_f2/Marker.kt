@@ -39,7 +39,7 @@ fun AddMarker(
                 }
 
                 Button(onClick = {
-                    testAddingAHotspot(textState1.toString(), textState2.toString(),textState3.toString(),textState4.toString())
+                    testAddingAHotspot(textState1.value.text, textState2.value.text,textState3.value.text,textState4.value.text)
                     Toast.makeText(context, "Hotspot created", Toast.LENGTH_LONG).show()
                     showInputForm.value = true //hide after adding hotspot //TODO: Skal rettes til false
                 }
