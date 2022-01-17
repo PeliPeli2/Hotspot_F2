@@ -17,6 +17,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.util.Patterns
+import android.view.View
 import java.util.regex.Pattern
 
 
@@ -56,29 +57,61 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.passwordbutton.setOnClickListener {
-            auth.signInWithEmailAndPassword("hej@het.het", "mat12345")
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signUserwithEmailandpassword:success")
-                        checkUser()
-                    } else {
-                        auth.createUserWithEmailAndPassword( "hej@het.het", "mat12345")
-                            .addOnCompleteListener(this) {task ->
-                                //Try to create user instead
-                                if (task.isSuccessful){
-                                    checkUser()
-                                }
-                                else {
-                                    // If create user or signin in fails, display a message to the user.
-                                    Log.w(TAG, "createorsignUserWithEmail:failure", task.exception)
-                                    Toast.makeText(baseContext, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show()
-                                }
-                            }
+            binding.passwordbutton.visibility = View.GONE
+            binding.passwordimage.visibility = View.GONE
+            binding.Confirm.visibility = View.VISIBLE
+            binding.Cancel.visibility = View.VISIBLE
+            binding.passwordbuttonemail.visibility = View.VISIBLE
+            binding.passwordbuttonpassword.visibility = View.VISIBLE
 
+            binding.Confirm.setOnClickListener {
+            if (isValidEmail(binding.passwordbuttonemail.text.toString()) && (binding.passwordbuttonpassword.text.toString().length > 5)) {
+                binding.passwordbutton.visibility = View.VISIBLE
+                binding.passwordimage.visibility = View.VISIBLE
+                binding.Confirm.visibility = View.GONE
+                binding.Cancel.visibility = View.GONE
+                binding.passwordbuttonemail.visibility = View.GONE
+                binding.passwordbuttonpassword.visibility = View.GONE
+                auth.signInWithEmailAndPassword(binding.passwordbuttonemail.text.toString(), binding.passwordbuttonpassword.text.toString())
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signUserwithEmailandpassword:success")
+                            checkUser()
+                            Toast.makeText(baseContext, "logging in ${binding.passwordbuttonemail.text}",
+                                Toast.LENGTH_SHORT).show()
+                        } else {
+                            auth.createUserWithEmailAndPassword( binding.passwordbuttonemail.text.toString(), binding.passwordbuttonpassword.text.toString())
+                                .addOnCompleteListener(this) {task ->
+                                    //Try to create user instead
+                                    if (task.isSuccessful){
+                                        checkUser()
+                                        Toast.makeText(baseContext, "creating user ${binding.passwordbuttonemail.text}",
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                                    else {
+                                        // If create user or signin in fails, display a message to the user.
+                                        Log.w(TAG, "createorsignUserWithEmail:failure", task.exception)
+                                        Toast.makeText(baseContext, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+
+                        }
                     }
-                }
+            }else{
+                Toast.makeText(baseContext, "Password or email invalid",
+                    Toast.LENGTH_SHORT).show()
+            }
+            }
+            binding.Cancel.setOnClickListener {
+                binding.passwordbutton.visibility = View.VISIBLE
+                binding.passwordimage.visibility = View.VISIBLE
+                binding.Confirm.visibility = View.GONE
+                binding.Cancel.visibility = View.GONE
+                binding.passwordbuttonemail.visibility = View.GONE
+                binding.passwordbuttonpassword.visibility = View.GONE
+            }
         }
 
     }

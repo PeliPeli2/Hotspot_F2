@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/googlesign_in_button"
         android:layout_marginTop="20dp"
+        android:visibility="gone"
         android:layout_centerInParent="true"
         android:layout_gravity="center" />
 
@@ -47,6 +48,7 @@
         android:contentDescription=""
         android:id="@+id/facebookimage"
         android:layout_width="45dp"
+        android:visibility="gone"
         android:layout_height="45dp"
         android:layout_alignStart="@id/googlesign_in_button"
         android:layout_centerInParent="true"
