@@ -64,9 +64,9 @@ class MainActivity : AppCompatActivity() {
             ChangeVisibility(binding.Cancel)
             ChangeVisibility(binding.passwordbuttonemail)
             ChangeVisibility(binding.passwordbuttonpassword)
+        }
 
-
-            binding.Confirm.setOnClickListener {
+        binding.Confirm.setOnClickListener {
             if (isValidEmail(binding.passwordbuttonemail.text.toString()) && (binding.passwordbuttonpassword.text.toString().length > 5)) {
                 ChangeVisibility(binding.passwordbutton)
                 ChangeVisibility(binding.passwordimage)
@@ -98,25 +98,25 @@ class MainActivity : AppCompatActivity() {
                                             Toast.LENGTH_SHORT).show()
                                     }
                                 }
-
                         }
                     }
-            }else{
+            }
+            else {
                 Toast.makeText(baseContext, "Password or email invalid",
                     Toast.LENGTH_SHORT).show()
             }
-            }
-            binding.Cancel.setOnClickListener {
-                ChangeVisibility(binding.passwordbutton)
-                ChangeVisibility(binding.passwordimage)
-                ChangeVisibility(binding.Confirm)
-                ChangeVisibility(binding.Cancel)
-                ChangeVisibility(binding.passwordbuttonemail)
-                ChangeVisibility(binding.passwordbuttonpassword)
-            }
         }
 
+        binding.Cancel.setOnClickListener {
+            ChangeVisibility(binding.passwordbutton)
+            ChangeVisibility(binding.passwordimage)
+            ChangeVisibility(binding.Confirm)
+            ChangeVisibility(binding.Cancel)
+            ChangeVisibility(binding.passwordbuttonemail)
+            ChangeVisibility(binding.passwordbuttonpassword)
+        }
     }
+
     private fun ChangeVisibility(view: View){
         if(      view.visibility == View.VISIBLE){
             view.visibility = View.GONE
@@ -124,10 +124,12 @@ class MainActivity : AppCompatActivity() {
             view.visibility = View.VISIBLE
         }
     }
+
     private fun isValidEmail(email: String): Boolean {
         val pattern: Pattern = Patterns.EMAIL_ADDRESS
         return pattern.matcher(email).matches()
     }
+
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
         if (firebaseUser != null) {
