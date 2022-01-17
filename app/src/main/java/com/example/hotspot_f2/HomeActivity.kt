@@ -85,9 +85,6 @@ fun Navigation(navController: NavHostController, profileViewModel: ProfileViewMo
         composable(NavigationItem.Movies.route) {
             DisplayList(hotspotViewModel)
         }
-        composable("HotSpot") {
-            DisplayList(hotspotViewModel)
-        }
         /*
         composable(NavigationItem.Books.route) {
             BooksScreen()
