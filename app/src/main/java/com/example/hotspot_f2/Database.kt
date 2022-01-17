@@ -98,8 +98,8 @@ class Database() {
     }
 
     private fun getUser(userID: String, profileViewModel: ProfileViewModel) {
-        //val docRef = Firebase.firestore.collection("users").document(userID)
-        val docRef = Firebase.firestore.collection("users").document("TESTING")
+        val docRef = Firebase.firestore.collection("users").document(userID)
+        //val docRef = Firebase.firestore.collection("users").document("TESTING")
         docRef.get()
             .addOnSuccessListener { document ->
                 if (!document.getData().isNullOrEmpty()) {
