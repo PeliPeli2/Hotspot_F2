@@ -40,10 +40,22 @@ fun ProfileScreen(profileViewModel: ProfileViewModel) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        ProfileSection(
-            painterResource(id = profileViewModel.imageID.value),
-            profileViewModel
-        )
+        var stat by rememberSaveable { profileViewModel.firstLogin}
+        if(stat=="FIRST_LOGIN"){
+            setName(profileViewModel)
+        }
+        else if(stat=="AGE"){
+            setAge(profileViewModel)
+        }
+        else if(stat=="DESCRIPTION"){
+            setAge(profileViewModel)
+        }
+        else {
+            ProfileSection(
+                painterResource(id = profileViewModel.imageID.value),
+                profileViewModel
+            )
+        }
     }
 }
 
@@ -147,6 +159,7 @@ fun RoundImage(
     image: Painter,
     modifier: Modifier = Modifier
 ) {
+
     Image(
         painter = image,
         contentDescription = null,
@@ -161,6 +174,75 @@ fun RoundImage(
             .clip(CircleShape)
     )
 }
+
+@Composable
+fun setName(
+    profileViewModel: ProfileViewModel,
+    modifier: Modifier = Modifier
+) {
+    var name by rememberSaveable { profileViewModel.name }
+    var stat by rememberSaveable { profileViewModel.firstLogin}
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") }
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Button(onClick = {
+            if (name != "") {
+                stat = "AGE"
+            }
+            else
+            {
+                name="lol"
+            }
+        }){ Text(text = "Videre lol") }
+    }
+}
+
+@Composable
+fun setAge(
+    profileViewModel: ProfileViewModel,
+    modifier: Modifier = Modifier
+) {
+    var age by rememberSaveable { profileViewModel.age }
+    var stat by rememberSaveable { profileViewModel.firstLogin}
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+
+        OutlinedTextField(
+            value = age.toString(),
+            onValueChange = {
+                if(it.toIntOrNull()!=null)
+                    age = it.toInt() },
+            label = { Text("Age") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next),
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Button(onClick = {
+            if (age != 0) {
+                stat = "DESCRIPTION"
+            }
+        }){ Text(text = "Videre") }
+    }
+}
+
+
+
+
 
 @Composable
 fun StatSection(
