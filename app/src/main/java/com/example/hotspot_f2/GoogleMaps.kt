@@ -1,5 +1,7 @@
 package com.example.hotspot_f2
 
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,20 +19,23 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.firestore.GeoPoint
+import java.io.IOException
 import java.util.*
 //val destination1 = LatLng(55.7215, 12.3639)
 
 val locationArrayList1: MutableList<String> = ArrayList()
 val locationArrayList2: MutableList<String> = ArrayList()
 val locationArrayList3: MutableList<String> = ArrayList()
-val locationArrayList4: MutableList<String> = ArrayList()
+// val locationArrayList4: MutableList<String> = ArrayList()
 var confirm: Boolean = false
-fun testAddingAHotspot(textState1: String, textState2: String, textState3: String, textState4: String)
+
+fun testAddingAHotspot(textState1: String, textState2: String, textState3: String)
 {
     locationArrayList1.add(textState1);
     locationArrayList2.add(textState2);
     locationArrayList3.add(textState3);
-    locationArrayList4.add(textState4);
+  //  locationArrayList4.add(textState4);
     confirm = true
 }
 
@@ -55,6 +60,29 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel,
     val lifecycle= LocalLifecycleOwner.current.lifecycle
     lifecycle.addObserver(rememberMapLifecycle(mapView))
 
+    fun getLocationFromAddress(strAddress: String?): GeoPoint? {
+        val coder = Geocoder(context)
+        val address: List<Address>
+        var p1: GeoPoint? = null
+        try {
+            address = coder.getFromLocationName(strAddress, 5)
+            if (address == null) {
+                return null
+            }
+            val location: Address = address[0]
+            location.getLatitude()
+            location.getLongitude()
+            p1 = GeoPoint(
+                (location.getLatitude()) as Double,
+                (location.getLongitude()) as Double
+            )
+            return p1
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
     AndroidView(
         factory = {
             mapView.apply {
@@ -63,15 +91,16 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel,
                         if (confirm) {
                             var i = 0
                             while (i <= locationArrayList1.size-1) {
+                                val locName = getLocationFromAddress(locationArrayList1[i])
                                 val markerOptionsDestination = MarkerOptions()
                                     .position(
                                         com.google.android.gms.maps.model.LatLng(
-                                            locationArrayList1[i].toDouble(),
-                                            locationArrayList2[i].toDouble()
+                                            locName?.latitude.toString().toDouble(),
+                                            locName?.longitude.toString().toDouble()
                                         )
                                     )
-                                    .title(locationArrayList3[i])
-                                    .snippet(locationArrayList4[i])
+                                    .title(locationArrayList2[i])
+                                    .snippet(locationArrayList3[i])
                                 googleMap.addMarker(markerOptionsDestination)
                                 i++
                             }
