@@ -130,13 +130,14 @@ fun TopBarPreview() {
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    val items = listOf(
-        NavigationItem.Home,
-        NavigationItem.Music,
-        NavigationItem.Movies,
+    val items = mutableListOf(
+        NavigationItem.Map,
+        NavigationItem.Profile,
+        NavigationItem.List,
         //NavigationItem.Books,
         //NavigationItem.Profile
     )
+    // if (checkedIn) items.add(NavigationItem.Lobby)
 
     BottomNavigation(
         backgroundColor = colorResource(id = R.color.colorPrimary),

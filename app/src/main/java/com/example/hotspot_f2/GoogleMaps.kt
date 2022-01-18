@@ -23,15 +23,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.example.hotspot_f2.nav.NavigationItem
 import com.example.hotspot_f2.ui.CustomInfoWindow
-import com.example.hotspot_f2.HotSpotActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 fun testAddingAHotspot(textState1: String, textState2: String, textState3: String, textState4: String)
@@ -46,7 +46,10 @@ fun testAddingAHotspot(textState1: String, textState2: String, textState3: Strin
 
 
 @Composable
-fun Hotspotmap(hotspotViewModel: HotspotViewModel, navController: NavHostController,
+fun Hotspotmap(
+    hotspotViewModel: HotspotViewModel,
+    lobbyViewModel: LobbyViewModel,
+    navController: NavHostController,
     modifier:Modifier=Modifier,
     OnReady:(GoogleMap)->Unit
 )
@@ -82,6 +85,34 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel, navController: NavHostControl
                           markers.forEach { googleMap.addMarker(it) }
                           googleMap.setInfoWindowAdapter(CustomInfoWindow(this.context))
                           googleMap.setOnInfoWindowClickListener { markerOptions ->
+
+                              lobbyViewModel.title.value = markerOptions.title.toString()
+                              lobbyViewModel.description.value = markerOptions.snippet.toString()
+                              lobbyViewModel.checkins.value = 10
+
+                              if (markerOptions.title == "Brønnum") {
+                                  lobbyViewModel.image.value = R.drawable.broennum
+                              }
+
+                              if (markerOptions.title == "Duck And Cover") {
+                                  lobbyViewModel.image.value = R.drawable.duck_and_cover
+                              }
+                              if (markerOptions.title == "Ørsted") {
+                                  lobbyViewModel.image.value = R.drawable.oersted
+                              }
+                              if (markerOptions.title == "K-bar") {
+                                  lobbyViewModel.image.value = R.drawable.k_bar
+                              }
+
+
+                              GlobalScope.launch(Dispatchers.Main) { // necessary to prevent deadlock
+                                  //navController.navigate(NavigationItem.Lobby.route)
+                                  navController.popBackStack()
+                                  navController.navigate(NavigationItem.Lobby.route)
+                              }
+
+                              /*
+                                  markerOptions ->
                               val intent = Intent(context, HotSpotActivity::class.java)
                               intent.putExtra("hotspotname", markerOptions.title.toString())
                               intent.putExtra("hotspotinfo", markerOptions.snippet.toString())
@@ -104,6 +135,7 @@ fun Hotspotmap(hotspotViewModel: HotspotViewModel, navController: NavHostControl
                               hotspotViewModel.title = markerOptions.title.toString()
                               Log.d("marker", markerOptions.title.toString())
                               Log.d("hotspot", hotspotViewModel.title)
+                              */
                           }
                           googleMap.setOnMarkerClickListener { markerOptions ->
                               if (markerOptions.isInfoWindowShown) {

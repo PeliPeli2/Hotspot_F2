@@ -26,10 +26,10 @@ import com.google.firebase.auth.FirebaseAuth
 private lateinit var firebaseAuth: FirebaseAuth
 
 @Composable
-fun HomeScreen(hotspotViewModel: HotspotViewModel, navController: NavHostController, context: Context = LocalContext.current) {
+fun HomeScreen(hotspotViewModel: HotspotViewModel, lobbyViewModel: LobbyViewModel, navController: NavHostController, context: Context = LocalContext.current) {
 
     Box(modifier=Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center) { Hotspotmap(hotspotViewModel = hotspotViewModel, navController = navController, modifier = Modifier){}
+        contentAlignment = Alignment.Center) { Hotspotmap(hotspotViewModel = hotspotViewModel, lobbyViewModel = lobbyViewModel,navController = navController, modifier = Modifier){}
     }
     AddMarker(modifier = Modifier)
 }
