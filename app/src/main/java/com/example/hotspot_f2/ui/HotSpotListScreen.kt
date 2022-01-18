@@ -56,8 +56,6 @@ fun DisplayList(hotspotViewModel: HotspotViewModel){
             HotspotList(hotspot = hotspot )
         }
     }
-
-
 }
 @Composable
 fun HotspotList(hotspot: Hotspot) {
@@ -93,57 +91,53 @@ fun HotspotList(hotspot: Hotspot) {
                 .height(90.dp)
         )
         {
-
-                Column {
-                    Row {
-                        Text(
-                            text = hotspot.title,
-                            modifier = Modifier
-                                .padding(vertical = 5.dp,horizontal = 5.dp),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                    }
+            Column {
+                Row {
                     Text(
-                        text = hotspot.type,
+                        text = hotspot.title,
                         modifier = Modifier
-                            .padding(horizontal = 6.dp),
-                        fontSize = 14.sp,
+                            .padding(vertical = 5.dp,horizontal = 5.dp),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                    Row(
-                        modifier = Modifier
-                            .padding(vertical = 7.dp, horizontal = 6.dp)
 
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_people_24),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(18.dp)
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(horizontal = 4.dp),
-                            fontSize = 13.sp,
-                            text = "" + hotspot.checkins + " indtjekninger lige nu "
+                }
+                Text(
+                    text = hotspot.type,
+                    modifier = Modifier
+                        .padding(horizontal = 6.dp),
+                    fontSize = 14.sp,
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(vertical = 7.dp, horizontal = 6.dp)
 
-                        )
-                    }
-                    Box(
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_people_24),
+                        contentDescription = null,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(DarkGray)
-                            .padding(vertical = 8.dp)
+                            .size(18.dp)
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp),
+                        fontSize = 13.sp,
+                        text = "" + hotspot.checkins + " indtjekninger lige nu "
+
                     )
                 }
-
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(DarkGray)
+                        .padding(vertical = 8.dp)
+                )
             }
-
-
         }
     }
+}
 
 
 

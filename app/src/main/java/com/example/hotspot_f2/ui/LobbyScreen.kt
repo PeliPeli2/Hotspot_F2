@@ -1,17 +1,23 @@
 package com.example.hotspot_f2.ui
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.R
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowForward
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -22,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.hotspot_f2.CheckedInUser
 import com.example.hotspot_f2.HomeActivity
 import com.example.hotspot_f2.LobbyViewModel
 import com.example.hotspot_f2.R.drawable
@@ -47,16 +54,14 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
     val checkins = lobbyViewModel.checkins.value
     val image = lobbyViewModel.image.value
 
+    var viewUsers by remember { mutableStateOf(false) }
+
     var buttontext by rememberSaveable{ mutableStateOf("checkin") }
     var buttoncolor by remember{ mutableStateOf(Color.Green) }
     var x by rememberSaveable{ mutableStateOf(checkins) }
 
 
-    Column(
-
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-    ){
+    Column{
         Card(){
             Image(
                 modifier = Modifier
@@ -91,19 +96,18 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
 
             Button(
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 20.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = buttoncolor),
+                colors = ButtonDefaults.buttonColors(backgroundColor = if (lobbyViewModel.isCheckedIn.value) Color.Red else Color.Green),
                 onClick = {
-                    if (buttontext == "checkin") {
-                        buttontext = "checkud"
-                        buttoncolor = Color.Red
+                    if(lobbyViewModel.isCheckedIn.value) {  // if user is checking out
+                        x -= 1
+                        lobbyViewModel.isCheckedIn.value = false
+                    } else {                                // if user is checking in
                         x += 1
-                    } else {
-                        buttontext = "checkin"
-                        buttoncolor = Color.Green
-                        x += -1
+                        lobbyViewModel.isCheckedIn.value = true
                     }
+
                 }
-            ) { Text(buttontext) }
+            ) { Text(if(lobbyViewModel.isCheckedIn.value) "Check ud" else "Check in") }
         }
         Row{
             Icon(
@@ -119,6 +123,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
                 fontSize = 17.sp
             )
         }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -126,11 +131,69 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
                 .background(Color.LightGray)
                 .padding(vertical = 8.dp)
         )
-        Text(
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            IconButton(onClick = { viewUsers = !viewUsers })
+            {
+                Icon(
+                    Icons.Outlined.Info,
+                    modifier = Modifier.size(30.dp),
+                    contentDescription = "Expand/Hide",
+                    tint = Color.Gray
+                )
+            }
+        }
+
+        if(viewUsers) {
+            if(lobbyViewModel.isCheckedIn.value) {
+                ListOfCheckedInUsers(lobbyViewModel = lobbyViewModel)
+            }
+        } else {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 8.dp, horizontal = 3.dp),
+                text = description.toString(),
+                fontSize = 18.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun ListOfCheckedInUsers(lobbyViewModel: LobbyViewModel) {
+
+    LazyColumn{
+        items(items = lobbyViewModel.checkedInUsers) { user ->
+            CheckedInUserElement(user = user)
+        }
+    }
+}
+
+@Composable
+fun CheckedInUserElement(user: CheckedInUser) {
+    Column {
+        Box(
             modifier = Modifier
-                .padding(vertical = 8.dp, horizontal = 3.dp),
-            text = description.toString(),
-            fontSize = 18.sp
+                .fillMaxSize()
+                .padding(vertical = 10.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Row {
+                Text(text = user.name, fontSize = 16.sp)
+                Text(text = ", " + user.age, fontSize = 16.sp)
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+                .padding(vertical = 10.dp)
         )
     }
 }

@@ -14,3 +14,10 @@ data class Hotspot(
     val checkins: Int,
     val imageID: Int,
     val location: GeoPoint)
+
+
+data class CheckedInUser(
+    val id: String = "",
+    val name: String = "",
+    val age: Int = 0)
+
