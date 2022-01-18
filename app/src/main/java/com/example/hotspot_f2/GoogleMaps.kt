@@ -22,12 +22,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.GeoPoint
 import java.io.IOException
 import java.util.*
-//val destination1 = LatLng(55.7215, 12.3639)
 
 val locationArrayList1: MutableList<String> = ArrayList()
 val locationArrayList2: MutableList<String> = ArrayList()
 val locationArrayList3: MutableList<String> = ArrayList()
-// val locationArrayList4: MutableList<String> = ArrayList()
 var confirm: Boolean = false
 
 fun testAddingAHotspot(textState1: String, textState2: String, textState3: String)
@@ -35,7 +33,6 @@ fun testAddingAHotspot(textState1: String, textState2: String, textState3: Strin
     locationArrayList1.add(textState1);
     locationArrayList2.add(textState2);
     locationArrayList3.add(textState3);
-  //  locationArrayList4.add(textState4);
     confirm = true
 }
 
