@@ -28,7 +28,6 @@ fun AddMarker(
     val textState1 = remember { mutableStateOf(TextFieldValue()) }
     val textState2 = remember { mutableStateOf(TextFieldValue()) }
     val textState3 = remember { mutableStateOf(TextFieldValue()) }
-    val textState4 = remember { mutableStateOf(TextFieldValue()) }
 
     Column(Modifier.padding(16.dp)) {
         if (showInputForm.value) {
@@ -37,9 +36,8 @@ fun AddMarker(
                 Button(modifier = Modifier.padding(end = 4.dp), onClick = { showInputForm.value = false }) {
                     Text("Cancel")
                 }
-
                 Button(onClick = {
-                    testAddingAHotspot(textState1.toString(), textState2.toString(),textState3.toString(),textState4.toString())
+                    testAddingAHotspot(textState1.value.text, textState2.value.text,textState3.value.text)
                     Toast.makeText(context, "Hotspot created", Toast.LENGTH_LONG).show()
                     showInputForm.value = true //hide after adding hotspot //TODO: Skal rettes til false
                 }
@@ -47,34 +45,25 @@ fun AddMarker(
                     Text("Add")
                 }
             }
-
-            //  Text("The text: " + textState1.value.text)
             TextField(
                 value = textState1.value,
                 textStyle = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
                 onValueChange = { textState1.value = it },
-                label = { Text("Latitude") }
+                label = { Text("Address or Area") }
             )
 
             TextField(
                 value = textState2.value,
                 textStyle = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
                 onValueChange = { textState2.value = it },
-                label = { Text("Longitude") }
+                label = { Text("Name") }
             )
 
             TextField(
                 value = textState3.value,
                 textStyle = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
                 onValueChange = { textState3.value = it },
-                label = { Text("Title") }
-            )
-
-            TextField(
-                value = textState4.value,
-                textStyle = TextStyle(color = Color.Red, fontWeight = FontWeight.Bold),
-                onValueChange = { textState4.value = it },
-                label = { Text("Snippet") }
+                label = { Text("Description") }
             )
         }
         else {

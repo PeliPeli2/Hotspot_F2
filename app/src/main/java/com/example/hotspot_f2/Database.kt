@@ -99,6 +99,7 @@ class Database() {
 
     private fun getUser(userID: String, profileViewModel: ProfileViewModel) {
         val docRef = Firebase.firestore.collection("users").document(userID)
+        //val docRef = Firebase.firestore.collection("users").document("TESTING")
         docRef.get()
             .addOnSuccessListener { document ->
                 if (!document.getData().isNullOrEmpty()) {
@@ -106,8 +107,10 @@ class Database() {
                     profileViewModel.description.value = document.get("description").toString()
                     profileViewModel.age.value = document.get("age").toString().toInt()
                     profileViewModel.imageID.value = document.get("imageID").toString().toInt()
+                    profileViewModel.firstLogin.value = "NORMAL"
                     Log.d(TAG, "Fetched user with userID $userID")}
                 else {
+                    profileViewModel.firstLogin.value = "FIRST_LOGIN"
                     Log.d(TAG, "No data for user with userID $userID")
                 }
             }

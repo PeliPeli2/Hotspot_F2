@@ -8,9 +8,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,10 +40,25 @@ fun ProfileScreen(profileViewModel: ProfileViewModel) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        ProfileSection(
-            painterResource(id = profileViewModel.imageID.value),
-            profileViewModel
-        )
+        var stat by rememberSaveable { profileViewModel.firstLogin}
+        if(stat=="FIRST_LOGIN"){
+            setName(profileViewModel)
+        }
+        else if(stat=="AGE"){
+            setAge(profileViewModel)
+        }
+        else if(stat=="DESCRIPTION"){
+            setDescription(profileViewModel)
+        }
+        else if(stat=="CONFIRM"){
+            createProfile(profileViewModel)
+        }
+        else {
+            ProfileSection(
+                painterResource(id = profileViewModel.imageID.value),
+                profileViewModel
+            )
+        }
     }
 }
 
@@ -145,6 +160,7 @@ fun RoundImage(
     image: Painter,
     modifier: Modifier = Modifier
 ) {
+
     Image(
         painter = image,
         contentDescription = null,
@@ -159,6 +175,212 @@ fun RoundImage(
             .clip(CircleShape)
     )
 }
+
+@Composable
+fun setName(
+    profileViewModel: ProfileViewModel,
+    modifier: Modifier = Modifier
+) {
+    var name by rememberSaveable { profileViewModel.name }
+    var stat by rememberSaveable { profileViewModel.firstLogin}
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        )
+    {
+        OutlinedTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Navn") },
+            modifier = modifier.fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Button(onClick = {
+            if (name != "") {
+                stat = "AGE"
+            }
+        },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            enabled = name != ""
+        ){ Text(text = "Videre") }
+    }
+}
+
+@Composable
+fun setAge(
+    profileViewModel: ProfileViewModel,
+    modifier: Modifier = Modifier
+) {
+    var age by rememberSaveable { profileViewModel.age }
+    var stat by rememberSaveable { profileViewModel.firstLogin}
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    )
+    {
+        OutlinedTextField(
+            value = age.toString(),
+            onValueChange = {
+                if(it.toIntOrNull()!=null)
+                    age = it.toInt() },
+            label = { Text("Alder") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next),
+            modifier = modifier.fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Button(onClick = {
+            if (age != 0) {
+                stat = "DESCRIPTION"
+            }
+        },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            enabled = age != 0
+        ){ Text(text = "Videre") }
+
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+
+        ) {
+            IconButton(
+                onClick = { stat = "FIRST_LOGIN"},
+
+            ){
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Localized description"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun setDescription(
+    profileViewModel: ProfileViewModel,
+    modifier: Modifier = Modifier
+) {
+    var description by rememberSaveable { profileViewModel.description }
+    var stat by rememberSaveable { profileViewModel.firstLogin}
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    )
+    {
+        OutlinedTextField(
+            value = description,
+            onValueChange = { description = it },
+            label = { Text("Beskrivelse") },
+            modifier = modifier.fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Button(onClick = {
+            if (description != "") {
+                stat = "CONFIRM"
+            }
+        },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            enabled = description != ""
+        ){ Text(text = "Videre") }
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+
+        ) {
+            IconButton(
+                onClick = { stat = "AGE"},
+
+                ){
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Localized description"
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun createProfile(
+    profileViewModel: ProfileViewModel,
+    modifier: Modifier = Modifier
+) {
+    var confirm by rememberSaveable { mutableStateOf(false) }
+    var stat by rememberSaveable { profileViewModel.firstLogin}
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    )
+    {
+
+        Text("Jeg giver mit udtrykkelige samtykke til, at Hotspot ApS må behandle mine oplysninger,"+
+            " til oprettelse og drift af min profil. Samtykket kan altid trækkes tilbage.",
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+        )
+        Checkbox(
+            checked = confirm,
+            onCheckedChange = { confirm = it },
+            enabled = true,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Button(onClick = {
+            if (confirm) {
+                Database().updateCurrentUser(profileViewModel)
+                stat = "NORMAL"
+            }
+        },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            enabled = confirm
+        ){ Text(text = "Opret Profil") }
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+
+        ) {
+            IconButton(
+                onClick = { stat = "DESCRIPTION"},
+                ){
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Localized description"
+                )
+            }
+        }
+    }
+}
+
+
+
 
 @Composable
 fun StatSection(

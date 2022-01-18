@@ -1,7 +1,10 @@
 package com.example.hotspot_f2.ui
 
 import android.content.Context
+<<<<<<< HEAD
 import android.content.Intent
+=======
+>>>>>>> develop
 import android.view.View
 import android.widget.Toast
 import androidx.compose.foundation.*
@@ -68,7 +71,10 @@ fun HotspotList(hotspot: Hotspot) {
             .clickable(onClick = {
                 Toast.makeText(context, hotspot.title, Toast.LENGTH_SHORT)
                     .show()
+<<<<<<< HEAD
                //context.startActivity(Intent(context, HotSpotActivity::class.java))
+=======
+>>>>>>> develop
             }
     )
     )

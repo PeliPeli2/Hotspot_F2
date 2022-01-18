@@ -116,9 +116,7 @@ fun TextFormField(value: String, onValueChange: (String) -> Unit, label: String,
 @Composable
 fun TopBar() {
     TopAppBar(
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
-        backgroundColor = colorResource(id = R.color.colorPrimary),
-        contentColor = Color.White
+        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) }
     )
 }
 
@@ -139,10 +137,7 @@ fun BottomNavigationBar(navController: NavController) {
     )
     // if (checkedIn) items.add(NavigationItem.Lobby)
 
-    BottomNavigation(
-        backgroundColor = colorResource(id = R.color.colorPrimary),
-        contentColor = Color.White
-    )
+    BottomNavigation()
     {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route

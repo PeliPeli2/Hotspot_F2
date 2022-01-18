@@ -5,15 +5,15 @@ import androidx.lifecycle.ViewModel
 
 class ProfileViewModel: ViewModel() {
 
-    var name = mutableStateOf("Lars Larsen")
-    var age = mutableStateOf(24)
-    var description = mutableStateOf("Very fancy description for this profile")
+    var name = mutableStateOf("")
+    var age = mutableStateOf(0)
+    var description = mutableStateOf("")
+    var firstLogin = mutableStateOf("")
+
     var imageID = mutableStateOf(R.drawable.lars)
 
     init {
         Database().getCurrentUser(this)
-        //Database().testGetUser("Adam Abel", this)
-        //Database().currentUserDebug()
     }
 
 }
