@@ -1,13 +1,10 @@
 package com.example.hotspot_f2.ui
 
 import android.content.Intent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -23,8 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,10 +114,9 @@ fun ProfileSection(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+
         ) {
             if (!edit){
-                Spacer(modifier = Modifier.width(16.dp))
                 StatSection(name, age.toString(), modifier = Modifier.weight(7f))
             }
             else{
@@ -194,7 +192,8 @@ fun setName(
             value = name,
             onValueChange = { name = it },
             label = { Text("Navn") },
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -234,7 +233,8 @@ fun setAge(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next),
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -288,7 +288,8 @@ fun setDescription(
             value = description,
             onValueChange = { description = it },
             label = { Text("Beskrivelse") },
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -387,24 +388,39 @@ fun StatSection(
     name: String, age: String,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
-    ) {
-        Column(
-            modifier = modifier
+    Column() {
+
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 20.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = name,
-                fontSize = 20.sp
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = age,
-                fontSize = 18.sp
+            Row(
+                modifier = modifier
+            ) {
+                Text(
+                    text = name,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = ", " + age,
+                    fontSize = 20.sp,
+                )
+            }}
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color.Gray)
+                    .padding(vertical = 20.dp)
             )
         }
     }
-}
+
+
 
 @Composable
 fun ProfileDescription(
@@ -415,12 +431,21 @@ fun ProfileDescription(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
     ) {
         Text(
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .padding(vertical = 15.dp),
             text = description,
             letterSpacing = letterSpacing,
             lineHeight = lineHeight
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray)
+                .padding(vertical = 10.dp)
         )
     }
 }
