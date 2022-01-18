@@ -49,17 +49,8 @@ fun LobbyScreen(navController: NavController, lobbyViewModel: LobbyViewModel) {
 
 @Composable
 fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) {
-    val title = lobbyViewModel.title.value
-    val description = lobbyViewModel.description.value
-    val checkins = lobbyViewModel.checkins.value
-    val image = lobbyViewModel.image.value
-
     var viewUsers by remember { mutableStateOf(false) }
-
-    var buttontext by rememberSaveable{ mutableStateOf("checkin") }
-    var buttoncolor by remember{ mutableStateOf(Color.Green) }
-    var x by rememberSaveable{ mutableStateOf(checkins) }
-
+    var x by rememberSaveable{ mutableStateOf(lobbyViewModel.checkins.value) }
 
     Column{
         Card(){
@@ -68,7 +59,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
                     .fillMaxWidth()
                     .height(200.dp)
                     .padding(bottom = 5.dp),
-                painter = painterResource(id = image),
+                painter = painterResource(id = lobbyViewModel.image.value),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
@@ -88,7 +79,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
         Row() {
             Text(
                 modifier = Modifier.padding(vertical = 3.dp, horizontal = 5.dp),
-                text = title.toString(),
+                text = lobbyViewModel.title.value,
                 fontSize = 30.sp,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Bold
@@ -156,7 +147,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
             Text(
                 modifier = Modifier
                     .padding(vertical = 8.dp, horizontal = 3.dp),
-                text = description.toString(),
+                text = lobbyViewModel.description.value,
                 fontSize = 18.sp
             )
         }
