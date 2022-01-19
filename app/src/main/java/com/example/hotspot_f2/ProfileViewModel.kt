@@ -10,7 +10,7 @@ class ProfileViewModel: ViewModel() {
     var description = mutableStateOf("")
     var firstLogin = mutableStateOf("")
 
-    var imageID = mutableStateOf(R.drawable.lars)
+    var imageID = mutableStateOf(R.drawable.face)
 
     init {
         Database().getCurrentUser(this)
