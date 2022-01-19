@@ -31,13 +31,14 @@ import androidx.navigation.NavController
 import com.example.hotspot_f2.CheckedInUser
 import com.example.hotspot_f2.HomeActivity
 import com.example.hotspot_f2.LobbyViewModel
+import com.example.hotspot_f2.ProfileViewModel
 import com.example.hotspot_f2.R.drawable
 import com.example.hotspot_f2.nav.NavigationItem
 
 @Composable
-fun LobbyScreen(navController: NavController, lobbyViewModel: LobbyViewModel) {
+fun LobbyScreen(navController: NavController, lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewModel) {
 
-    HotspotScreen(lobbyViewModel = lobbyViewModel, navController = navController)
+    HotspotScreen(lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel, navController = navController)
 
 /*
     Column {
@@ -48,7 +49,7 @@ fun LobbyScreen(navController: NavController, lobbyViewModel: LobbyViewModel) {
 
 
 @Composable
-fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) {
+fun HotspotScreen(lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewModel, navController: NavController) {
     var viewUsers by remember { mutableStateOf(false) }
     var x by rememberSaveable{ mutableStateOf(lobbyViewModel.checkins.value) }
 
@@ -89,12 +90,17 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 20.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = if (lobbyViewModel.isCheckedIn.value) Color.Red else Color.Green),
                 onClick = {
-                    if(lobbyViewModel.isCheckedIn.value) {  // if user is checking out
-                        x -= 1
-                        lobbyViewModel.isCheckedIn.value = false
-                    } else {                                // if user is checking in
-                        x += 1
-                        lobbyViewModel.isCheckedIn.value = true
+                    if(lobbyViewModel.isCheckedIn.value) {
+                        // if user is checking out
+                            lobbyViewModel.checkOut()
+                        /*x -= 1
+                        lobbyViewModel.isCheckedIn.value = false*/
+                    } else {
+                        // if user is checking in
+                        lobbyViewModel.checkIn(profileViewModel = profileViewModel)
+                        /*x += 1
+                        lobbyViewModel.isCheckedIn.value = true*/
+
                     }
 
                 }

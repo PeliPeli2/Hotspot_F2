@@ -22,20 +22,12 @@ class LobbyViewModel: ViewModel() {
     var isCheckedIn: MutableState<Boolean> = mutableStateOf(false)
 
 
-    fun checkIn() {
-       // call db check in function
-
-        //
-
-        isCheckedIn.value = true
+    fun checkIn(profileViewModel: ProfileViewModel) {
+        Database().checkInCurrentUser(lobbyViewModel = this, profileViewModel = profileViewModel)
     }
 
     fun checkOut() {
-        // call db check out function
-
-        //
-
-        isCheckedIn.value = false
+        Database().checkOutCurrentUser(lobbyViewModel = this)
     }
 
     fun getNumberOfCheckedInUsers(): Int = checkedInUsers.size

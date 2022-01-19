@@ -76,9 +76,8 @@ fun ProfileSection(
     var edit by rememberSaveable { mutableStateOf(false) }
     var editText by rememberSaveable { mutableStateOf("Edit profile") }
     Row() {
-        //TODO: Delete test buttons
-        Button(onClick = { Database().TESTPRINTALLHOTSPOTIDS()}) { Text(text = "TEST") }
-
+        /*//TODO: Delete test buttons
+        Button(onClick = { Database().TESTPRINTALLHOTSPOTIDS()}) { Text(text = "TEST") }*/
 
         Button(onClick = {
             val firebaseAuth = FirebaseAuth.getInstance()

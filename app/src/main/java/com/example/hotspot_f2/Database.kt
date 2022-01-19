@@ -1,6 +1,8 @@
 package com.example.hotspot_f2
 
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
@@ -206,7 +208,7 @@ class Database() {
                             description = document.get("description").toString(),
                             type = document.get("type").toString(),
                             checkins = document.get("checkins").toString().toInt(),
-                            imageID = R.drawable.broennum, //document.get("imageID").toString().toInt(),
+                            imageID = getDummyHotspotImageIDFromTitle(document.get("title").toString()), //TODO: actually use the imageID
                             location = document.get("location", GeoPoint::class.java)!!
                         )
                     )
@@ -301,6 +303,7 @@ class Database() {
         )
 
         val db = Firebase.firestore
+
         db.collection("hotspots").document(hotspotID).collection("checked_in_users").document(userID)
             .set(data)
             .addOnSuccessListener {
@@ -346,6 +349,8 @@ class Database() {
         db.collection("hotspots").document(lobbyViewModel.hotspot.value!!.id).collection("checked_in_users")
             .get()
             .addOnSuccessListener { result ->
+                //TODO: Move side effects to lambda function
+                lobbyViewModel.isCheckedIn.value = true
                 lobbyViewModel.checkedInUsers.clear()
                 for(document in result) {
                     lobbyViewModel.checkedInUsers.add(
@@ -376,5 +381,15 @@ class Database() {
             "age" to profileViewModel.age.value,
             "description" to profileViewModel.description.value,
             "imageID" to profileViewModel.imageID.value)
+    }
+}
+
+fun getDummyHotspotImageIDFromTitle(title: String): Int {
+    return when (title) {
+        "Brønnum" -> R.drawable.broennum
+        "Duck And Cover" -> R.drawable.duck_and_cover
+        "Ørsted" -> R.drawable.oersted
+        "K-bar" -> R.drawable.k_bar
+        else -> R.drawable.lars
     }
 }

@@ -93,7 +93,7 @@ fun Navigation(navController: NavHostController, profileViewModel: ProfileViewMo
             DisplayList(hotspotViewModel)
         }
         composable(NavigationItem.Lobby.route) {
-            LobbyScreen(navController = navController, lobbyViewModel = lobbyViewModel)
+            LobbyScreen(navController = navController, lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel)
         }
         /*
         composable(NavigationItem.Books.route) {

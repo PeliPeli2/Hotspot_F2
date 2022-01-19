@@ -33,10 +33,11 @@ fun AddMarker(
     val textState3 = remember { mutableStateOf(TextFieldValue()) }
 
     Column(Modifier.padding(16.dp)) {
+        /*
         //TODO: Delete test buttons
         Button(onClick = { Log.d("TESTQ", lobbyViewModel.hotspot.value?.title.toString()) }) { Text(text = "CUR") }
         Button(onClick = { Database().checkInTestUsers2(lobbyViewModel = lobbyViewModel) }) { Text(text = "TESTUSERS") }
-        Button(onClick = { Database().checkInCurrentUser(lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel)}) { Text(text = "ADDTHISUSER") }
+        Button(onClick = { Database().checkInCurrentUser(lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel)}) { Text(text = "ADDTHISUSER") }*/
 
         if (showInputForm.value) {
             Row() {
