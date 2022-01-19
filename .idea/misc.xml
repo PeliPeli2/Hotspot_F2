@@ -35,9 +35,9 @@
         <entry key="../../../../layout/compose-model-1641798939309.xml" value="0.2998960498960499" />
         <entry key="../../../../layout/compose-model-1641804842874.xml" value="0.25" />
         <entry key="../../../../layout/compose-model-1641807352307.xml" value="1.0" />
-        <entry key="..\:/Users/haris/AndroidStudioProjects/Hotspot_F2/app/src/main/res/layout/activity_main3.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1642416347612.xml" value="0.2575046904315197" />
         <entry key="../../../../layout/compose-model-1642416645297.xml" value="2.0" />
+        <entry key="..\:/Users/haris/AndroidStudioProjects/Hotspot_F2/app/src/main/res/layout/activity_main3.xml" value="0.1" />
         <entry key="..\:/Users/mhech/OneDrive/Dokumenter/GitHub/Hotspot_F2/app/src/main/res/drawable/firebase_auth_ui.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/mhech/OneDrive/Dokumenter/GitHub/Hotspot_F2/app/src/main/res/drawable/ic_home.xml" value="0.2703125" />
         <entry key="..\:/Users/mhech/OneDrive/Dokumenter/GitHub/Hotspot_F2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
@@ -58,6 +58,7 @@
         <entry key="app/src/main/res/drawable/lars_background.xml" value="0.2947916666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.21145833333333333" />
+        <entry key="app/src/main/res/layout/loginscreen.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.22760416666666666" />
       </map>

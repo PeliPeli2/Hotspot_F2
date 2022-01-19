@@ -8,6 +8,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.ExitToApp
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,28 +76,7 @@ fun ProfileSection(
     val context = LocalContext.current
     var edit by rememberSaveable { mutableStateOf(false) }
     var editText by rememberSaveable { mutableStateOf("Edit profile") }
-    Row() {
-/*        //TODO: Delete test buttons
-        Button(onClick = { Database().TESTPRINTALLHOTSPOTIDS()}) { Text(text = "TEST") }
-        Button(onClick = { Database().FIXCHECKINCOUNT()}) { Text(text = "TEST2") }*/
-
-
-        Button(onClick = {
-            val firebaseAuth = FirebaseAuth.getInstance()
-            firebaseAuth.signOut()
-            context.startActivity(Intent(context, MainActivity::class.java))
-        })
-        { Text(text = "Logout") }
-        Button(onClick = {
-            if(!edit)
-                editText= "Done"
-            else {
-                Database().updateCurrentUser(profileViewModel)
-                editText = "Edit profile"
-            }
-                edit =!edit
-        }) { Text(text = editText) }
-    }
+    Spacer(modifier = Modifier.height(4.dp))
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -128,14 +108,14 @@ fun ProfileSection(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Name") }
+                    label = { Text("Navn") }
                 )
                 OutlinedTextField(
                     value = age.toString(),
                     onValueChange = {
                     if(it.toIntOrNull()!=null)
                         age = it.toInt() },
-                    label = { Text("Age") },
+                    label = { Text("Alder") },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Next),
@@ -152,10 +132,36 @@ fun ProfileSection(
             OutlinedTextField(
                 value = description,
                 onValueChange = { description = it },
-                label = { Text("Description") }
+                label = { Text("Beskrivelse") }
             )
         }
     }
+    Spacer(modifier = Modifier.height(4.dp))
+    Row() {
+        Button(onClick = {
+            val firebaseAuth = FirebaseAuth.getInstance()
+            firebaseAuth.signOut()
+            context.startActivity(Intent(context, MainActivity::class.java))
+        })
+        {
+            Icon(Icons.Rounded.ExitToApp,contentDescription = "Localized description" )
+            Text(text = "Logout")
+        }
+
+        Button(onClick = {
+            if(!edit)
+                editText= "Done"
+            else {
+                Database().updateCurrentUser(profileViewModel)
+                editText = "Edit profile"
+            }
+            edit =!edit
+        }) {
+            Icon(Icons.Rounded.Settings,contentDescription = "Localized description" )
+            Text(text = editText)
+        }
+    }
+
 }
 
 @Composable
