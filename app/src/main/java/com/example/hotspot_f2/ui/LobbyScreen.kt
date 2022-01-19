@@ -116,7 +116,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewM
             )
             Text(
                 modifier = Modifier.padding(vertical = 2.dp),
-                text = x.toString() + " " + "indtjekninger",
+                text = lobbyViewModel.hotspot.value?.checkins.toString() + " " + "indtjekninger",
                 fontSize = 17.sp
             )
         }

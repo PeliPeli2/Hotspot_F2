@@ -12,7 +12,7 @@ data class Hotspot(
     val title: String,
     val description: String,
     val type: String,
-    val checkins: Int,
+    var checkins: Int,
     val imageID: Int,
     val location: GeoPoint)
 

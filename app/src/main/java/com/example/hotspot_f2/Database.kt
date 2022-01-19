@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -94,6 +95,14 @@ class Database() {
             .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 1") }
     }*/
 
+    fun FIXCHECKINCOUNT() {
+        val db = Firebase.firestore
+        db.collection("hotspots").document("7fNHoCmiYCM21IG4kgMC").update("checkins", 3)
+        db.collection("hotspots").document("ghgmW1O1hTOn1lMrXW6Q").update("checkins", 0)
+        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 0)
+        db.collection("hotspots").document("rYPA7GSyCP912WcQ9Zo7").update("checkins", 3)
+    }
+
     fun TESTPRINTALLHOTSPOTIDS() {
         val db = Firebase.firestore
         db.collection("hotspots")
@@ -101,7 +110,7 @@ class Database() {
             .addOnSuccessListener { result ->
                 Log.d("DBTESTPRINT", "**********************")
                 for (document in result) {
-                    Log.d("DBTESTPRINT", document.id)
+                    Log.d("DBTESTPRINT", "ID: ${document.id} name: ${document.get("title").toString()}")
                 }
                 Log.d("DBTESTPRINT", "**********************")
             }
@@ -271,7 +280,12 @@ class Database() {
     fun checkOutCurrentUser(lobbyViewModel: LobbyViewModel) {
         val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
+        //TODO: Make this a transaction
         val db = Firebase.firestore
+        db.collection("hotspots").document(lobbyViewModel.hotspot.value!!.id).update("checkins", FieldValue.increment(-1))
+            .addOnSuccessListener { lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins - 1 }
+            .addOnFailureListener { e -> Log.w(TAG, "Error incrementing checkins", e) }
+
         db.collection("hotspots")
             .document(lobbyViewModel.hotspot.value!!.id).
             collection("checked_in_users")
@@ -303,6 +317,11 @@ class Database() {
         )
 
         val db = Firebase.firestore
+
+        //TODO: Make this a transaction
+        db.collection("hotspots").document(hotspotID).update("checkins", FieldValue.increment(1))
+            .addOnSuccessListener { lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins + 1 }
+            .addOnFailureListener { e -> Log.w(TAG, "Error incrementing checkins", e) }
 
         db.collection("hotspots").document(hotspotID).collection("checked_in_users").document(userID)
             .set(data)
