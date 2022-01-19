@@ -135,31 +135,32 @@ fun ProfileSection(
                 label = { Text("Beskrivelse") }
             )
         }
-    }
-    Spacer(modifier = Modifier.height(4.dp))
-    Row() {
-        Button(onClick = {
-            val firebaseAuth = FirebaseAuth.getInstance()
-            firebaseAuth.signOut()
-            context.startActivity(Intent(context, MainActivity::class.java))
-        })
-        {
-            Icon(Icons.Rounded.ExitToApp,contentDescription = "Localized description" )
-            Text(text = "Logout")
+        Spacer(modifier = Modifier.height(4.dp))
+        Row() {
+            Button(onClick = {
+                val firebaseAuth = FirebaseAuth.getInstance()
+                firebaseAuth.signOut()
+                context.startActivity(Intent(context, MainActivity::class.java))
+            })
+            {
+                Icon(Icons.Rounded.ExitToApp,contentDescription = "Localized description" )
+                Text(text = "Logout")
+            }
+
+            Button(onClick = {
+                if(!edit)
+                    editText= "Done"
+                else {
+                    Database().updateCurrentUser(profileViewModel)
+                    editText = "Edit profile"
+                }
+                edit =!edit
+            }) {
+                Icon(Icons.Rounded.Settings,contentDescription = "Localized description" )
+                Text(text = editText)
+            }
         }
 
-        Button(onClick = {
-            if(!edit)
-                editText= "Done"
-            else {
-                Database().updateCurrentUser(profileViewModel)
-                editText = "Edit profile"
-            }
-            edit =!edit
-        }) {
-            Icon(Icons.Rounded.Settings,contentDescription = "Localized description" )
-            Text(text = editText)
-        }
     }
 
 }
