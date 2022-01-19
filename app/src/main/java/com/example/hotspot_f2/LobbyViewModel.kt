@@ -8,6 +8,7 @@ import com.google.firebase.firestore.GeoPoint
 
 class LobbyViewModel: ViewModel() {
 
+    //TODO: get rid of these 6 variables
     var title = mutableStateOf("")
     var description =  mutableStateOf("")
     var type =  mutableStateOf("")
@@ -20,11 +21,12 @@ class LobbyViewModel: ViewModel() {
     var checkedInUsers = mutableStateListOf<CheckedInUser>()
     var isCheckedIn: MutableState<Boolean> = mutableStateOf(false)
 
-    fun checkIn(newHotspot: Hotspot) {
+
+    fun checkIn() {
        // call db check in function
 
         //
-        hotspot.value = newHotspot
+
         isCheckedIn.value = true
     }
 
@@ -32,7 +34,7 @@ class LobbyViewModel: ViewModel() {
         // call db check out function
 
         //
-        hotspot.value = null
+
         isCheckedIn.value = false
     }
 
@@ -44,11 +46,11 @@ class LobbyViewModel: ViewModel() {
         return res
     }
 
-    init {
+/*    init {
         checkedInUsers.add(CheckedInUser("usertestid1", "Regina George", 17))
         checkedInUsers.add(CheckedInUser("usertestid2", "Karen Smith", 17))
         checkedInUsers.add(CheckedInUser("usertestid3", "Gretchen Wieners", 17))
-    }
+    }*/
 
     // not used yet
     //var hotspot = mutableStateOf(Hotspot("","","",0,R.drawable.lars, GeoPoint(0.0,0.0)))

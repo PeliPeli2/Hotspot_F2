@@ -8,11 +8,6 @@ import com.google.firebase.firestore.GeoPoint
 
 class HotspotViewModel: ViewModel() {
 
-    var title = ""
-    var description = ""
-    var checkins = 0
-    var imageID = ""
-
     var hotspots = mutableStateListOf<Hotspot>()
 
     fun addItem(item: Hotspot) { hotspots.add(item) }

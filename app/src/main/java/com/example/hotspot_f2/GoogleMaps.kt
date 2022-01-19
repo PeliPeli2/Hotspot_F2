@@ -129,9 +129,13 @@ fun Hotspotmap(
 
                           googleMap.setOnInfoWindowClickListener { markerOptions ->
 
+                              //TODO: Remove these 3 lines when they are no longer needed
                               lobbyViewModel.title.value = markerOptions.title.toString()
                               lobbyViewModel.description.value = markerOptions.snippet.toString()
                               lobbyViewModel.checkins.value = 10
+
+                              lobbyViewModel.hotspot.value = hotspotViewModel.hotspots.firstOrNull { it.title == markerOptions.title}
+
 
                               if (markerOptions.title == "Brønnum") {
                                   lobbyViewModel.image.value = R.drawable.broennum

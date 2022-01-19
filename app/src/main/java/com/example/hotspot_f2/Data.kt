@@ -8,6 +8,7 @@ import com.google.firebase.firestore.GeoPoint
 
 
 data class Hotspot(
+    val id: String,
     val title: String,
     val description: String,
     val type: String,

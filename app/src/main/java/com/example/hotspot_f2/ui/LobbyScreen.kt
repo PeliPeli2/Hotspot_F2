@@ -79,7 +79,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
         Row() {
             Text(
                 modifier = Modifier.padding(vertical = 3.dp, horizontal = 5.dp),
-                text = lobbyViewModel.title.value,
+                text = lobbyViewModel.hotspot.value?.title.toString(),
                 fontSize = 30.sp,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Bold
@@ -147,7 +147,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, navController: NavController) 
             Text(
                 modifier = Modifier
                     .padding(vertical = 8.dp, horizontal = 3.dp),
-                text = lobbyViewModel.description.value,
+                text = lobbyViewModel.hotspot.value?.description.toString(),
                 fontSize = 18.sp
             )
         }
