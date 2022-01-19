@@ -5,7 +5,7 @@ package com.example.hotspot_f2
 
 
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -87,7 +86,8 @@ fun Appbar(title: String, action: () -> Unit) {
                     contentDescription = "Back button"
                 )
             }
-        }
+        },
+        backgroundColor = colorResource(R.color.colorPrimary)
     )
 }
 
@@ -116,7 +116,13 @@ fun TextFormField(value: String, onValueChange: (String) -> Unit, label: String,
 @Composable
 fun TopBar() {
     TopAppBar(
-        title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) }
+        backgroundColor = colorResource(R.color.colorPrimary),
+        title = {
+            Image(painterResource(R.drawable.ic_hotspot_logo),
+            contentDescription = null,
+        )
+            Text(text = "  F2", fontSize = 18.sp, color= Color.White) }
+
     )
 }
 
@@ -137,7 +143,9 @@ fun BottomNavigationBar(navController: NavController) {
     )
     // if (checkedIn) items.add(NavigationItem.Lobby)
 
-    BottomNavigation()
+    BottomNavigation(
+        backgroundColor = colorResource(R.color.colorPrimary),
+    )
     {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
