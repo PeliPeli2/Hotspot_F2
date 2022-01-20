@@ -139,11 +139,6 @@ fun ProfileSection(
         }
         Spacer(modifier = Modifier.height(4.dp))
         Row() {
-            
-            Button(onClick = { Database().FIXCHECKINCOUNT()}) {
-                
-            }
-
             Button(onClick = {
                 val firebaseAuth = FirebaseAuth.getInstance()
                 firebaseAuth.signOut()

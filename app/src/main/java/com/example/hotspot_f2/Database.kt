@@ -71,14 +71,6 @@ class Database() {
         return listOf(point1, point2, point3, point4)
     }
 
-    fun FIXCHECKINCOUNT() {
-        val db = Firebase.firestore
-        db.collection("hotspots").document("7fNHoCmiYCM21IG4kgMC").update("checkins", 5)
-        db.collection("hotspots").document("ghgmW1O1hTOn1lMrXW6Q").update("checkins", 1)
-        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 3)
-        db.collection("hotspots").document("rYPA7GSyCP912WcQ9Zo7").update("checkins", 3)
-    }
-
     fun updateCurrentUser(profileViewModel: ProfileViewModel) {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
         if(userID != null) {
