@@ -151,7 +151,6 @@ class Database() {
                                    location = documentChange.document.get("location", GeoPoint::class.java)!!
                                )
                            )
-                           Log.d("ADDTEST", "ADDING HOTSPOT LOCATION B ID IS ${documentChange.document.id} L: ${hotspotViewModel.hotspots.last().location.latitude} L: ${hotspotViewModel.hotspots.last().location.longitude}")
                        }
                        DocumentChange.Type.REMOVED -> {
                            hotspotViewModel.hotspots.removeIf { it.id == documentChange.document.id }
@@ -209,23 +208,18 @@ class Database() {
     }
 
     private fun checkInUser(hotspotID: String, userID: String, name: String, age: Int, lobbyViewModel: LobbyViewModel) {
-        val data = hashMapOf(
-            "name" to name,
-            "age" to age
-        )
-
+        val data = hashMapOf("name" to name,"age" to age)
         val db = Firebase.firestore
-
-        //TODO: Make this a transaction
         db.collection("hotspots").document(hotspotID).update("checkins", FieldValue.increment(1))
-            .addOnSuccessListener { Log.d(TAG, "Incremented checkins") }
-            .addOnFailureListener { e -> Log.w(TAG, "Error incrementing checkins", e) }
-
         db.collection("hotspots").document(hotspotID).collection("checked_in_users").document(userID)
             .set(data)
             .addOnSuccessListener {
-                    documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: $userID")
-                    getCheckedInUsers(lobbyViewModel = lobbyViewModel)
+                    Log.d(TAG, "DocumentSnapshot added with ID: $userID")
+                    lobbyViewModel.checkedInUsers.clear()
+                    lobbyViewModel.checkedInID.value = lobbyViewModel.hotspot.value!!.id
+                    lobbyViewModel.isCheckedIn.value = true
+                    lobbyViewModel.busy = false
+                    createCheckedInUsersListener(lobbyViewModel = lobbyViewModel)
             }
             .addOnFailureListener {
                 e -> Log.w(TAG, "Error adding document", e)
@@ -233,23 +227,14 @@ class Database() {
             }
     }
 
-    fun getCheckedInUsers(lobbyViewModel: LobbyViewModel) {
+    private fun createCheckedInUsersListener(lobbyViewModel: LobbyViewModel) {
 
         if(lobbyViewModel.hotspot.value == null) {
             Log.d(TAG, "getCheckedInUsers: hotspot is null")
             return
         }
 
-        lobbyViewModel.checkedInUsers.clear()
-
         val db = Firebase.firestore
-        db.collection("hotspots").document(lobbyViewModel.hotspot.value!!.id).collection("checked_in_users")
-            .get()
-            .addOnSuccessListener { result ->
-                lobbyViewModel.checkedInID.value = lobbyViewModel.hotspot.value!!.id
-                lobbyViewModel.isCheckedIn.value = true
-                lobbyViewModel.busy = false
-            }
 
         // Listen for users checking in and out of this particular hotspot
         lobbyViewModel.listenerRegistration = db.collection("hotspots")
@@ -262,7 +247,6 @@ class Database() {
             }
             if(snapshots != null) {
                 for (documentChange in snapshots.documentChanges) {
-                    Log.d("ASDTEST", "GETTING USERS FROM LOCATION 2 DOCID: ${documentChange.document.id}")
                     when (documentChange.type) {
                         DocumentChange.Type.ADDED -> {
                             lobbyViewModel.checkedInUsers.add(
