@@ -233,19 +233,37 @@ class Database() {
 
        db.collection("hotspots").addSnapshotListener { snapshots, error ->
            if(error != null) {
-               Log.w(TAG, "Error listening for checkins", error)
+               Log.w(TAG, error)
                return@addSnapshotListener
            }
            if(snapshots != null) {
-               Log.d(TAG, "IN IF STATEMENT")
                for (documentChange in snapshots!!.documentChanges) {
+                   when(documentChange.type) {
+                       DocumentChange.Type.ADDED -> {
+                           hotspotViewModel.hotspots.add(
+                               Hotspot(
+                                   id = documentChange.document.id,
+                                   title = documentChange.document.get("title").toString(),
+                                   description = documentChange.document.get("description").toString(),
+                                   type = documentChange.document.get("type").toString(),
+                                   checkins = mutableStateOf(documentChange.document.get("checkins").toString().toInt()),
+                                   imageID = getDummyHotspotImageIDFromTitle(documentChange.document.get("title").toString()), //TODO: actually use the imageID
+                                   location = documentChange.document.get("location", GeoPoint::class.java)!!
+                               )
+                           )
+                       }
+                       DocumentChange.Type.REMOVED -> {
+                           hotspotViewModel.hotspots.removeIf { it.id == documentChange.document.id }
+                       }
+                       DocumentChange.Type.MODIFIED -> {
+                           val hs = hotspotViewModel.hotspots.firstOrNull {it.id == documentChange.document.id}
+                           hs?.checkins?.value = documentChange.document.get("checkins").toString().toInt()
+                       }
+                   }
                    val hs = hotspotViewModel.hotspots.firstOrNull {it.id == documentChange.document.id}
                    hs?.checkins?.value = documentChange.document.get("checkins").toString().toInt()
-
-                   // Log.d(TAG, "New checkins value: ${documentChange.document.get("checkins").toString().toInt()}")
                }
            }
-
        }
     }
 
@@ -306,6 +324,8 @@ class Database() {
 
         //TODO: Make this a transaction
         val db = Firebase.firestore
+
+        //decrement the checkins field of the hotspot
         db.collection("hotspots").document(lobbyViewModel.checkedInID.value!!).update("checkins", FieldValue.increment(-1))
             .addOnSuccessListener { Log.d(TAG, "Decremented checkins") }
             .addOnFailureListener { e -> Log.w(TAG, "Error decrementing checkins", e) }
