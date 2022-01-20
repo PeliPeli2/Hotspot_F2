@@ -86,7 +86,6 @@ class Database() {
 
     private fun getUser(userID: String, profileViewModel: ProfileViewModel) {
         val docRef = Firebase.firestore.collection("users").document(userID)
-        //val docRef = Firebase.firestore.collection("users").document("TESTING")
         docRef.get()
             .addOnSuccessListener { document ->
                 if (!document.getData().isNullOrEmpty()) {
@@ -132,33 +131,11 @@ class Database() {
         hotspotViewModel.hotspots.clear()
 
         val db = Firebase.firestore
-/*
-        db.collection("hotspots")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d("ADDTEST", "ADDING HOTSPOT LOCATION A ID IS ${document.id}")
-                    hotspotViewModel.hotspots.add(
-                        Hotspot(
-                            id = document.id,
-                            title = document.get("title").toString(),
-                            description = document.get("description").toString(),
-                            type = document.get("type").toString(),
-                            checkins = mutableStateOf(document.get("checkins").toString().toInt()),
-                            imageID = getDummyHotspotImageIDFromTitle(document.get("title").toString()), //TODO: actually use the imageID
-                            location = document.get("location", GeoPoint::class.java)!!
-                        )
-                    )
-                }
+        db.collection("hotspots").addSnapshotListener { snapshots, error ->
+            if(error != null) {
+                Log.w(TAG, error)
+                return@addSnapshotListener
             }
-*/
-
-
-       db.collection("hotspots").addSnapshotListener { snapshots, error ->
-           if(error != null) {
-               Log.w(TAG, error)
-               return@addSnapshotListener
-           }
            if(snapshots != null) {
                for (documentChange in snapshots.documentChanges) {
                    when(documentChange.type) {
