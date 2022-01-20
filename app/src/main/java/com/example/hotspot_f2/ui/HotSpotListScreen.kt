@@ -53,12 +53,12 @@ import com.example.hotspot_f2.R
 fun DisplayList(hotspotViewModel: HotspotViewModel){
     LazyColumn{
         items(items = hotspotViewModel.hotspots) { hotspot ->
-            HotspotList(hotspot = hotspot, checkins = hotspot.checkins.value)
+            HotspotList(hotspot = hotspot)
         }
     }
 }
 @Composable
-fun HotspotList(hotspot: Hotspot, checkins: Int) {
+fun HotspotList(hotspot: Hotspot) {
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -123,7 +123,7 @@ fun HotspotList(hotspot: Hotspot, checkins: Int) {
                         modifier = Modifier
                             .padding(horizontal = 4.dp),
                         fontSize = 13.sp,
-                        text = "$checkins indtjekninger lige nu "
+                        text = "${hotspot.checkins.value} indtjekninger lige nu "
 
                     )
                 }

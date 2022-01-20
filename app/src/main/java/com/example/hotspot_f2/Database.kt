@@ -197,7 +197,7 @@ class Database() {
             "title" to hotspot.title,
             "description" to hotspot.description,
             "type" to hotspot.type,
-            "checkins" to hotspot.checkins,
+            "checkins" to hotspot.checkins.value,
             "imageID" to hotspot.imageID,
             "location" to hotspot.location)
 
@@ -232,7 +232,7 @@ class Database() {
 
        db.collection("hotspots").addSnapshotListener { snapshots, error ->
            if(error != null) {
-               Log.d(TAG, "ERROR NOT NULL")
+               Log.w(TAG, "Error listening for checkins", error)
                return@addSnapshotListener
            }
            if(snapshots != null) {
@@ -306,12 +306,12 @@ class Database() {
         //TODO: Make this a transaction
         val db = Firebase.firestore
         db.collection("hotspots").document(lobbyViewModel.hotspot.value!!.id).update("checkins", FieldValue.increment(-1))
-            .addOnSuccessListener { /*lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins - 1*/ }
-            .addOnFailureListener { e -> Log.w(TAG, "Error incrementing checkins", e) }
+            .addOnSuccessListener { Log.d(TAG, "Decremented checkins") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error decrementing checkins", e) }
 
         db.collection("hotspots")
-            .document(lobbyViewModel.hotspot.value!!.id).
-            collection("checked_in_users")
+            .document(lobbyViewModel.hotspot.value!!.id)
+            .collection("checked_in_users")
             .document(userID)
             .delete()
             .addOnSuccessListener {
@@ -343,7 +343,7 @@ class Database() {
 
         //TODO: Make this a transaction
         db.collection("hotspots").document(hotspotID).update("checkins", FieldValue.increment(1))
-            .addOnSuccessListener { /*lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins + 1*/ }
+            .addOnSuccessListener { Log.d(TAG, "Incremented checkins") }
             .addOnFailureListener { e -> Log.w(TAG, "Error incrementing checkins", e) }
 
         db.collection("hotspots").document(hotspotID).collection("checked_in_users").document(userID)
