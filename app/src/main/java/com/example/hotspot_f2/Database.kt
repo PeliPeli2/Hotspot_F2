@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
@@ -305,18 +306,19 @@ class Database() {
 
         //TODO: Make this a transaction
         val db = Firebase.firestore
-        db.collection("hotspots").document(lobbyViewModel.hotspot.value!!.id).update("checkins", FieldValue.increment(-1))
+        db.collection("hotspots").document(lobbyViewModel.checkedInID.value!!).update("checkins", FieldValue.increment(-1))
             .addOnSuccessListener { Log.d(TAG, "Decremented checkins") }
             .addOnFailureListener { e -> Log.w(TAG, "Error decrementing checkins", e) }
 
         db.collection("hotspots")
-            .document(lobbyViewModel.hotspot.value!!.id)
+            .document(lobbyViewModel.checkedInID.value!!)
             .collection("checked_in_users")
             .document(userID)
             .delete()
             .addOnSuccessListener {
                 //TODO: move side effects to a lambda function that gets passed along
                 lobbyViewModel.isCheckedIn.value = false
+                lobbyViewModel.checkedInID.value = null
                 lobbyViewModel.checkedInUsers.clear()
                 Log.d(TAG, "Checked out user with id $userID")
             }
@@ -392,6 +394,7 @@ class Database() {
             .get()
             .addOnSuccessListener { result ->
                 //TODO: Move side effects to lambda function
+                lobbyViewModel.checkedInID.value = lobbyViewModel.hotspot.value!!.id
                 lobbyViewModel.isCheckedIn.value = true
                 lobbyViewModel.checkedInUsers.clear()
                 for(document in result) {
@@ -405,6 +408,35 @@ class Database() {
                 }
                 Log.d("DBGETUSERS", lobbyViewModel.getStringOfContents())
             }
+
+        // Listen for users checking in and out of this particular hotspot
+        lobbyViewModel.listenerRegistration = db.collection("hotspots")
+            .document(lobbyViewModel.hotspot.value!!.id)
+            .collection("checked_in_users")
+            .addSnapshotListener { snapshots, error ->
+            if(error != null) {
+                Log.w(TAG, error)
+                return@addSnapshotListener
+            }
+            if(snapshots != null) {
+                for (documentChange in snapshots!!.documentChanges) {
+                    when (documentChange.type) {
+                        DocumentChange.Type.ADDED -> {
+                            lobbyViewModel.checkedInUsers.add(
+                                CheckedInUser(
+                                    id = documentChange.document.id,
+                                    name = documentChange.document.toObject(CheckedInUser::class.java)!!.name,
+                                    age = documentChange.document.toObject(CheckedInUser::class.java)!!.age
+                                )
+                            )
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            lobbyViewModel.checkedInUsers.removeIf { it.id == documentChange.document.id }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun hashMapFromHotspot(hs: Hotspot): HashMap<String, Comparable<*>> {

@@ -51,7 +51,6 @@ fun LobbyScreen(navController: NavController, lobbyViewModel: LobbyViewModel, pr
 @Composable
 fun HotspotScreen(lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewModel, navController: NavController) {
     var viewUsers by remember { mutableStateOf(false) }
-    var x by rememberSaveable{ mutableStateOf(lobbyViewModel.checkins.value) }
 
     Column{
         Card(){
@@ -146,7 +145,10 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewM
         }
 
         if(viewUsers) {
-            if(lobbyViewModel.isCheckedIn.value) {
+            if(lobbyViewModel.isCheckedIn.value
+                && lobbyViewModel.checkedInID.value != null
+                && lobbyViewModel.hotspot.value != null
+                && lobbyViewModel.checkedInID.value == lobbyViewModel.hotspot.value!!.id) {
                 ListOfCheckedInUsers(lobbyViewModel = lobbyViewModel)
             }
         } else {
