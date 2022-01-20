@@ -16,6 +16,11 @@ class Database() {
         private const val TAG = "FIRESTOREDB"
     }
 
+    fun addHotspot(hotspot: Hotspot) {
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        writeHotspot(hotspot = hotspot, creator = userID)
+    }
+
     fun getHotspots(hotspotViewModel: HotspotViewModel) {
         getAllHotspots(hotspotViewModel)
         //getDummyHotspots().forEach { hotspotViewModel.hotspots.add(it) }
@@ -69,7 +74,7 @@ class Database() {
         return listOf(point1, point2, point3, point4)
     }
 
-    /*fun private TESTDELETESOMEHOTSPOTS() {
+    fun TESTDELETESOMEHOTSPOTS() {
         val db = Firebase.firestore
         db.collection("hotspots").document("BTpd9I2XTpsVSnWcJWgj")
             .delete()
@@ -95,7 +100,7 @@ class Database() {
             .delete()
             .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 5") }
             .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 1") }
-    }*/
+    }
 
     fun FIXCHECKINCOUNT() {
         val db = Firebase.firestore
@@ -217,6 +222,7 @@ class Database() {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
+                    Log.d("ADDTEST", "ADDING HOTSPOT LOCATION A ID IS ${document.id}")
                     hotspotViewModel.hotspots.add(
                         Hotspot(
                             id = document.id,
@@ -240,6 +246,7 @@ class Database() {
                for (documentChange in snapshots!!.documentChanges) {
                    when(documentChange.type) {
                        DocumentChange.Type.ADDED -> {
+                           Log.d("ADDTEST", "ADDING HOTSPOT LOCATION B ID IS ${documentChange.document.id}")
                            hotspotViewModel.hotspots.add(
                                Hotspot(
                                    id = documentChange.document.id,

@@ -138,6 +138,11 @@ fun ProfileSection(
     }
     Spacer(modifier = Modifier.height(4.dp))
     Row() {
+
+        Button(onClick = { Database().TESTPRINTALLHOTSPOTIDS() }) {
+            Text(text = "TEST")
+        }
+
         Button(onClick = {
             val firebaseAuth = FirebaseAuth.getInstance()
             firebaseAuth.signOut()

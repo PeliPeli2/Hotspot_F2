@@ -10,7 +10,9 @@ class HotspotViewModel: ViewModel() {
 
     var hotspots = mutableStateListOf<Hotspot>()
 
-    fun addItem(item: Hotspot) { hotspots.add(item) }
+    fun addNewHotspot(hotspot: Hotspot) {
+        Database().addHotspot(hotspot = hotspot)
+    }
 
     fun removeItem(item: Hotspot) { hotspots.remove(item) }
 

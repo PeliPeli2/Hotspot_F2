@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -108,6 +109,24 @@ fun Hotspotmap(
                                   googleMap.addMarker(markerOptionsDestination)
                                   i++
                               }
+
+
+                              //********************************
+/*                              Log.d("LOCTEST", locationArrayList1[locationArrayList1.size-1].toString())
+                              val locName = getLocationFromAddress(locationArrayList1[locationArrayList1.size-1], context)
+                              if(locName != null) {
+                                  hotspotViewModel.addNewHotspot(
+                                      Hotspot(
+                                          title = locationArrayList2.last(),
+                                          description = locationArrayList3.last(),
+                                          location = GeoPoint(locName.latitude, locName.longitude)
+                                      )
+                                  )
+                              }
+                              confirm = false
+                              Log.d("ADDTEST", "ADDED HOTSPOT USING BUTTON I HOPE")*/
+                            //********************************
+
                           }
 
                           hotspotViewModel.hotspots.forEach {
@@ -130,52 +149,19 @@ fun Hotspotmap(
                           googleMap.setOnInfoWindowClickListener { markerOptions ->
                               lobbyViewModel.hotspot.value = hotspotViewModel.hotspots.firstOrNull { it.title == markerOptions.title}
 
-                              if (markerOptions.title == "Brønnum") {
-                                  lobbyViewModel.image.value = R.drawable.broennum
+                              when(markerOptions.title) {
+                                  "Brønnum" -> lobbyViewModel.image.value = R.drawable.broennum
+                                  "Duck And Cover" -> lobbyViewModel.image.value = R.drawable.duck_and_cover
+                                  "Ørsted" -> lobbyViewModel.image.value = R.drawable.oersted
+                                  "K-bar" -> lobbyViewModel.image.value = R.drawable.k_bar
+                                  else -> lobbyViewModel.image.value = R.drawable.broennum
                               }
 
-                              if (markerOptions.title == "Duck And Cover") {
-                                  lobbyViewModel.image.value = R.drawable.duck_and_cover
-                              }
-                              if (markerOptions.title == "Ørsted") {
-                                  lobbyViewModel.image.value = R.drawable.oersted
-                              }
-                              if (markerOptions.title == "K-bar") {
-                                  lobbyViewModel.image.value = R.drawable.k_bar
-                              }
-
-
-                              GlobalScope.launch(Dispatchers.Main) { // necessary to prevent deadlock
-                                  //navController.navigate(NavigationItem.Lobby.route)
+                              // necessary to prevent error when navigating from map
+                              GlobalScope.launch(Dispatchers.Main) {
                                   navController.popBackStack()
                                   navController.navigate(NavigationItem.Lobby.route)
                               }
-
-                              /*
-                                  markerOptions ->
-                              val intent = Intent(context, HotSpotActivity::class.java)
-                              intent.putExtra("hotspotname", markerOptions.title.toString())
-                              intent.putExtra("hotspotinfo", markerOptions.snippet.toString())
-                              //random checkin value should be changed
-                              intent.putExtra("hotspotcheckins",10)
-                              //If statements should be changed
-                                  if (markerOptions.title == "Brønnum") {
-                                      intent.putExtra("hotspotimage", R.drawable.broennum)
-                                  }
-                                  if (markerOptions.title == "Duck And Cover") {
-                                      intent.putExtra("hotspotimage", R.drawable.duck_and_cover)
-                                  }
-                                  if (markerOptions.title == "Ørsted") {
-                                      intent.putExtra("hotspotimage", R.drawable.oersted)
-                                  }
-                                  if (markerOptions.title == "K-bar") {
-                                      intent.putExtra("hotspotimage", R.drawable.k_bar)
-                                  }
-                              context.startActivity(intent)
-                              hotspotViewModel.title = markerOptions.title.toString()
-                              Log.d("marker", markerOptions.title.toString())
-                              Log.d("hotspot", hotspotViewModel.title)
-                              */
                           }
                           googleMap.setOnMarkerClickListener { markerOptions ->
                               if (markerOptions.isInfoWindowShown) {

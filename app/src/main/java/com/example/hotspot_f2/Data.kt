@@ -8,12 +8,12 @@ import com.google.firebase.firestore.GeoPoint
 
 
 data class Hotspot(
-    val id: String,
+    val id: String = "",
     val title: String,
     val description: String,
-    val type: String,
-    var checkins: MutableState<Int>,
-    val imageID: Int,
+    val type: String = "Bar",
+    var checkins: MutableState<Int> = mutableStateOf(0),
+    val imageID: Int = 0,
     val location: GeoPoint)
 
 

@@ -23,25 +23,16 @@ class CustomInfoWindow (context: Context) : GoogleMap.InfoWindowAdapter {
 
         Markertitle.text = marker.title
         Markersnippet.text = marker.snippet
-        if (marker.title == "Brønnum") {
-            view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.broennum)
-            view.findViewById<ImageView>(R.id.imageView2).visibility = View.VISIBLE
+
+        when(marker.title) {
+            "Brønnum" -> view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.broennum)
+            "Duck And Cover" -> view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.duck_and_cover)
+            "Ørsted" -> view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.oersted)
+            "K-bar" -> view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.k_bar)
+            else -> view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.broennum)
         }
-        if (marker.title == "Duck And Cover") {
-            view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.duck_and_cover)
-            view.findViewById<ImageView>(R.id.imageView2).visibility = View.VISIBLE
-        }
-        if (marker.title == "Ørsted") {
-            view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.oersted)
-            view.findViewById<ImageView>(R.id.imageView2).visibility = View.VISIBLE
-        }
-        if (marker.title == "K-bar") {
-            view.findViewById<ImageView>(R.id.imageView2).setImageResource(R.drawable.k_bar)
-            view.findViewById<ImageView>(R.id.imageView2).visibility = View.VISIBLE
-        }
+        view.findViewById<ImageView>(R.id.imageView2).visibility = View.VISIBLE
         view.findViewById<Button>(R.id.button).setText("Check in")
-
-
     }
 
     override fun getInfoContents(marker: Marker): View? {
