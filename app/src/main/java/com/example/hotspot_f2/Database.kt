@@ -71,6 +71,13 @@ class Database() {
         return listOf(point1, point2, point3, point4)
     }
 
+    fun FIXCHECKINCOUNT() {
+        val db = Firebase.firestore
+        db.collection("hotspots").document("7fNHoCmiYCM21IG4kgMC").update("checkins", 5)
+        db.collection("hotspots").document("ghgmW1O1hTOn1lMrXW6Q").update("checkins", 1)
+        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 3)
+        db.collection("hotspots").document("rYPA7GSyCP912WcQ9Zo7").update("checkins", 3)
+    }
 
     fun updateCurrentUser(profileViewModel: ProfileViewModel) {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
@@ -213,9 +220,13 @@ class Database() {
                 lobbyViewModel.isCheckedIn.value = false
                 lobbyViewModel.checkedInID.value = null
                 lobbyViewModel.checkedInUsers.clear()
+                lobbyViewModel.busy = false
                 Log.d(TAG, "Checked out user with id $userID")
             }
-            .addOnFailureListener { Log.d(TAG, "Failed to check out user") }
+            .addOnFailureListener {
+                lobbyViewModel.busy = false
+                Log.d(TAG, "Failed to check out user")
+            }
     }
 
     fun checkInCurrentUser(profileViewModel: ProfileViewModel, lobbyViewModel: LobbyViewModel) {
@@ -247,33 +258,11 @@ class Database() {
                     documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: $userID")
                     getCheckedInUsers(lobbyViewModel = lobbyViewModel)
             }
-            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
-    }
-
-    /*fun OLDcheckInCurrentUser(profileViewModel: ProfileViewModel, lobbyViewModel: LobbyViewModel) {
-        checkInUser(
-            hotspotID = lobbyViewModel.hotspot.value!!.id,
-            userID = FirebaseAuth.getInstance().currentUser!!.uid,
-            name = profileViewModel.name.value,
-            age = profileViewModel.age.value
-        )
-    }*/
-
-    /*private fun OLDcheckInUser(hotspotID: String, userID: String, name: String, age: Int) {
-        val data = hashMapOf(
-            "name" to name,
-            "age" to age
-        )
-
-        val db = Firebase.firestore
-        db.collection("hotspots").document(hotspotID).collection("checked_in_users").document(userID)
-            .set(data)
-            .addOnSuccessListener {
-                    documentReference -> Log.d(TAG, "DocumentSnapshot added with ID: $userID")
+            .addOnFailureListener {
+                e -> Log.w(TAG, "Error adding document", e)
+                lobbyViewModel.busy = false
             }
-            .addOnFailureListener { e -> Log.w(TAG, "Error adding document", e) }
-    }*/
-
+    }
 
     fun getCheckedInUsers(lobbyViewModel: LobbyViewModel) {
 
@@ -282,24 +271,15 @@ class Database() {
             return
         }
 
+        lobbyViewModel.checkedInUsers.clear()
+
         val db = Firebase.firestore
         db.collection("hotspots").document(lobbyViewModel.hotspot.value!!.id).collection("checked_in_users")
             .get()
             .addOnSuccessListener { result ->
-                //TODO: Move side effects to lambda function
                 lobbyViewModel.checkedInID.value = lobbyViewModel.hotspot.value!!.id
                 lobbyViewModel.isCheckedIn.value = true
-                lobbyViewModel.checkedInUsers.clear()
-                for(document in result) {
-                    lobbyViewModel.checkedInUsers.add(
-                        CheckedInUser(
-                            id = document.id,
-                            name = document.toObject(CheckedInUser::class.java).name,
-                            age = document.toObject(CheckedInUser::class.java).age
-                        )
-                    )
-                }
-                Log.d("DBGETUSERS", lobbyViewModel.getStringOfContents())
+                lobbyViewModel.busy = false
             }
 
         // Listen for users checking in and out of this particular hotspot
@@ -313,6 +293,7 @@ class Database() {
             }
             if(snapshots != null) {
                 for (documentChange in snapshots.documentChanges) {
+                    Log.d("ASDTEST", "GETTING USERS FROM LOCATION 2 DOCID: ${documentChange.document.id}")
                     when (documentChange.type) {
                         DocumentChange.Type.ADDED -> {
                             lobbyViewModel.checkedInUsers.add(

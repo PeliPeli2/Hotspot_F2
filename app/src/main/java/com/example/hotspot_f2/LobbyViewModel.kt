@@ -18,14 +18,27 @@ class LobbyViewModel: ViewModel() {
     var isCheckedIn: MutableState<Boolean> = mutableStateOf(false)
     var checkedInID: MutableState<String?> = mutableStateOf(null)
 
+    var busy = false
 
     fun checkIn(profileViewModel: ProfileViewModel) {
-        Database().checkInCurrentUser(lobbyViewModel = this, profileViewModel = profileViewModel)
+        if(busy) {
+            return
+        } else {
+            busy = true
+            Database().checkInCurrentUser(lobbyViewModel = this, profileViewModel = profileViewModel)
+        }
     }
 
     fun checkOut() {
-        listenerRegistration?.remove()
-        Database().checkOutCurrentUser(lobbyViewModel = this)
+        if (busy) {
+            return
+        } else {
+            busy = true
+            listenerRegistration?.remove()
+            Database().checkOutCurrentUser(lobbyViewModel = this)
+        }
+
+
     }
 
     fun getStringOfContents(): String {

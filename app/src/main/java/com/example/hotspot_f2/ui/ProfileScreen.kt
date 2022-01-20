@@ -1,6 +1,7 @@
 package com.example.hotspot_f2.ui
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.example.hotspot_f2.Database
 import com.example.hotspot_f2.MainActivity
 import com.example.hotspot_f2.ProfileViewModel
+import com.example.hotspot_f2.R
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -55,7 +57,7 @@ fun ProfileScreen(profileViewModel: ProfileViewModel) {
         }
         else {
             ProfileSection(
-                painterResource(id = profileViewModel.imageID.value),
+                painterResource(R.drawable.face), //TODO: Replace placeholder with somehting else
                 profileViewModel
             )
         }
@@ -137,6 +139,11 @@ fun ProfileSection(
         }
         Spacer(modifier = Modifier.height(4.dp))
         Row() {
+            
+            Button(onClick = { Database().FIXCHECKINCOUNT()}) {
+                
+            }
+
             Button(onClick = {
                 val firebaseAuth = FirebaseAuth.getInstance()
                 firebaseAuth.signOut()
