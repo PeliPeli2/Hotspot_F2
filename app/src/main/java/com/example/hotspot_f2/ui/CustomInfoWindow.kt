@@ -13,7 +13,6 @@ import com.google.android.gms.maps.model.Marker
 
 class CustomInfoWindow (context: Context) : GoogleMap.InfoWindowAdapter {
 
-    var mContext = context
     var mWindow = (context as Activity).layoutInflater.inflate(R.layout.custom_info_window, null)
 
     private fun renderWindowText(marker: Marker, view: View){

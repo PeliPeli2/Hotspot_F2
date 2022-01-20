@@ -1,39 +1,19 @@
 package com.example.hotspot_f2
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.findNavController
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.findNavController
 import com.example.hotspot_f2.nav.NavigationItem
 import com.example.hotspot_f2.ui.CustomInfoWindow
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -53,14 +33,13 @@ import java.util.*
 val locationArrayList1: MutableList<String> = ArrayList()
 val locationArrayList2: MutableList<String> = ArrayList()
 val locationArrayList3: MutableList<String> = ArrayList()
-var confirm: Boolean = false
 
 fun testAddingAHotspot(addressInput: String, titleInput: String, descriptionInput: String, hotspotViewModel: HotspotViewModel, context: Context)
 {
 
-    locationArrayList1.add(addressInput);
-    locationArrayList2.add(titleInput);
-    locationArrayList3.add(descriptionInput);
+    locationArrayList1.add(addressInput)
+    locationArrayList2.add(titleInput)
+    locationArrayList3.add(descriptionInput)
 
     val locName = getLocationFromAddress(locationArrayList1[locationArrayList1.size-1], context)
     if(locName != null) {
@@ -72,15 +51,6 @@ fun testAddingAHotspot(addressInput: String, titleInput: String, descriptionInpu
             )
         )
     }
-    //confirm = false
-    Log.d("ADDTEST", "ADDED HOTSPOT USING BUTTON I HOPE")
-    //********************************
-
-/*    locationArrayList1.add(addressInput);
-    locationArrayList2.add(titleInput);
-    locationArrayList3.add(descriptionInput);*/
-    //confirm = true
-
 }
 
 @Composable
@@ -136,7 +106,7 @@ fun Hotspotmap(
                               markers.add(
                                   MarkerOptions()
                                       .position(
-                                          com.google.android.gms.maps.model.LatLng(
+                                          LatLng(
                                               it.location.latitude,
                                               it.location.longitude
                                           )
@@ -187,7 +157,7 @@ fun Hotspotmap(
 fun getLocationFromAddress(strAddress: String?, context: Context ): GeoPoint? {
     val coder = Geocoder(context)
     val address: List<Address>
-    var p1: GeoPoint? = null
+    var p1: GeoPoint?
     try {
         address = coder.getFromLocationName(strAddress, 5)
         if (address == null) {

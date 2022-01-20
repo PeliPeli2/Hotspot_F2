@@ -1,34 +1,18 @@
 package com.example.hotspot_f2.ui
 
-import android.content.Context
-import android.content.Intent
-import android.view.View
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.graphics.Color.Companion.LightGray
-import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,15 +23,6 @@ import androidx.compose.ui.unit.sp
 import com.example.hotspot_f2.Hotspot
 import com.example.hotspot_f2.HotspotViewModel
 import com.example.hotspot_f2.R
-
-
-/*fun HotSpotListScreen(name: String,type: String, checkins: Int, image:Painter) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        HotspotList(name, type, checkins, image)
-    }*/
 
 @Composable
 fun DisplayList(hotspotViewModel: HotspotViewModel){

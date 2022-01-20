@@ -1,27 +1,19 @@
 package com.example.hotspot_f2.ui
 
-import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -29,27 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.hotspot_f2.CheckedInUser
-import com.example.hotspot_f2.HomeActivity
 import com.example.hotspot_f2.LobbyViewModel
 import com.example.hotspot_f2.ProfileViewModel
-import com.example.hotspot_f2.R.drawable
 import com.example.hotspot_f2.nav.NavigationItem
 
 @Composable
 fun LobbyScreen(navController: NavController, lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewModel) {
-
-    HotspotScreen(lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel, navController = navController)
-
-/*
-    Column {
-        Text(text = "Velkommen til lobbyen")
-    }
-     */
-}
-
-
-@Composable
-fun HotspotScreen(lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewModel, navController: NavController) {
     var viewUsers by remember { mutableStateOf(false) }
 
     Column{
@@ -161,6 +138,7 @@ fun HotspotScreen(lobbyViewModel: LobbyViewModel, profileViewModel: ProfileViewM
         }
     }
 }
+
 
 @Composable
 fun ListOfCheckedInUsers(lobbyViewModel: LobbyViewModel) {

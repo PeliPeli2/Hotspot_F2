@@ -1,7 +1,6 @@
 package com.example.hotspot_f2
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,8 +22,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AddMarker(
     hotspotViewModel: HotspotViewModel,
-    context: Context = LocalContext.current,
-    modifier: Modifier = Modifier
+    context: Context = LocalContext.current
+
 ) {
     val showInputForm = remember { mutableStateOf(false) }
     val textState1 = remember { mutableStateOf(TextFieldValue()) }
@@ -32,12 +31,6 @@ fun AddMarker(
     val textState3 = remember { mutableStateOf(TextFieldValue()) }
 
     Column(Modifier.padding(16.dp)) {
-        /*
-        //TODO: Delete test buttons
-        Button(onClick = { Log.d("TESTQ", lobbyViewModel.hotspot.value?.title.toString()) }) { Text(text = "CUR") }
-        Button(onClick = { Database().checkInTestUsers2(lobbyViewModel = lobbyViewModel) }) { Text(text = "TESTUSERS") }
-        Button(onClick = { Database().checkInCurrentUser(lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel)}) { Text(text = "ADDTHISUSER") }*/
-
         if (showInputForm.value) {
             Row() {
                 // Cancel adding a hotspot

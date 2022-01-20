@@ -8,16 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,10 +21,8 @@ import com.example.hotspot_f2.nav.NavigationItem
 import com.example.hotspot_f2.ui.DisplayList
 import com.example.hotspot_f2.ui.HomeScreen
 import com.example.hotspot_f2.ui.LobbyScreen
-//import com.example.hotspot_f2.ui.HotSpotListScreen
 import com.example.hotspot_f2.ui.ProfileScreen
 import com.google.firebase.auth.FirebaseAuth
-import com.example.hotspot_f2.Hotspot
 
 class HomeActivity : AppCompatActivity() {
 
@@ -56,9 +49,6 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
-        else {
-            val email = firebaseUser.email
-        }
     }
 }
 
@@ -84,7 +74,7 @@ fun MainScreenPreview() {
 fun Navigation(navController: NavHostController, profileViewModel: ProfileViewModel, hotspotViewModel: HotspotViewModel, lobbyViewModel: LobbyViewModel) {
     NavHost(navController, startDestination = NavigationItem.Map.route) {
         composable(NavigationItem.Map.route) {
-            HomeScreen(hotspotViewModel = hotspotViewModel, lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel, navController)
+            HomeScreen(hotspotViewModel = hotspotViewModel, lobbyViewModel = lobbyViewModel, navController)
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen(profileViewModel)

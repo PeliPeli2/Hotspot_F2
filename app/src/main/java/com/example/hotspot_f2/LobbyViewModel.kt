@@ -4,7 +4,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ListenerRegistration
 
 class LobbyViewModel: ViewModel() {
@@ -28,8 +27,6 @@ class LobbyViewModel: ViewModel() {
         listenerRegistration?.remove()
         Database().checkOutCurrentUser(lobbyViewModel = this)
     }
-
-    fun getNumberOfCheckedInUsers(): Int = checkedInUsers.size
 
     fun getStringOfContents(): String {
         var res = ""

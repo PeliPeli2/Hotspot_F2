@@ -42,16 +42,16 @@ fun ProfileScreen(profileViewModel: ProfileViewModel) {
     ) {
         var stat by rememberSaveable { profileViewModel.firstLogin}
         if(stat=="FIRST_LOGIN"){
-            setName(profileViewModel)
+            SetName(profileViewModel)
         }
         else if(stat=="AGE"){
-            setAge(profileViewModel)
+            SetAge(profileViewModel)
         }
         else if(stat=="DESCRIPTION"){
-            setDescription(profileViewModel)
+            SetDescription(profileViewModel)
         }
         else if(stat=="CONFIRM"){
-            createProfile(profileViewModel)
+            CreateProfile(profileViewModel)
         }
         else {
             ProfileSection(
@@ -187,7 +187,7 @@ fun RoundImage(
 }
 
 @Composable
-fun setName(
+fun SetName(
     profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -223,7 +223,7 @@ fun setName(
 }
 
 @Composable
-fun setAge(
+fun SetAge(
     profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -283,7 +283,7 @@ fun setAge(
 }
 
 @Composable
-fun setDescription(
+fun SetDescription(
     profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -336,7 +336,7 @@ fun setDescription(
 }
 
 @Composable
-fun createProfile(
+fun CreateProfile(
     profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {

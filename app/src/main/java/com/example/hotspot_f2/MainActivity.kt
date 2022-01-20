@@ -18,7 +18,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.util.Patterns
 import android.view.View
-import android.widget.EditText
 import java.util.regex.Pattern
 
 

@@ -1,8 +1,6 @@
 package com.example.hotspot_f2
 
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
@@ -73,79 +71,6 @@ class Database() {
         return listOf(point1, point2, point3, point4)
     }
 
-    fun TESTDELETESOMEHOTSPOTS() {
-        val db = Firebase.firestore
-        db.collection("hotspots").document("8fvbT4q1gGPr16nvSAp5")
-            .delete()
-            .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 1") }
-            .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 1") }
-
-        db.collection("hotspots").document("923JkJVLvDbkV5FuZ8l9")
-            .delete()
-            .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 2") }
-            .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 2") }
-
-        db.collection("hotspots").document("FtHMyhMbXyPNlfnrIaeS")
-            .delete()
-            .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 3") }
-            .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 3") }
-
-        db.collection("hotspots").document("eCZA5E54XtLGXagSwInk")
-            .delete()
-            .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 4") }
-            .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 4") }
-
-        db.collection("hotspots").document("Oazw6gF1IWgseCTstki1")
-            .delete()
-            .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 5") }
-            .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 1") }
-    }
-
-    fun FIXCHECKINCOUNT() {
-        val db = Firebase.firestore
-        db.collection("hotspots").document("7fNHoCmiYCM21IG4kgMC").update("checkins", 5)
-        db.collection("hotspots").document("ghgmW1O1hTOn1lMrXW6Q").update("checkins", 1)
-        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 3)
-        db.collection("hotspots").document("rYPA7GSyCP912WcQ9Zo7").update("checkins", 3)
-    }
-
-    fun TESTPRINTALLHOTSPOTIDS() {
-        val db = Firebase.firestore
-        db.collection("hotspots")
-            .get()
-            .addOnSuccessListener { result ->
-                Log.d("DBTESTPRINT", "**********************")
-                for (document in result) {
-                    Log.d("DBTESTPRINT", "ID: ${document.id} name: ${document.get("title").toString()}")
-                }
-                Log.d("DBTESTPRINT", "**********************")
-            }
-    }
-
-
-    fun writeDummyHotspots() {
-        getDummyHotspots().forEach {writeHotspot("Bente Bent", it) }
-    }
-
-    fun writeDummyUsers() {
-        val testUser = ProfileViewModel()
-        testUser.name.value = "Adam Abel"
-        testUser.age.value = 99
-        testUser.description.value = "En bruger af appen"
-        testUser.imageID.value = R.drawable.lars
-        updateUser(testUser.name.value, testUser)
-
-        val testUser2 = ProfileViewModel()
-        testUser2.name.value = "Bente Bent"
-        testUser2.age.value = 88
-        testUser2.description.value = "En anden bruger af appen"
-        testUser2.imageID.value = R.drawable.lars
-        updateUser(testUser2.name.value, testUser2)
-    }
-
-    fun testUpdateUser(dummyUserID: String, profileViewModel: ProfileViewModel) {
-        updateUser(dummyUserID, profileViewModel)
-    }
 
     fun updateCurrentUser(profileViewModel: ProfileViewModel) {
         val userID = FirebaseAuth.getInstance().currentUser?.uid
@@ -158,11 +83,6 @@ class Database() {
         Firebase.firestore.collection("users").document(userID).set(hashMapFromProfile(profileViewModel))
             .addOnSuccessListener { Log.d(TAG, "Updated the user ${profileViewModel.name.value}" ) }
             .addOnFailureListener { Log.d(TAG, "Error updating the user ${profileViewModel.name.value}" )}
-    }
-
-    fun testjkl() {
-        val db = Firebase.firestore
-
     }
 
     private fun getUser(userID: String, profileViewModel: ProfileViewModel) {
@@ -183,10 +103,6 @@ class Database() {
                 }
             }
             .addOnFailureListener { Log.d(TAG, "Failed to get user") }
-    }
-
-    fun testGetUser(userID: String, profileViewModel: ProfileViewModel) {
-        getUser(userID = userID, profileViewModel = profileViewModel)
     }
 
     fun getCurrentUser(profileViewModel: ProfileViewModel) {
@@ -245,7 +161,7 @@ class Database() {
                return@addSnapshotListener
            }
            if(snapshots != null) {
-               for (documentChange in snapshots!!.documentChanges) {
+               for (documentChange in snapshots.documentChanges) {
                    when(documentChange.type) {
                        DocumentChange.Type.ADDED -> {
                            hotspotViewModel.hotspots.add(
@@ -274,58 +190,6 @@ class Database() {
                }
            }
        }
-    }
-
-    fun checkInTestUsers(lobbyViewModel: LobbyViewModel) {
-        checkInUser(
-            hotspotID = lobbyViewModel.hotspot.value!!.id,
-            userID = "usertestid1",
-            name = "Regina George",
-            age = 17,
-            lobbyViewModel = lobbyViewModel
-        )
-
-        checkInUser(
-            hotspotID = lobbyViewModel.hotspot.value!!.id,
-            userID = "usertestid2",
-            name = "Karen Smith",
-            age = 17,
-            lobbyViewModel = lobbyViewModel
-        )
-
-        checkInUser(
-            hotspotID = lobbyViewModel.hotspot.value!!.id,
-            userID = "usertestid3",
-            name = "Gretchen Wieners",
-            age = 17,
-            lobbyViewModel = lobbyViewModel
-        )
-    }
-
-    fun checkInTestUsers2(lobbyViewModel: LobbyViewModel) {
-        checkInUser(
-            hotspotID = lobbyViewModel.hotspot.value!!.id,
-            userID = "usertestid4",
-            name = "Johnny Lawrence",
-            age = 56,
-            lobbyViewModel = lobbyViewModel
-        )
-
-        checkInUser(
-            hotspotID = lobbyViewModel.hotspot.value!!.id,
-            userID = "usertestid5",
-            name = "Daniel LaRusso",
-            age = 60,
-            lobbyViewModel = lobbyViewModel
-        )
-
-        checkInUser(
-            hotspotID = lobbyViewModel.hotspot.value!!.id,
-            userID = "usertestid6",
-            name = "John Kreese",
-            age = 75,
-            lobbyViewModel = lobbyViewModel
-        )
     }
 
     fun checkOutCurrentUser(lobbyViewModel: LobbyViewModel) {
@@ -430,8 +294,8 @@ class Database() {
                     lobbyViewModel.checkedInUsers.add(
                         CheckedInUser(
                             id = document.id,
-                            name = document.toObject(CheckedInUser::class.java)!!.name,
-                            age = document.toObject(CheckedInUser::class.java)!!.age
+                            name = document.toObject(CheckedInUser::class.java).name,
+                            age = document.toObject(CheckedInUser::class.java).age
                         )
                     )
                 }
@@ -448,34 +312,25 @@ class Database() {
                 return@addSnapshotListener
             }
             if(snapshots != null) {
-                for (documentChange in snapshots!!.documentChanges) {
+                for (documentChange in snapshots.documentChanges) {
                     when (documentChange.type) {
                         DocumentChange.Type.ADDED -> {
                             lobbyViewModel.checkedInUsers.add(
                                 CheckedInUser(
                                     id = documentChange.document.id,
-                                    name = documentChange.document.toObject(CheckedInUser::class.java)!!.name,
-                                    age = documentChange.document.toObject(CheckedInUser::class.java)!!.age
+                                    name = documentChange.document.toObject(CheckedInUser::class.java).name,
+                                    age = documentChange.document.toObject(CheckedInUser::class.java).age
                                 )
                             )
                         }
                         DocumentChange.Type.REMOVED -> {
                             lobbyViewModel.checkedInUsers.removeIf { it.id == documentChange.document.id }
                         }
+                        else -> {}
                     }
                 }
             }
         }
-    }
-
-    private fun hashMapFromHotspot(hs: Hotspot): HashMap<String, Comparable<*>> {
-        return hashMapOf(
-            "title" to hs.title,
-            "description" to hs.description,
-            "type" to hs.type,
-            "checkins" to hs.checkins.value,
-            "imageID" to hs.imageID,
-            "location" to hs.location)
     }
 
     private fun hashMapFromProfile(profileViewModel: ProfileViewModel): HashMap<String, Comparable<*>> {
