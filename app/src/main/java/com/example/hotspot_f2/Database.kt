@@ -3,6 +3,7 @@ package com.example.hotspot_f2
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.GeoPoint
@@ -28,7 +29,7 @@ class Database() {
                     " historic retreat—the perfect post-sightseeing reprieve. Specializing in Champagne," +
                     " along with a well-edited list of wine and cocktails and late-afternoon live jazz performances.",
             type = "Bar",
-            checkins = 30,
+            checkins = mutableStateOf(30),
             imageID = R.drawable.broennum,
             location = GeoPoint(55.73,12.3962))
 
@@ -39,7 +40,7 @@ class Database() {
                     "In contrast to the neighborhood’s other packed-to-the-gills bars, it's a relaxed, " +
                     "ideal place to pop in for a subdued nightcap amid a striking collection of vintage furniture and lighting.",
             type = "Bar",
-            checkins = 10,
+            checkins = mutableStateOf(10),
             imageID = R.drawable.duck_and_cover,
             location = GeoPoint(55.73,12.39))
 
@@ -49,7 +50,7 @@ class Database() {
             type = "Bar",
             description = "Copenhagen's craft beer scene is impressive, and one of the best places to become acquainted with it is Ørsted Ølbar," +
                     " located a stone’s throw from Nørreport Station and tranquil Ørstedparken.",
-            checkins = 23,
+            checkins = mutableStateOf(23),
             imageID = R.drawable.oersted,
             location = GeoPoint(55.7250,12.3910))
 
@@ -60,7 +61,7 @@ class Database() {
             description = "K-bar is named for Kirsten Holm, " +
                     "a pioneer of the Copenhagen cocktail scene. Years after opening, this bar, " +
                     "situated near Højbro Square, remains a sought-after drinks destination",
-            checkins = 44,
+            checkins = mutableStateOf(44),
             imageID = R.drawable.k_bar,
             location = GeoPoint(55.7279,12.39))
 
@@ -97,9 +98,9 @@ class Database() {
 
     fun FIXCHECKINCOUNT() {
         val db = Firebase.firestore
-        db.collection("hotspots").document("7fNHoCmiYCM21IG4kgMC").update("checkins", 3)
-        db.collection("hotspots").document("ghgmW1O1hTOn1lMrXW6Q").update("checkins", 0)
-        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 0)
+        db.collection("hotspots").document("7fNHoCmiYCM21IG4kgMC").update("checkins", 5)
+        db.collection("hotspots").document("ghgmW1O1hTOn1lMrXW6Q").update("checkins", 1)
+        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 1)
         db.collection("hotspots").document("rYPA7GSyCP912WcQ9Zo7").update("checkins", 3)
     }
 
@@ -152,6 +153,11 @@ class Database() {
         Firebase.firestore.collection("users").document(userID).set(hashMapFromProfile(profileViewModel))
             .addOnSuccessListener { Log.d(TAG, "Updated the user ${profileViewModel.name.value}" ) }
             .addOnFailureListener { Log.d(TAG, "Error updating the user ${profileViewModel.name.value}" )}
+    }
+
+    fun testjkl() {
+        val db = Firebase.firestore
+
     }
 
     private fun getUser(userID: String, profileViewModel: ProfileViewModel) {
@@ -216,13 +222,30 @@ class Database() {
                             title = document.get("title").toString(),
                             description = document.get("description").toString(),
                             type = document.get("type").toString(),
-                            checkins = document.get("checkins").toString().toInt(),
+                            checkins = mutableStateOf(document.get("checkins").toString().toInt()),
                             imageID = getDummyHotspotImageIDFromTitle(document.get("title").toString()), //TODO: actually use the imageID
                             location = document.get("location", GeoPoint::class.java)!!
                         )
                     )
                 }
             }
+
+       db.collection("hotspots").addSnapshotListener { snapshots, error ->
+           if(error != null) {
+               Log.d(TAG, "ERROR NOT NULL")
+               return@addSnapshotListener
+           }
+           if(snapshots != null) {
+               Log.d(TAG, "IN IF STATEMENT")
+               for (documentChange in snapshots!!.documentChanges) {
+                   val hs = hotspotViewModel.hotspots.firstOrNull {it.id == documentChange.document.id}
+                   hs?.checkins?.value = documentChange.document.get("checkins").toString().toInt()
+
+                   // Log.d(TAG, "New checkins value: ${documentChange.document.get("checkins").toString().toInt()}")
+               }
+           }
+
+       }
     }
 
     fun checkInTestUsers(lobbyViewModel: LobbyViewModel) {
@@ -283,7 +306,7 @@ class Database() {
         //TODO: Make this a transaction
         val db = Firebase.firestore
         db.collection("hotspots").document(lobbyViewModel.hotspot.value!!.id).update("checkins", FieldValue.increment(-1))
-            .addOnSuccessListener { lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins - 1 }
+            .addOnSuccessListener { /*lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins - 1*/ }
             .addOnFailureListener { e -> Log.w(TAG, "Error incrementing checkins", e) }
 
         db.collection("hotspots")
@@ -320,7 +343,7 @@ class Database() {
 
         //TODO: Make this a transaction
         db.collection("hotspots").document(hotspotID).update("checkins", FieldValue.increment(1))
-            .addOnSuccessListener { lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins + 1 }
+            .addOnSuccessListener { /*lobbyViewModel.hotspot.value?.checkins = lobbyViewModel.hotspot.value!!.checkins + 1*/ }
             .addOnFailureListener { e -> Log.w(TAG, "Error incrementing checkins", e) }
 
         db.collection("hotspots").document(hotspotID).collection("checked_in_users").document(userID)
@@ -389,7 +412,7 @@ class Database() {
             "title" to hs.title,
             "description" to hs.description,
             "type" to hs.type,
-            "checkins" to hs.checkins,
+            "checkins" to hs.checkins.value,
             "imageID" to hs.imageID,
             "location" to hs.location)
     }
