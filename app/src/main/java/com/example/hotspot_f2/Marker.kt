@@ -22,8 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AddMarker(
-    lobbyViewModel: LobbyViewModel,
-    profileViewModel: ProfileViewModel,
+    hotspotViewModel: HotspotViewModel,
     context: Context = LocalContext.current,
     modifier: Modifier = Modifier
 ) {
@@ -46,7 +45,7 @@ fun AddMarker(
                     Text("Cancel")
                 }
                 Button(onClick = {
-                    testAddingAHotspot(textState1.value.text, textState2.value.text,textState3.value.text)
+                    testAddingAHotspot(textState1.value.text, textState2.value.text,textState3.value.text, hotspotViewModel = hotspotViewModel, context = context)
                     Toast.makeText(context, "Hotspot created", Toast.LENGTH_LONG).show()
                     showInputForm.value = false
                 }

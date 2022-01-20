@@ -27,7 +27,6 @@ class Database() {
     }
 
     private fun getDummyHotspots(): List<Hotspot> {
-
         val point1 = Hotspot(
             id = "dummyid1",
             title="Brønnum",
@@ -76,27 +75,27 @@ class Database() {
 
     fun TESTDELETESOMEHOTSPOTS() {
         val db = Firebase.firestore
-        db.collection("hotspots").document("BTpd9I2XTpsVSnWcJWgj")
+        db.collection("hotspots").document("8fvbT4q1gGPr16nvSAp5")
             .delete()
             .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 1") }
             .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 1") }
 
-        db.collection("hotspots").document("ZGLyDKHUlPLkdIx8AIB4")
+        db.collection("hotspots").document("923JkJVLvDbkV5FuZ8l9")
             .delete()
             .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 2") }
             .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 2") }
 
-        db.collection("hotspots").document("fd4qEWbWBtj66jugG8xY")
+        db.collection("hotspots").document("FtHMyhMbXyPNlfnrIaeS")
             .delete()
             .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 3") }
             .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 3") }
 
-        db.collection("hotspots").document("gKUHuYbBFRZ15tn15tVA")
+        db.collection("hotspots").document("eCZA5E54XtLGXagSwInk")
             .delete()
             .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 4") }
             .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 4") }
 
-        db.collection("hotspots").document("rZhVUtBiRj5VlWoCQ8EH")
+        db.collection("hotspots").document("Oazw6gF1IWgseCTstki1")
             .delete()
             .addOnSuccessListener { Log.d("DBDELETETEST", "Deleted 5") }
             .addOnFailureListener { Log.d("DBDELETETEST", "Failed to delete 1") }
@@ -106,7 +105,7 @@ class Database() {
         val db = Firebase.firestore
         db.collection("hotspots").document("7fNHoCmiYCM21IG4kgMC").update("checkins", 5)
         db.collection("hotspots").document("ghgmW1O1hTOn1lMrXW6Q").update("checkins", 1)
-        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 1)
+        db.collection("hotspots").document("q1jBYdzkGVjVkJfrXyIi").update("checkins", 3)
         db.collection("hotspots").document("rYPA7GSyCP912WcQ9Zo7").update("checkins", 3)
     }
 
@@ -218,6 +217,7 @@ class Database() {
         hotspotViewModel.hotspots.clear()
 
         val db = Firebase.firestore
+/*
         db.collection("hotspots")
             .get()
             .addOnSuccessListener { result ->
@@ -236,6 +236,8 @@ class Database() {
                     )
                 }
             }
+*/
+
 
        db.collection("hotspots").addSnapshotListener { snapshots, error ->
            if(error != null) {
@@ -246,7 +248,6 @@ class Database() {
                for (documentChange in snapshots!!.documentChanges) {
                    when(documentChange.type) {
                        DocumentChange.Type.ADDED -> {
-                           Log.d("ADDTEST", "ADDING HOTSPOT LOCATION B ID IS ${documentChange.document.id}")
                            hotspotViewModel.hotspots.add(
                                Hotspot(
                                    id = documentChange.document.id,
@@ -258,6 +259,7 @@ class Database() {
                                    location = documentChange.document.get("location", GeoPoint::class.java)!!
                                )
                            )
+                           Log.d("ADDTEST", "ADDING HOTSPOT LOCATION B ID IS ${documentChange.document.id} L: ${hotspotViewModel.hotspots.last().location.latitude} L: ${hotspotViewModel.hotspots.last().location.longitude}")
                        }
                        DocumentChange.Type.REMOVED -> {
                            hotspotViewModel.hotspots.removeIf { it.id == documentChange.document.id }
@@ -491,6 +493,6 @@ fun getDummyHotspotImageIDFromTitle(title: String): Int {
         "Duck And Cover" -> R.drawable.duck_and_cover
         "Ørsted" -> R.drawable.oersted
         "K-bar" -> R.drawable.k_bar
-        else -> R.drawable.lars
+        else -> R.drawable.broennum
     }
 }

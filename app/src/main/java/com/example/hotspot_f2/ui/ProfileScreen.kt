@@ -139,7 +139,7 @@ fun ProfileSection(
     Spacer(modifier = Modifier.height(4.dp))
     Row() {
 
-        Button(onClick = { Database().TESTPRINTALLHOTSPOTIDS() }) {
+        Button(onClick = { Database().FIXCHECKINCOUNT() }) {
             Text(text = "TEST")
         }
 

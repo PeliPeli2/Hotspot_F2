@@ -31,7 +31,7 @@ fun HomeScreen(hotspotViewModel: HotspotViewModel, lobbyViewModel: LobbyViewMode
     Box(modifier=Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center) { Hotspotmap(hotspotViewModel = hotspotViewModel, lobbyViewModel = lobbyViewModel,navController = navController, modifier = Modifier){}
     }
-    AddMarker(lobbyViewModel = lobbyViewModel, profileViewModel = profileViewModel, modifier = Modifier)
+    AddMarker(hotspotViewModel = hotspotViewModel, modifier = Modifier)
 }
 @Preview(showBackground = true)
 

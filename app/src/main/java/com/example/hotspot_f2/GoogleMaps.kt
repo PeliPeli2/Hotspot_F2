@@ -55,12 +55,32 @@ val locationArrayList2: MutableList<String> = ArrayList()
 val locationArrayList3: MutableList<String> = ArrayList()
 var confirm: Boolean = false
 
-fun testAddingAHotspot(textState1: String, textState2: String, textState3: String)
+fun testAddingAHotspot(addressInput: String, titleInput: String, descriptionInput: String, hotspotViewModel: HotspotViewModel, context: Context)
 {
-    locationArrayList1.add(textState1);
-    locationArrayList2.add(textState2);
-    locationArrayList3.add(textState3);
-    confirm = true
+
+    locationArrayList1.add(addressInput);
+    locationArrayList2.add(titleInput);
+    locationArrayList3.add(descriptionInput);
+
+    val locName = getLocationFromAddress(locationArrayList1[locationArrayList1.size-1], context)
+    if(locName != null) {
+        hotspotViewModel.addNewHotspot(
+            Hotspot(
+                title = locationArrayList2.last(),
+                description = locationArrayList3.last(),
+                location = GeoPoint(locName.latitude, locName.longitude)
+            )
+        )
+    }
+    //confirm = false
+    Log.d("ADDTEST", "ADDED HOTSPOT USING BUTTON I HOPE")
+    //********************************
+
+/*    locationArrayList1.add(addressInput);
+    locationArrayList2.add(titleInput);
+    locationArrayList3.add(descriptionInput);*/
+    //confirm = true
+
 }
 
 @Composable
@@ -93,26 +113,10 @@ fun Hotspotmap(
                   mapView.apply {
                       mapView.getMapAsync { googleMap->
                           googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+
+/*
                           if (confirm) {
-                              var i = 0
-                              while (i <= locationArrayList1.size-1) {
-                                  val locName = getLocationFromAddress(locationArrayList1[i], context)
-                                  val markerOptionsDestination = MarkerOptions()
-                                      .position(
-                                          com.google.android.gms.maps.model.LatLng(
-                                              locName?.latitude.toString().toDouble(),
-                                              locName?.longitude.toString().toDouble()
-                                          )
-                                      )
-                                      .title(locationArrayList2[i])
-                                      .snippet(locationArrayList3[i])
-                                  googleMap.addMarker(markerOptionsDestination)
-                                  i++
-                              }
-
-
-                              //********************************
-/*                              Log.d("LOCTEST", locationArrayList1[locationArrayList1.size-1].toString())
+                              Log.d("LOCTEST", locationArrayList1[locationArrayList1.size-1].toString())
                               val locName = getLocationFromAddress(locationArrayList1[locationArrayList1.size-1], context)
                               if(locName != null) {
                                   hotspotViewModel.addNewHotspot(
@@ -124,10 +128,9 @@ fun Hotspotmap(
                                   )
                               }
                               confirm = false
-                              Log.d("ADDTEST", "ADDED HOTSPOT USING BUTTON I HOPE")*/
-                            //********************************
-
+                              Log.d("ADDTEST", "ADDED HOTSPOT USING BUTTON I HOPE")
                           }
+*/
 
                           hotspotViewModel.hotspots.forEach {
                               markers.add(
